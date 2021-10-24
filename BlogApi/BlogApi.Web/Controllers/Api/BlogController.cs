@@ -1,6 +1,7 @@
 ﻿using BlogApi.BlogDatabase.Models;
 using BlogApi.Core.Infrastructure.Interfaces;
 using BlogApi.Core.Services;
+using BlogApi.Identity.Models;
 using BlogApi.Identity.Repositories;
 using BlogApi.Web.Models.ViewModels.Api.Account;
 using BlogApi.Web.Models.ViewModels.Api.Blog;
@@ -32,6 +33,34 @@ namespace BlogApi.Web.Controllers.Api
             return true;
         }
 
+        private bool PageCheck(int page, UserRepository repository)
+        {
+            if (page <= 0)
+                return false;
+            if (page > (repository.Users.Count() / countOnPage) + 1)
+                return false;
+
+            return true;
+        }
+
+        private async Task<UserDataResponse> GetUserDataFiltred(Func<User, ICollection<string>, bool> predicate, UserDataRequest request)
+        {
+            var users = (await userRepository.Users.ToListAsync()).Where(x => predicate(x, request.UsersId));
+            var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x => new UserData
+            {
+                Id = x.Id,
+                Name = x.UserName,
+                UserPhoto = userPhotoRepository.GetAll().FirstOrDefault(photo => photo.UserId == x.Id)
+            }).ToList();
+
+            return new UserDataResponse
+            {
+                Total = users.Count(),
+                Page = request.Page,
+                Count = usersData.Count,
+                UserDatas = usersData
+            };
+        }
 
         private ArticleResponse ArticleResponse(int page, string searchText)
         {
@@ -131,19 +160,18 @@ namespace BlogApi.Web.Controllers.Api
         [HttpPost("users")]
         public async Task<ActionResult> GetUserInformation([FromBody] UserDataRequest request)
         {
-            if (CheckObjectForNull.CheckForNull(request))
-                return BadRequest();
-            var users = (await userRepository.Users.ToListAsync()).Where(x => request.UsersId.Contains(x.Id)).ToList();
+            if (CheckObjectForNull.CheckForNull(request) && PageCheck(request.Page, userRepository))
+                return BadRequest(); 
+   
+            return Json(GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request));
 
-            return Json(new UserDataResponse
-            {
-                Count = users.Count,
-                UserDatas = users.Select(x => new UserData
-                {
-                    Name = x.UserName,
-                    UserPhoto = userPhotoRepository.GetAll().FirstOrDefault(photo => photo.UserId == x.Id)
-                }).ToList()
-            }) ;
+        }
+        [HttpPost("search/users")]
+        public async Task<ActionResult> GetUsers([FromBody] UserDataRequest request)
+        {
+            if (CheckObjectForNull.CheckForNull(request) && PageCheck(request.Page, userRepository))
+                return BadRequest();
+            return Json(GetUserDataFiltred((x, collection) => collection.Any(item => item.Contains(x.UserName)), request));
         }
     }
 }

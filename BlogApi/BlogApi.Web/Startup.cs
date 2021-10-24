@@ -95,6 +95,8 @@ namespace BlogApi.Web
             services.AddScoped<DbContext, BlogContext>();
             services.AddScoped<IRepository<Article>, ArticleRepository>();
             services.AddScoped<IRepository<Photo>, PhotoRepository>();
+            services.AddScoped<IRepository<UserPhoto>, UserPhotoRepository>();
+            services.AddScoped<SubscriptionRepository, SubscriptionRepository>();
             services.AddSingleton<IJwtGenerator>(new JwtGenerator(Configuration));
 
             identityBuilder.AddRoles<Role>();

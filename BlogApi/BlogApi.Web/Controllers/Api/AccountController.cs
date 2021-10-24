@@ -3,6 +3,8 @@ using BlogApi.Identity.Repositories;
 using BlogApi.Web.Models.ViewModels.Api;
 using BlogApi.Web.Models.ViewModels.Api.Account;
 using BlogApi.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,11 +19,13 @@ namespace BlogApi.Web.Controllers.Api
     {
         private readonly UserRepository userRepository;
         private readonly IJwtGenerator jwtGenerator;
+        private readonly SubscriptionRepository subscriptionRepository;
 
-        public AccountController(UserRepository userRepository, IJwtGenerator jwtGenerator)
+        public AccountController(UserRepository userRepository, IJwtGenerator jwtGenerator, SubscriptionRepository subscriptionRepository)
         {
             this.userRepository = userRepository;
             this.jwtGenerator = jwtGenerator;
+            this.subscriptionRepository = subscriptionRepository;
         }
 
         private async Task<ClaimsIdentity> GetIdentity(string login, string password)
@@ -101,6 +105,56 @@ namespace BlogApi.Web.Controllers.Api
             }
         }
 
+        [HttpPost("subscribe"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> SubscribeUser([FromBody] string authorId)
+        {
+            try
+            {
+                var id = Guid.Parse(authorId);
+               
+                var currentUserId = User.Identities.ElementAt(0).Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                if (currentUserId == authorId)
+                    throw new Exception("Cannot subscribe user to himself");
+                subscriptionRepository.CreateOrUpdate(new Identity.Models.Subscribe
+                {
+                    Id = Guid.NewGuid(),
+                    AuthorId = authorId,
+                    SubscriberId = currentUserId
+                }) ;
+                subscriptionRepository.SaveChanges();
+                return Json(new SubscriptionResponse
+                {
+                    AuthorId = authorId,
+                    SubscriberId = currentUserId
+                });
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("unsubscribe"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> UnsubscribeUser([FromBody] string authorId)
+        {
+            try
+            {
+                var id = Guid.Parse(authorId);
+                var currentUserId = User.Identities.ElementAt(0).Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var subscription = subscriptionRepository.GetAll().Where(x => (x.AuthorId == authorId && x.SubscriberId == currentUserId)).FirstOrDefault();
+                subscriptionRepository.Delete(subscription);
+
+                return Json(new SubscriptionResponse
+                {
+                    AuthorId = authorId,
+                    SubscriberId = currentUserId
+                });
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
     }
 }
