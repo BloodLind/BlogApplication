@@ -27,6 +27,9 @@
   .nav-top{
     z-index:9999;
 }
+.nav-top-second{
+    z-index: 9998;
+}
   .navigation{
       background-color: var(--dark-color);
       color:var(--light-color) !important;
