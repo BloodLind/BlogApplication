@@ -1,10 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {BlogsGet, UsersGet, PhotosGet} from '../api/blogController'
 import { useEffect, useState } from "react";
+<<<<<<< Updated upstream
 import '../styles/site.css'
 import imageLightness from '../services/imageLightness'
 import LeftCard from './cards/LeftCard';
 import RightCard from './cards/RightCard';
+=======
+import '../index.css'
+>>>>>>> Stashed changes
 
  function Main(){
      const [isLoaded, setIsLoaded] = useState(false);
@@ -17,6 +21,7 @@ import RightCard from './cards/RightCard';
      if(isLoaded){
          console.log(data);
          return(
+<<<<<<< Updated upstream
              <>
              <div className='color-light d-flex flex-column justify-content-center'>
             <div className="w-100 card m-5 round-card align-self-center align-content-between justify-content-between" style={{
@@ -64,6 +69,14 @@ import RightCard from './cards/RightCard';
             </div>
             </>
     
+=======
+             <div>
+            <div className="col-10 card m-5">
+                <img src={(data.result[0].previewPhotoId == null ? './drawable/logowithtextdark.png' : data.result[0])}
+                ></img>
+            </div>
+        </div>
+>>>>>>> Stashed changes
     );
 }
     else
