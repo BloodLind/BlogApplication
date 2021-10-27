@@ -1,14 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {BlogsGet, UsersGet, PhotosGet} from '../api/blogController'
 import { useEffect, useState } from "react";
-<<<<<<< Updated upstream
 import '../styles/site.css'
 import imageLightness from '../services/imageLightness'
 import LeftCard from './cards/LeftCard';
 import RightCard from './cards/RightCard';
-=======
-import '../index.css'
->>>>>>> Stashed changes
+import LeftSecondCard from './cards/LeftSecondCard';
+import RightSecondCard from './cards/RightSecondCard';
 
  function Main(){
      const [isLoaded, setIsLoaded] = useState(false);
@@ -21,7 +19,6 @@ import '../index.css'
      if(isLoaded){
          console.log(data);
          return(
-<<<<<<< Updated upstream
              <>
              <div className='color-light d-flex flex-column justify-content-center'>
             <div className="w-100 card m-5 round-card align-self-center align-content-between justify-content-between" style={{
@@ -58,9 +55,17 @@ import '../index.css'
                 <div className=" line-dark w-75"></div>
             </div>
             
-            <div className="d-flex flex-wrap justify-content-center align-content-center align-items-baseline m-5 mt-0 mb-0 p-5 pt-0">
+            <div className="d-flex flex-row justify-content-center align-content-center align-items m-5 mt-0 mb-0 p-5 pt-0 gap-4">
+                <div className="d-flex flex-column gap-5">
+
                 <LeftCard></LeftCard>
+                <LeftSecondCard></LeftSecondCard>
+                </div>
+                <div className="d-flex flex-column gap-5">
+
                 <RightCard></RightCard>
+                <RightSecondCard></RightSecondCard>
+                </div>
             </div>
 
             <div className="d-flex flex-row m-5 mb-0 p-5 align-items-baseline gap-5">
@@ -69,14 +74,6 @@ import '../index.css'
             </div>
             </>
     
-=======
-             <div>
-            <div className="col-10 card m-5">
-                <img src={(data.result[0].previewPhotoId == null ? './drawable/logowithtextdark.png' : data.result[0])}
-                ></img>
-            </div>
-        </div>
->>>>>>> Stashed changes
     );
 }
     else
