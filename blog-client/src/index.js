@@ -10,6 +10,7 @@ import {
 import Main from './components/main'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
+import Article from './components/article'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -47,10 +48,17 @@ ReactDOM.render(
         <Route path="/register">
           Login
         </Route>
+          <Route path="/article/:id">
+            <Navbar></Navbar>
+            <Article></Article>
+            <Footer></Footer>
+          </Route>
         </Switch>
 
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
+  
 );
+
 

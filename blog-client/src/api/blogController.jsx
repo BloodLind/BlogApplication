@@ -1,35 +1,48 @@
-import {GetUsers, GetArticles, GetPhotos} from './apiKeys'
+import {GetUsers, GetArticles, GetPhotos, GetArticle} from './apiKeys'
 export async function BlogsGet(){
     var res =   fetch(GetArticles);
     return res.then(x =>{return x.json()}).then(x => x);
 }
 
+
 export async function PhotosGet(ids){
     var photos = [];
-    ids.foreach(async x => {
-
-        var result = await fetch(GetPhotos + `/id-${x}`);
+    console.log(ids);
+    for(let id of ids){
+        if(id == null)
+            continue;
+        var result = await fetch(GetPhotos + `/id-${id}`);
         if(result.ok){
             var data = await result.json();
             photos.push(data);
         }
-        })
-        return photos.result;
+    }
+    
+      console.log(photos);
+        return photos;
     }
 
 export async function UsersGet(ids){
-    var users = [];
-    
         var result = await fetch(GetUsers, {
             method : 'POST',
-            body : {
-                "usersId" : ids
-            }
-        })
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify({usersId : ids
+            })
+        });
         if(result.ok)
-            return await result.json().result;
+            return (await result.json());
         else
-            return undefined;
+            return null;
 
+}
+
+export async function ArticleGet(id){
+    var result = await fetch(GetArticle + `/${id}`);
+    if(result.ok)
+        return (await result.json());
+    else
+        return null;
 }
 

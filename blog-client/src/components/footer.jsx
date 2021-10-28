@@ -4,7 +4,15 @@ import {
 
 function Footer(){
     return(
-        <div className="footer p-2">
+        <div className="footer d-flex flex-column p-2">
+        <div className=" align-self-center" style={{
+          backgroundColor:'white',
+          position:'relative',
+          top:'-10px',
+          height:'5px',
+          width:'37em',
+          borderRadius:'10px'
+        }}></div>
       <div className="d-flex flex-row justify-content-around align-items-center">
         <div className="d-flex flex-column justify-content-center align-items-center">
           <img className="nav-img" src="drawable/logowithTextlight.png"></img>

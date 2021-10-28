@@ -65,6 +65,10 @@
 
 
 /* Colors */
+.bg-dark-gradient{
+  background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(0,0,0,1) 100%);
+}
+
 .bg-dark-color{
   background-color: var(--dark-color) !important;
 }
@@ -102,7 +106,7 @@
 }
 /* font size */
 .text-x-large{
-  font-size: xx-large !important;
+  font-size: 2.3em !important;
 }
 
 .text-larger{
