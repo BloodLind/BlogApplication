@@ -10,6 +10,7 @@ namespace BlogApi.Identity.Models
 {
     public class User : IdentityUser
     {
+
         public virtual ICollection<Subscribe> Subscribers { get; set; }
         
         public virtual ICollection<Subscribe> Subscriptions { get; set; }

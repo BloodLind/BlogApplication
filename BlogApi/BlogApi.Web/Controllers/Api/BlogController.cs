@@ -27,7 +27,7 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (page <= 0)
                 return false;
-            if (page > (repository.GetAll().Count() / countOnPage) + 1)
+            if (page > Math.Ceiling(repository.GetAll().Count() / (double)countOnPage))
                 return false;
 
             return true;
@@ -37,7 +37,7 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (page <= 0)
                 return false;
-            if (page > (repository.Users.Count() / countOnPage) + 1)
+            if (page > Math.Ceiling(repository.Users.Count() / (double)countOnPage))
                 return false;
 
             return true;
@@ -50,7 +50,7 @@ namespace BlogApi.Web.Controllers.Api
             {
                 Id = x.Id,
                 Name = x.UserName,
-                UserPhoto = userPhotoRepository.GetAll().FirstOrDefault(photo => photo.UserId == x.Id)
+                Photo = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id)?.Photo.Data
             }).ToList();
 
             return new UserDataResponse
@@ -70,7 +70,7 @@ namespace BlogApi.Web.Controllers.Api
                 return null;
             
             if(searchText == null)
-                articles = articlesRepository.GetAll().Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
+                articles = articlesRepository.GetAll().OrderByDescending(x => x.PublicationDate).Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
             else
                 articles = articlesRepository.GetAll().Where(x => x.Title.Contains(searchText))
                     .Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
@@ -79,7 +79,7 @@ namespace BlogApi.Web.Controllers.Api
             {
                 Count = articles.Count,
                 CurrentPage = page,
-                PageCount = (total / countOnPage) + 1,
+                PageCount = (int)Math.Ceiling(total / (double)countOnPage),
                 Total = total,
                 Result = articles
             };
@@ -93,7 +93,7 @@ namespace BlogApi.Web.Controllers.Api
             this.userRepository = userRepository;
         }
         
-        [HttpGet("articles/page-{page:int}"), HttpGet(""), HttpGet("api/blog/articles")]
+        [HttpGet("articles/page-{page:int}"), HttpGet(""), HttpGet("/articles")]
         public async Task<ActionResult> Articles(int page = 1, string searchText = null)
         {
             
@@ -152,7 +152,7 @@ namespace BlogApi.Web.Controllers.Api
             {
                 Count = result.Count,
                 CurrentPage = request.Page,
-                PageCount = (result.Count / countOnPage) + 1,
+                PageCount = (int)Math.Ceiling(result.Count / (double)countOnPage),
                 Total = articles.Count(),
                 Result = result
             });
@@ -163,7 +163,7 @@ namespace BlogApi.Web.Controllers.Api
             if (CheckObjectForNull.CheckForNull(request) && PageCheck(request.Page, userRepository))
                 return BadRequest(); 
    
-            return Json(GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request));
+            return Json(await GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request));
 
         }
         [HttpPost("search/users")]
@@ -171,7 +171,7 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (CheckObjectForNull.CheckForNull(request) && PageCheck(request.Page, userRepository))
                 return BadRequest();
-            return Json(GetUserDataFiltred((x, collection) => collection.Any(item => item.Contains(x.UserName)), request));
+            return Json(await GetUserDataFiltred((x, collection) => collection.Any(item => item.Contains(x.UserName)), request));
         }
     }
 }

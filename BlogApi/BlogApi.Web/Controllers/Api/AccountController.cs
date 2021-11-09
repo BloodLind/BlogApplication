@@ -76,7 +76,7 @@ namespace BlogApi.Web.Controllers.Api
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody]RegisterUserRequest request)
         {
-            if (!CheckObjectForNull.CheckForNull(request))
+            if (CheckObjectForNull.CheckForNull(request))
                 return BadRequest();
 
             var result = await userRepository.AddUserAsync(
@@ -87,7 +87,7 @@ namespace BlogApi.Web.Controllers.Api
                 }, request.Password);
             if (result.Succeeded)
             {
-                var user = await userRepository.GetUserAsync(request.Login);
+                var user = await userRepository.GetUserByLoginAsync(request.Login);
                 await userRepository.AddToRoleAsync(user, "User");
                 var identity = await GetIdentity(request.Login, request.Password);
 

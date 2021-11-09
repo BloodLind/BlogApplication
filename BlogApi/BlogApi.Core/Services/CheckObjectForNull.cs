@@ -16,7 +16,7 @@ namespace BlogApi.Core.Services
                 return true;
 
             bool result = false;
-            foreach(var propertie in typeof(object).GetProperties())
+            foreach(var propertie in target.GetType().GetProperties())
             {
                 result = propertie.GetValue(target) == null;
                 if (result)
