@@ -1,0 +1,269 @@
+.background-item{
+    z-index: -1;
+}
+
+:root{
+    --dark-color: #191919;
+    --sub-dark-color:#14213D;
+    --accent-color:#FCA311;
+    --light-color: #FFFFFF;
+    --sub-light-color:#E5E5E5;
+  }
+@font-face {
+    font-family: 'OCR-A';
+    src: url('fonts/OCR-A\ Regular.ttf');
+}
+@font-face {
+    font-family: "YU Gothic UI";
+    src: url('fonts/yugothib.ttf');
+}
+
+@font-face {
+    font-family: 'Agency FB';
+    src: url('fonts/Agency\ FB.TTF');
+}
+
+
+.footer{
+  background-color: var(--sub-dark-color);
+  color:var(--light-color);
+  font-family: "Agency FB";
+}
+.nav-top{
+  z-index:9999;
+}
+.nav-top-second{
+  z-index: 9998;
+}
+.navigation{
+    background-color: var(--dark-color);
+    color:var(--light-color) !important;
+    font-family: 'OCR-A';
+    
+}
+
+.navigation-logo{
+  height: 400px;
+}
+
+.z-100{
+    z-index: 100;
+}
+
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+/* navigation image  */
+.nav-img{
+    
+    width: 250px !important;
+}
+
+.light-link{
+    color: var(--light-color) !important;
+    text-decoration: none;
+    transition: 50ms ease-in-out;
+}
+.light-link:hover{
+  color:var(--sub-light-color) !important;
+}
+
+/* lists */
+
+.list-clear{
+  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  align-items: flex-start;
+}
+
+.round-button{
+  border-radius: 5px;
+}
+
+.opacity-button{
+  opacity: 80%;
+  transition: 200ms ease-in-out;
+}
+.opacity-button:hover{
+  opacity: 100%;
+}
+
+.round-card{
+  border:none;
+  border-radius: 15px;
+}
+
+.round-user{
+  border: none;
+  border-radius: 15px;
+}
+.light-link{
+    color: var(--light-color) !important;
+    text-decoration: none;
+    transition: 50ms ease-in-out;
+}
+.light-link:hover{
+  color:var(--sub-light-color) !important;
+}
+
+
+
+.list-clear{
+  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  align-items: flex-start;
+}
+
+
+
+.bg-dark-gradient{
+  background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(0,0,0,1) 100%);
+}
+
+.bg-dark-color{
+  background-color: var(--dark-color) !important;
+}
+
+.bg-sub-dark{
+  background-color: var(--sub-dark-color) !important;
+}
+
+.bg-accent{
+  background-color:  var(--accent-color) !important;
+}
+
+
+.color-light{
+  color:var(--light-color) !important;
+}
+
+.color-sub-light{
+  color:var(--sub-light-color) !important;
+}
+
+.color-dark{
+  color:var(--dark-color) !important;
+}
+
+
+.ocr{
+    font-family: 'OCR-A';
+}
+.agency{
+    font-family: 'Agency FB';
+}
+.yu-gothic{
+    font-family: "YU Gothic UI";
+}
+
+.text-x-large{
+  font-size: 2.3em !important;
+}
+
+.text-larger{
+  font-size: x-large !important;
+}
+
+.text-large{
+  font-size: larger !important;
+}
+
+.text-super-xx-large{
+  font-size: 4.2em;
+}
+
+.text-super-x-larger{
+  font-size: 4em;
+}
+.text-super-larger{
+  font-size: 2.7em;
+}
+.text-super-large{
+  font-size: 2em;
+}
+
+
+@media screen and(max-width:700px) {
+  .adaptive{
+      font-size: small !important;
+  }
+}
+
+.line{
+  background-color: white !important;
+  width: 700px !important;
+  height: 3px !important;
+  opacity: 0.9!important;
+  border: none !important;
+}
+
+.line-dark{
+  background-color: var(--dark-color);
+  height: 3px !important;
+  border:none;
+  border-radius: 5px;
+}
+
+
+.hidden{
+  opacity: 0;
+  transition: 200ms ease-in-out;
+}
+.opacity-trigger:hover  .hidden{
+  
+  opacity: 100;
+}
+
+
+.opacity-100{
+  opacity: 100% !important;
+}
+
+.opacity-75{
+  opacity: 75% !important;
+}
+
+.opacity-50{
+  opacity: 50% !important;
+}
+
+.opacity-25{
+  opacity: 25% !important;
+}
+
+.slide-image{
+  height: 350px;
+  width:600px
+}
+
+.parent {
+  height:'300px';
+  width:'225px';
+ transition: 150ms ease-in-out;
+}
+.child {
+    border: none;
+}
+.parent:hover { transform: scale(1.15); }
+.parent:hover .child { transform: scale(1); }
+
+
+.creator-card{
+  transition: 150ms ease-in-out;
+  transform: scale(1);
+  height:'300px';
+  width:'225px';
+}
+.creator-card :hover:before{
+  transform: scale(1.25);
+}
