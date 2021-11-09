@@ -17,7 +17,7 @@ function Navbar(){
         <Link className="nav-link bg-torqoise-primary text-large color-light" to="/create">Create</Link>
         </div>
         <div className="line"></div>
-        <img className="nav-img align-self-center" src="drawable/logowithTextlight.png"></img>
+        <img className="nav-img align-self-center" src={window.location.protocol + "//" + window.location.host + "/drawable/logowithTextlight.png"}></img>
         <h3 className="text-large ocr color-light align-self-end me-5">... Connect our minds</h3>
       </div>
 </nav>

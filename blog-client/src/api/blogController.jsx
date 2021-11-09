@@ -22,6 +22,14 @@ export async function PhotosGet(ids){
         return photos;
     }
 
+    export async function GetPhoto(id){
+        var result = await fetch(GetPhotos + `/id-${id}`);
+        if(result.ok){
+            return await result.json();
+        }
+        else return null;
+    }
+
 export async function UsersGet(ids){
         var result = await fetch(GetUsers, {
             method : 'POST',
@@ -38,8 +46,26 @@ export async function UsersGet(ids){
 
 }
 
+export async function GetUser(id){
+    var result = await fetch(GetUsers, {
+        method : 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify({usersId : [id]
+        })
+    });
+
+    if(result.ok)
+    {
+        return (await result.json()).userDatas;
+}
+    else
+        return null;
+}
+
 export async function ArticleGet(id){
-    var result = await fetch(GetArticle + `/${id}`);
+    var result = await fetch(GetArticle + `/id-${id}`);
     if(result.ok)
         return (await result.json());
     else

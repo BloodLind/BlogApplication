@@ -23,6 +23,67 @@
     src: url('fonts/Agency\ FB.TTF');
 }
 
+
+.footer{
+  background-color: var(--sub-dark-color);
+  color:var(--light-color);
+  font-family: "Agency FB";
+}
+.nav-top{
+  z-index:9999;
+}
+.nav-top-second{
+  z-index: 9998;
+}
+.navigation{
+    background-color: var(--dark-color);
+    color:var(--light-color) !important;
+    font-family: 'OCR-A';
+    
+}
+
+.navigation-logo{
+  height: 400px;
+}
+
+.z-100{
+    z-index: 100;
+}
+
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+/* navigation image  */
+.nav-img{
+    
+    width: 250px !important;
+}
+
+.light-link{
+    color: var(--light-color) !important;
+    text-decoration: none;
+    transition: 50ms ease-in-out;
+}
+.light-link:hover{
+  color:var(--sub-light-color) !important;
+}
+
+/* lists */
+
+.list-clear{
+  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  align-items: flex-start;
+}
+
 .round-button{
   border-radius: 5px;
 }
@@ -53,7 +114,7 @@
   color:var(--sub-light-color) !important;
 }
 
-/* lists */
+
 
 .list-clear{
   justify-content: left;
@@ -64,7 +125,7 @@
 }
 
 
-/* Colors */
+
 .bg-dark-gradient{
   background: linear-gradient(180deg, rgba(25,25,25,1) 0%, rgba(0,0,0,1) 100%);
 }
@@ -81,7 +142,7 @@
   background-color:  var(--accent-color) !important;
 }
 
-/* Foregeround color */
+
 .color-light{
   color:var(--light-color) !important;
 }
@@ -94,7 +155,7 @@
   color:var(--dark-color) !important;
 }
 
-/*fonts */
+
 .ocr{
     font-family: 'OCR-A';
 }
@@ -104,7 +165,7 @@
 .yu-gothic{
     font-family: "YU Gothic UI";
 }
-/* font size */
+
 .text-x-large{
   font-size: 2.3em !important;
 }
@@ -164,7 +225,6 @@
 }
 
 
-/* opactiy modes */
 .opacity-100{
   opacity: 100% !important;
 }
@@ -184,4 +244,26 @@
 .slide-image{
   height: 350px;
   width:600px
+}
+
+.parent {
+  height:'300px';
+  width:'225px';
+ transition: 150ms ease-in-out;
+}
+.child {
+    border: none;
+}
+.parent:hover { transform: scale(1.15); }
+.parent:hover .child { transform: scale(1); }
+
+
+.creator-card{
+  transition: 150ms ease-in-out;
+  transform: scale(1);
+  height:'300px';
+  width:'225px';
+}
+.creator-card :hover:before{
+  transform: scale(1.25);
 }
