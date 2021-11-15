@@ -43,7 +43,7 @@ namespace BlogApi.Web.Controllers.Api
             return null;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] ClientRequest request)
         {
             if (request == null || request.Login == null || request == null)
