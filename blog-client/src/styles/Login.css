@@ -6,26 +6,18 @@
        width:100%;
        display:flex;
        justify-content:center;
-      
        align-items:center;
     
 }
 .loginContainer {
-    height:500px;
     background-color: white;
     padding: 40px;
     border-radius:20px;
-    flex-direction:row;
-    display:flex;
 }
-.loginForm {
-    display:flex;
-    flex-direction: column;
-  width:300px;
-}
+
 .loginForm .input {
     border:none;
-    border-bottom:3px solid black ;
+    border-bottom:2px solid black ;
     margin-top: 10px;
     margin-bottom: 10px;
     outline: none;
