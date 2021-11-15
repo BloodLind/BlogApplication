@@ -12,10 +12,11 @@ import Navbar from './components/navbar'
 import Footer from './components/footer'
 import Article from './components/article'
 import Explore from './components/explore';
+import Login from './components/login'
 import './styles/site.css'
-
+import useSession, { UseSessionProvider } from 'react-session-hook';
 ReactDOM.render(
-  <React.StrictMode>
+  <UseSessionProvider>
     <Router>
         <Switch>
 
@@ -44,7 +45,7 @@ ReactDOM.render(
         </Route>
         
         <Route path="/login">
-          Login
+          <Login/>
         </Route>
         
         <Route path="/register">
@@ -58,7 +59,8 @@ ReactDOM.render(
         </Switch>
 
     </Router>
-  </React.StrictMode>,
+ 
+  </UseSessionProvider>,
   document.getElementById('root')
   
 );

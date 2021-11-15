@@ -19,7 +19,7 @@ function Footer(){
           <img className="nav-img" src={window.location.protocol + "//" + window.location.host + "/drawable/logowithTextlight.png"}></img>
           <div className="d-flex flex-row gap-5">
             <div className="text-larger">
-              @BloodLind
+              @BloodLind vs @Kyrylchenko
             </div>
             <a className="light-link text-larger" aria-current="page" href="#">PRIVACY POLICY</a>
             <a className="light-link text-larger" aria-current="page" href="#">TERMS OF SERVICE</a>

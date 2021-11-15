@@ -1,0 +1,51 @@
+.base
+{
+  
+       background-size:cover;
+       height:100vh;
+       width:100%;
+       display:flex;
+       justify-content:center;
+      
+       align-items:center;
+    
+}
+.loginContainer {
+    height:500px;
+    background-color: white;
+    padding: 40px;
+    border-radius:20px;
+    flex-direction:row;
+    display:flex;
+}
+.loginForm {
+    display:flex;
+    flex-direction: column;
+  width:300px;
+}
+.loginForm .input {
+    border:none;
+    border-bottom:3px solid black ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    outline: none;
+    
+}
+.loginForm .input::placeholder {
+    font-family: 'Agency FB';
+    font-style: none;
+    text-decoration: none;
+    
+   color: black;
+    font-size: 22px;
+}
+.logo
+{
+    margin:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:left;
+}
+

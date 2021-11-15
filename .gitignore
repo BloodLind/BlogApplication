@@ -1,0 +1,17 @@
+/BlogApi/.vs
+
+/BlogApi/BlogApi.Core/obj
+
+/BlogApi/BlogApi.Core/bin
+
+/BlogApi/BlogApi.Identity/obj
+
+/BlogApi/BlogApi.Identity/bin
+
+/BlogApi/BlogApi.Web/obj
+
+/BlogApi/BlogApi.Web/bin
+
+/BlogApi/BlogApi.BlogDatabase/bin
+
+/BlogApi/BlogApi.BlogDatabase/obj

@@ -22,7 +22,7 @@ import CreatorCard from './cards/CreatorCard';
             setData(x); 
             PhotosGet(x.result.map(y => y.previewPhotoId)).then(p => {
                 setPhotos(p);
-                UsersGet(x.result.map(a => a.authorId)).then(z => {setAuthors(z); setIsLoaded(true)})
+                UsersGet(x.result.map(a => a.authorId)).then(z => {console.log("authors ",z);setAuthors(z); setIsLoaded(true)})
                 })
             });
      }, [])
