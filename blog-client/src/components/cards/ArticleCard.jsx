@@ -8,7 +8,7 @@ return(
     <div className="m-5 mb-0" style={{
         width:'1000px',
         height:'400px',
-        backgroundImage: props.photo == null? 'url(https://www.soundguys.com/wp-content/uploads/2020/03/AKG-K371-over-ear-wired-headphones-hero.jpg)' : `url(${props.photo.data})`,
+        backgroundImage: props.photo == null? window.location.protocol + "//" + window.location.host + "/drawable/logowithTextlight.png" : `url(${props.photo.data})`,
         borderRadius:'10px',
         backgroundPositionX:'75%',
         backgroundPositionY:'35%',
@@ -27,7 +27,7 @@ return(
                  width:'150px',
                  borderRadius:'10px',
                  objectFit:'cover'
-                }} className="border-0 child" src={props.author?.photo == null ? './drawable/logowhite.png' : props.author.photo}></img>
+                }} className="border-0 child" src={props.author?.photo == null ? window.location.protocol + "//" + window.location.host + '/drawable/logowhite.png' : props.author.photo}></img>
                 <h3 className="agency m-2 text-super-large color-light child">{props.author?.name}</h3>
             </div>
             <h3 className="agency text-larger color-sub-light">Publication date: {date.getDate()}.{date.getMonth()}.{date.getFullYear()}</h3>

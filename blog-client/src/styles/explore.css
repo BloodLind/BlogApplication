@@ -1,0 +1,27 @@
+.explore-card{
+    height: 300px;
+    background-color: #191919;
+}
+
+.content{
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#191919,#14213d);
+    background: -moz-linear-gradient(#191919,#14213d);
+    background: -o-linear-gradient(#191919,#14213d);
+    background: linear-gradient(90deg, rgba(25,25,25,1) 40%, rgba(20,33,61,1) 70%);
+    
+    -webkit-transition: background 0.3s ease-out;
+    -moz-transition: background 0.3s ease-out;
+    -o-transition: background 0.3s ease-out;
+    transition: background 0.3s ease-out;
+    background-size: 200rem auto;
+    background-position: 0rem;
+   
+}
+
+.explore-card:hover .content{
+    background-position:-82rem;
+}
+.explore-card:focus .content{
+    background-position:-82rem;
+}

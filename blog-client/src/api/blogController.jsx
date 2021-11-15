@@ -1,6 +1,6 @@
 import {GetUsers, GetArticles, GetPhotos, GetArticle} from './apiKeys'
-export async function BlogsGet(){
-    var res =   fetch(GetArticles);
+export async function BlogsGet(page=1){
+    var res =   fetch(GetArticles + '/page-' +page);
     return res.then(x =>{return x.json()}).then(x => x);
 }
 

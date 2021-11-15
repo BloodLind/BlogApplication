@@ -11,6 +11,7 @@ import Main from './components/main'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 import Article from './components/article'
+import Explore from './components/explore';
 import './styles/site.css'
 
 ReactDOM.render(
@@ -38,7 +39,7 @@ ReactDOM.render(
 
         <Route path="/explore" exact>
             <Navbar />
-            Explore
+            <Explore></Explore>
             <Footer /> 
         </Route>
         
