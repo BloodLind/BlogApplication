@@ -1,11 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {BlogsGet, UsersGet, PhotosGet} from '../api/blogController'
+import { BlogsGet, UsersGet, PhotosGet } from '../api/blogController'
 import { useEffect, useState } from "react";
 import '../styles/site.css'
+import '../styles/default-namespace.jsx'
 import ExploreCard from './cards/ExploreCard'
 
 
-export default function Explore(){
+export default function Explore() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
     const [photos, setPhotos] = useState([]);
@@ -13,60 +14,58 @@ export default function Explore(){
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         setIsLoaded(false);
-        BlogsGet(currentPage).then(x => 
-            {
+        BlogsGet(currentPage).then(x => {
             let newData = data;
             newData.currentPage = x.currentPage;
-            if(data != undefined && data.result != undefined)
+            if (data != undefined && data.result != undefined)
                 newData.result = data.result.concat(x.result);
             else
                 newData = x;
-            setData(newData); 
+            setData(newData);
 
             PhotosGet(x.result.map(y => y.previewPhotoId)).then(p => {
                 let newPhotos = photos;
-                if(photos != undefined)
+                if (photos != undefined)
                     newPhotos = photos.concat(p);
                 else
-                     newPhotos = x;
+                    newPhotos = x;
                 setPhotos(newPhotos);
 
-                UsersGet(x.result.map(a => a.authorId)).then(z => 
-                    {
-                        let newAuthors = authors;
-                        if(authors != undefined && authors.userDatas != undefined)
-                            newAuthors.userDatas = authors.userDatas.concat(z.userDatas);
-                        else
-                            newAuthors = z;
-                        setAuthors(newAuthors); 
-                        setIsLoaded(true)
-                    })
+                UsersGet(x.result.map(a => a.authorId)).then(z => {
+                    let newAuthors = authors;
+                    if (authors != undefined && authors.userDatas != undefined)
+                        newAuthors.userDatas = authors.userDatas.concat(z.userDatas);
+                    else
+                        newAuthors = z;
+                    setAuthors(newAuthors);
+                    setIsLoaded(true)
                 })
-            });
-     }, [currentPage]);
-     if(isLoaded || currentPage > 1){
-        let page = data.result.map(x => 
-        <ExploreCard key={x.id} article={x} photo={photos.filter(p => p.id == x.previewPhotoId)[0]} author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
-         window.addEventListener('scroll', () =>{
+            })
+        });
+    }, [currentPage]);
+    if (isLoaded || currentPage > 1) {
+        let page = data.result.map(x =>
+            <ExploreCard key={x.id} article={x} photo={photos.filter(p => p.id == x.previewPhotoId)[0]} author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
+        window.addEventListener('scroll', () => {
 
             const {
                 scrollTop,
                 scrollHeight,
                 clientHeight
-               } = document.documentElement;
-               if (scrollTop + clientHeight >= scrollHeight - 350  && data.currentPage != data.pageCount) {
-                   console.log('end of scroll');
-                   if(isLoaded == true)
-                   {
-                        setCurrentPage(data.currentPage + 1);
-                   }
-           }}, {passive: true});
-         return (<>
-         <div className="d-flex flex-column justify-items-center align-items-center mt-5 pt-5 mb-5 pb-5">
-            {page}
-         </div>
-         </>);
-         } else {
-             return (<></>);
-         }
+            } = document.documentElement;
+            if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
+                console.log('end of scroll');
+                if (isLoaded == true) {
+                    setCurrentPage(data.currentPage + 1);
+                }
+            }
+        }, { passive: true });
+        return (<>
+            <div className="d-flex flex-column justify-items-center align-items-center mt-5 pt-5 mb-5 pb-5">
+                {page}
+            </div>
+        </>);
+    } else {
+        return (<></>);
+    }
 }

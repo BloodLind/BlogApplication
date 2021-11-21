@@ -1,0 +1,19 @@
+:root {
+    --dark-color: #191919;
+    --sub-dark-color: #14213D;
+    --accent-color: #FCA311;
+    --light-color: #FFFFFF;
+    --sub-light-color: #E5E5E5;
+}
+
+.color-light {
+    color: var(--light-color) !important;
+}
+
+.color-sub-light {
+    color: var(--sub-light-color) !important;
+}
+
+.color-dark {
+    color: var(--dark-color) !important;
+}
