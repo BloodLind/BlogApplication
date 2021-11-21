@@ -31,13 +31,5 @@
    color: black;
     font-size: 22px;
 }
-.logo
-{
-    margin:20px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:left;
-}
+
 
