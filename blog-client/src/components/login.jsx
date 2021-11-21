@@ -1,5 +1,6 @@
 import '../styles/images.css';
 import '../styles/login.css';
+import '../styles/default-namespace.jsx'
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -10,27 +11,22 @@ import {
 
 import AccountService from "../api/accountService";
 import useSession from 'react-session-hook';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/site.css'
 
 
 
-function Login (){
-    const [state,setState]  = useState( {login: '',password:''})
-    const session=  useSession();
-    const history = useHistory();
-    const handleChange = (event)=> {    
-       setState({...state,[event.target.name]:event.target.value});
-    };
-   const handleSingIn = (event)=> {
-    AccountService.Login( state.login,state.password,session);
+function Login() {
+  const [state, setState] = useState({ login: '', password: '' })
+  const session = useSession();
+  const history = useHistory();
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+  const handleSingIn = (event) => {
+    AccountService.Login(state.login, state.password, session);
     history.push("/")
-   }
-  
-  const handleSingUp = (event)=>{
-    alert('data ' + state.login + "   "+state.password);
-    
   }
 
 
@@ -54,15 +50,23 @@ function Login (){
                 <img alt="R" src={window.location.protocol + '//' + window.location.host + '/drawable/reddit.png'} className="icon me-3"></img>
                 Connect with Reddit</button>
           </div>
-              <div className="logo m-3 p-1 d-flex flex-column">
-                <img style={{height:"300px"}} src="/drawable/logowithtextdark.png"/>
-                <h3 className="">... Connect our minds</h3>
-              </div>
 
+              <div className="logo">
+                <img style={{height:"300px"}} src="/drawable/logowithtextdark.png"/>
+              </div>
        </div>
      </div>
       );
     
   }
+
+        <div className="logo">
+          <img style={{ height: "300px" }} src="/drawable/logowithtextdark.png" />
+        </div>
+      </div>
+    </div>
+  );
+
+}
 
 export default Login;

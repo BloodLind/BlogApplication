@@ -1,0 +1,37 @@
+.nav-top {
+    z-index: 9999;
+}
+
+.nav-top-second {
+    z-index: 9998;
+}
+
+.navigation {
+    background-color: var(--dark-color);
+    color: var(--light-color) !important;
+    font-family: 'OCR-A';
+
+}
+
+.navigation-logo {
+    height: 400px;
+}
+
+.z-100 {
+    z-index: 100;
+}
+
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+/* navigation image  */
+.nav-img {
+
+    width: 250px !important;
+}
