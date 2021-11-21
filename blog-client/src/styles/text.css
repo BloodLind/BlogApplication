@@ -1,0 +1,54 @@
+.ocr {
+    font-family: 'OCR-A';
+}
+
+.agency {
+    font-family: 'Agency FB';
+}
+
+.yu-gothic {
+    font-family: "YU Gothic UI";
+}
+
+.text-x-large {
+    font-size: 2.3em !important;
+}
+
+.text-larger {
+    font-size: x-large !important;
+}
+
+.text-large {
+    font-size: larger !important;
+}
+
+.text-super-xx-large {
+    font-size: 4.2em;
+}
+
+.text-super-x-larger {
+    font-size: 4em;
+}
+
+.text-super-larger {
+    font-size: 2.7em;
+}
+
+.text-super-large {
+    font-size: 2em;
+}
+
+.line {
+    background-color: white !important;
+    width: 700px !important;
+    height: 3px !important;
+    opacity: 0.9 !important;
+    border: none !important;
+}
+
+.line-dark {
+    background-color: var(--dark-color);
+    height: 3px !important;
+    border: none;
+    border-radius: 5px;
+}

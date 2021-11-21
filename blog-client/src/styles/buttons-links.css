@@ -1,0 +1,22 @@
+.round-button {
+    border-radius: 5px;
+}
+
+.opacity-button {
+    opacity: 80%;
+    transition: 200ms ease-in-out;
+}
+
+.opacity-button:hover {
+    opacity: 100%;
+}
+
+.light-link {
+    color: var(--light-color) !important;
+    text-decoration: none;
+    transition: 50ms ease-in-out;
+}
+
+.light-link:hover {
+    color: var(--sub-light-color) !important;
+}

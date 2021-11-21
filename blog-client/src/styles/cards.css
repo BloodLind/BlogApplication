@@ -1,0 +1,20 @@
+.round-card {
+    border: none;
+    border-radius: 15px;
+}
+
+.round-user {
+    border: none;
+    border-radius: 15px;
+}
+
+.creator-card {
+    transition: 150ms ease-in-out;
+    transform: scale(1);
+    height: '300px';
+    width: '225px';
+}
+
+.creator-card :hover:before {
+    transform: scale(1.25);
+}

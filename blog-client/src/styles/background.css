@@ -1,0 +1,28 @@
+.background-item {
+    z-index: -1;
+}
+
+:root {
+    --dark-color: #191919;
+    --sub-dark-color: #14213D;
+    --accent-color: #FCA311;
+    --light-color: #FFFFFF;
+    --sub-light-color: #E5E5E5;
+}
+
+
+.bg-dark-gradient {
+    background: linear-gradient(180deg, rgba(25, 25, 25, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+.bg-dark-color {
+    background-color: var(--dark-color) !important;
+}
+
+.bg-sub-dark {
+    background-color: var(--sub-dark-color) !important;
+}
+
+.bg-accent {
+    background-color: var(--accent-color) !important;
+}

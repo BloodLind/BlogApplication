@@ -1,0 +1,7 @@
+.list-clear {
+    justify-content: left;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    align-items: flex-start;
+}
