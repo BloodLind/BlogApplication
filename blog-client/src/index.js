@@ -1,20 +1,24 @@
+import './styles/site.css'
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import useSession, { UseSessionProvider } from 'react-session-hook';
+
 import Main from './components/main'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 import Article from './components/article'
 import Explore from './components/explore';
 import Login from './components/login'
-import './styles/site.css'
-import useSession, { UseSessionProvider } from 'react-session-hook';
+import Account from './components/account';
+
 ReactDOM.render(
   <UseSessionProvider>
     <Router>
@@ -51,11 +55,18 @@ ReactDOM.render(
         <Route path="/register">
           Login
         </Route>
-          <Route path="/article/:id">
+
+        <Route path="/article/:id">
             <Navbar></Navbar>
             <Article></Article>
             <Footer></Footer>
-          </Route>
+        </Route>
+
+        <Route path="/account">
+            <Navbar></Navbar>
+            <Account></Account>
+            <Footer></Footer>
+        </Route>
         </Switch>
 
     </Router>

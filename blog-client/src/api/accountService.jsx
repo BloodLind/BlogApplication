@@ -1,7 +1,7 @@
 import {Login as loginURL} from './apiKeys'
 export default class AccountService
 {
-      static async  Login(login,password,session)
+    static async Login(login,password,session)
     {
         var res =  await fetch(loginURL,
         {
@@ -17,8 +17,12 @@ export default class AccountService
               })
         });
     
-    
-        const token  = (await (await res.json())).token;
-        session.setSession({ "token":token});
+    if(res.ok){
+      const token  = (await (await res.json())).token;
+      session.setSession({ "token":token});
+      return true;
+    } else {
+      return false;
     }
+}
 }

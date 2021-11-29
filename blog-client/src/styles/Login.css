@@ -9,8 +9,9 @@
        align-items:center;
     
 }
+
 .loginContainer {
-    background-color: white;
+    width: 800px;
     padding: 40px;
     border-radius:20px;
 }
@@ -20,9 +21,9 @@
     border-bottom:2px solid black ;
     margin-top: 10px;
     margin-bottom: 10px;
-    outline: none;
-    
+    outline: none;    
 }
+
 .loginForm .input::placeholder {
     font-family: 'Agency FB';
     font-style: none;

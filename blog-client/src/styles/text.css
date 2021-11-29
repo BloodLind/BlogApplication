@@ -1,13 +1,31 @@
-.ocr {
+@font-face {
     font-family: 'OCR-A';
+    src: url('fonts/OCR-A\ Regular.ttf');
+  }
+  
+  @font-face {
+    font-family: "YU Gothic UI";
+    src: url('fonts/yugothib.ttf');
+  }
+  
+  @font-face {
+    font-family: 'Agency FB';
+    src: url('fonts/Agency\ FB.TTF');
+  }
+
+.ocr {
+    font-family: 'OCR-A' !important;
+    letter-spacing: 0.1em;
 }
 
 .agency {
-    font-family: 'Agency FB';
+    font-family: 'Agency FB' !important;
+    letter-spacing: 0.02em;
 }
 
 .yu-gothic {
-    font-family: "YU Gothic UI";
+    font-family: "YU Gothic UI" !important;
+    letter-spacing: 0.01em;
 }
 
 .text-x-large {
