@@ -10,7 +10,7 @@ namespace BlogApi.BlogDatabase.Models
     public class Photo : IGuidKey
     {
         public Guid Id { get; set; }
-        public string Data { get; set; }
+        public string Path { get; set; }
         public virtual ICollection<UserPhoto> UserPhotos { get; set; }
     }
 }

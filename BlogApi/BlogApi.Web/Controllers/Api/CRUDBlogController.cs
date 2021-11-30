@@ -4,6 +4,7 @@ using BlogApi.Core.Services;
 using BlogApi.Web.Models.ViewModels.Api.CRUD.Blog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,24 +27,25 @@ namespace BlogApi.Web.Controllers.Api
             this.photoRepository = photoRepository;
         }
 
-        [HttpPost("photo")]
-        public async Task<ActionResult> AddPhoto([FromBody] string photo)
-        {
-            if (photo == null)
-                return BadRequest();
+        //[HttpPost("addPhoto")]
+        //public async Task<ActionResult> AddPhoto( IFormFile file)
+        //{
+        //    //file.
+        //    //if (photo == null)
+        //    //    return BadRequest();
 
-            if (!photoRepository.GetAll().Any(x => x.Data.Equals(photo)))
-            { 
-                photoRepository.CreateOrUpdate(new Photo { Data = photo });
-                photoRepository.SaveChanges();
-            }
-            var result = photoRepository.GetAll().FirstOrDefault(x => x.Data == photo);
-            return Json(new PhotoResponse 
-            { 
-                Result = result.Data,
-                ApiRequest = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{result.Id}"
-            });
-        }
+        //    //if (!photoRepository.GetAll().Any(x => x.Data.Equals(photo)))
+        //    //{
+        //    //    photoRepository.CreateOrUpdate(new Photo { Data = photo });
+        //    //    photoRepository.SaveChanges();
+        //    //}
+        //    //var result = photoRepository.GetAll().FirstOrDefault(x => x.Data == photo);
+        //    //return Json(new PhotoResponse
+        //    //{
+        //    //    Result = result.Data,
+        //    //    ApiRequest = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{result.Id}"
+        //    //});
+        //}
 
         [HttpPost("blog")]
         public async Task<ActionResult> AddBlog([FromBody] BlogRequest request)

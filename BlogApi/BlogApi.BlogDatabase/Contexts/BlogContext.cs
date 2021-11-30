@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace BlogApi.BlogDatabase.Contexts
 {
+
+
+    //Update-Database -Context BlogContext
+    //    Для того что бы сделать миграцию нуждно прописать эту команду в консоле диспетчера пакетов 
+    //и закоментить еншуркреатед
     public class BlogContext : DbContext
     {
         public DbSet<Article> Articles { get; set; }
@@ -16,7 +21,7 @@ namespace BlogApi.BlogDatabase.Contexts
        
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
         {
-            Database.EnsureCreated();
+           Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

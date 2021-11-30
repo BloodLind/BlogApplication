@@ -6,9 +6,11 @@ using BlogApi.Identity.Repositories;
 using BlogApi.Web.Models.ViewModels.Api.Account;
 using BlogApi.Web.Models.ViewModels.Api.Blog;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,11 +48,15 @@ namespace BlogApi.Web.Controllers.Api
         private async Task<UserDataResponse> GetUserDataFiltred(Func<User, ICollection<string>, bool> predicate, UserDataRequest request)
         {
             var users = (await userRepository.Users.ToListAsync()).Where(x => predicate(x, request.UsersId));
-            var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x => new UserData
-            {
-                Id = x.Id,
-                Name = x.UserName,
-                Photo = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id)?.Photo.Data
+          
+            var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x => {
+                string userPhotoId = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id)?.Photo.Id.ToString();
+                return new UserData
+                {
+                    Id = x.Id,
+                    Name = x.UserName,
+                    Photo = string.IsNullOrEmpty(userPhotoId)! ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhotoId}" : null
+                };
             }).ToList();
 
             return new UserDataResponse
@@ -102,6 +108,22 @@ namespace BlogApi.Web.Controllers.Api
 
             return Json(ArticleResponse(page, searchText));
         }
+        [HttpGet("photos/id-{id}")]
+        public async Task<ActionResult> PhotoById(string id)
+        {
+           
+
+            var file = Path.Combine(Directory.GetCurrentDirectory(),
+                                                "Files","Images", photoRepository.Get(Guid.Parse(id)).Path);
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
+            if(provider.TryGetContentType(Path.GetFileName(file),out contentType))
+            {
+                return PhysicalFile(file,contentType);
+            }
+            return BadRequest();
+           
+        }
 
         [HttpGet("articles/id-{id}"), HttpPost("articles/id-{id}")]
         public async Task<ActionResult> ArticleById(string id)
@@ -110,29 +132,8 @@ namespace BlogApi.Web.Controllers.Api
         }
 
 
-        [HttpGet("photos/page-{page:int}"), HttpGet("photos")]
-        public async Task<ActionResult> Photos(int page = 1)
-        {
-            int total = photoRepository.GetAll().Count();
-            if (!PageCheck(page, photoRepository))
-                return BadRequest();
-
-            var photos = photoRepository.GetAll().Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
-            return Json(new PhotoResponse
-            {
-               Count = photos.Count,
-               CurrentPage = page,
-               Total = total,
-               PageCount = (total / countOnPage) + 1,
-               Result = photos
-            });
-        }
-
-        [HttpGet("photos/id-{id}"), HttpPost("photos/id-{id}")]
-        public async Task<ActionResult> PhotoById(string id)
-        {
-            return Json(photoRepository.Get(Guid.Parse(id)));
-        }
+       
+     
 
         [HttpPost("articles/subscriptions")]
         public async Task<ActionResult> SubscribtionArticles([FromBody] SubscriptionArticlesRequest request)
@@ -161,8 +162,8 @@ namespace BlogApi.Web.Controllers.Api
         public async Task<ActionResult> GetUserInformation([FromBody] UserDataRequest request)
         {
             if (CheckObjectForNull.CheckForNull(request) && PageCheck(request.Page, userRepository))
-                return BadRequest(); 
-   
+                return BadRequest();
+
             return Json(await GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request));
 
         }
