@@ -8,6 +8,10 @@ import '../styles/site.css'
 import '../styles/default-namespace.jsx'
 import { Link } from 'react-router-dom'
 import useSession  from 'react-session-hook'
+
+function Logout(session){
+  session.removeSession();
+}
 function Navbar() {
   const session = useSession();
   return (<>
@@ -18,6 +22,13 @@ function Navbar() {
           width: '45px',
           objectFit: 'cover'
         }} src={window.location.protocol + "//" + window.location.host + "/drawable/login.png"}></img>
+      </Link>
+      <Link to="" onClick={() => Logout(session)} style={{ position: "absolute", top: "40px", right: "100px", display: session.token == undefined ? 'none' : "block"}}>
+        <img style={{
+          position: 'relative',
+          width: '45px',
+          objectFit: 'cover'
+        }} src={window.location.protocol + "//" + window.location.host + "/drawable/logout.png"}></img>
       </Link>
       <div className="d-flex flex-column justify-content-center">
         <div className="navbar-collapse d-flex flex-row justify-content-around" id="navbarSupportedContent" style={
@@ -51,6 +62,13 @@ function Navbar() {
           width: '40px',
           objectFit: 'cover'
         }}></img>
+      </Link>
+      <Link to="" onClick={() => Logout(session)} style={{ position: "absolute", top: "10px", right: "100px", display: session.token == undefined ? 'none' : "block"}}>
+        <img style={{
+          position: 'relative',
+          width: '40px',
+          objectFit: 'cover'
+        }} src={window.location.protocol + "//" + window.location.host + "/drawable/logout.png"}></img>
       </Link>
     </nav>
   </>

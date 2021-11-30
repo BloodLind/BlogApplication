@@ -102,7 +102,7 @@ function Main() {
                 </div>
 
                 <div className="d-flex flex-row bg-dark-color color-light align-items-center justify-content-around" style={{
-                    height: '700px',
+                    height: '550px',
                     padding: '15em'
                 }}>
                     <div className="ocr m-5" style={{
