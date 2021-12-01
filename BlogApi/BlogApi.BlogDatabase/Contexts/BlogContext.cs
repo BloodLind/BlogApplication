@@ -21,13 +21,14 @@ namespace BlogApi.BlogDatabase.Contexts
        
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
         {
-           Database.EnsureCreated();
+           //Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserPhoto>().HasOne(x => x.Photo).WithMany(x => x.UserPhotos)
                 .HasForeignKey(x => x.PhotoId).OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<UserPhoto>().HasOne(x => x.ProfilePhoto).WithMany(x => x.UserProfilePhotos).HasForeignKey(x => x.PhotoId).OnDelete(DeleteBehavior.Cascade);
         }
 
 

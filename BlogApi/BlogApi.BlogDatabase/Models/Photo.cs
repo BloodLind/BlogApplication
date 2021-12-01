@@ -12,5 +12,6 @@ namespace BlogApi.BlogDatabase.Models
         public Guid Id { get; set; }
         public string Path { get; set; }
         public virtual ICollection<UserPhoto> UserPhotos { get; set; }
+        public virtual ICollection<UserPhoto> UserProfilePhotos { get; set; }
     }
 }
