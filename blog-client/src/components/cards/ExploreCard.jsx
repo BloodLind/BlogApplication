@@ -18,7 +18,7 @@ export default function ExploreCard(props) {
                 // backgroundPositionX: '50%',
                 // backgroundPositionY:'50%',
             }}>
-                <img loading="lazy" src={props?.photo == undefined ? `${window.location.protocol + "//" + window.location.host + "/drawable/logowhite.png"}` : `${props.photo.data}`} style={{
+                <img loading="lazy" src={ !props?.photo  ? `${window.location.protocol + "//" + window.location.host + "/drawable/logowhite.png"}` : props.photo } style={{
                     borderRadius: '15px 0px 0px 15px',
                     objectFit: 'cover',
                     height: '100%'
@@ -39,7 +39,8 @@ export default function ExploreCard(props) {
                     height: '90px',
                     whiteSpace: 'wrap',
                     textOverflow: 'ellipsis',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+  
                 }}>{props.article?.innerData}</p>
                 <h5 className="agency text-larger ms-5 mt-0">by {props.author?.name}</h5>
             </div>
