@@ -1,0 +1,44 @@
+.account-content {
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#141415, #14213d);
+    background: -moz-linear-gradient(#141415, #14213d);
+    background: -o-linear-gradient(#141415, #14213d);
+    background: linear-gradient(90deg, rgba(20, 20, 21, 1) 40%, rgba(20, 33, 61, 1) 70%);
+
+    -webkit-transition: background 0.3s ease-out;
+    -moz-transition: background 0.3s ease-out;
+    -o-transition: background 0.3s ease-out;
+    transition: background 0.3s ease-out;
+    background-size: 200rem auto;
+    background-position: 0rem;
+
+}
+
+.account-article-card:hover .account-content {
+    background-position: -82rem;
+}
+
+.account-article-card:focus .account-content {
+    background-position: -82rem;
+}
+
+.account-back {
+    height: 335px;
+}
+
+.account-img-back {
+    height: 100%;
+    width: 100%;
+}
+
+.account-ava {
+    height: 300px;
+    width: 300px;
+    margin-top: -10%;
+}
+
+.account-ava-img {
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 0;
+}

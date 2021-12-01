@@ -24,7 +24,7 @@ export default function Account() {
                             </div>
                             <div className="d-flex flex-column gap-3">
                                 <div className="text-super-x-larger">
-                                    Welcome, Floppa
+                                    Floppa
                                 </div>
                                 <div className="d-flex gap-5 text-larger">
                                     <div>
@@ -39,8 +39,7 @@ export default function Account() {
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
-                                <button className="btn bg-accent round-button text-larger agency ps-5 pe-5 opacity-button text-nowrap" type="button">Edit Profile</button>
-                                <button className="btn bg-accent round-button text-larger agency ps-5 pe-5 opacity-button text-nowrap" type="button">Creative Lab</button>
+                                <button className="btn bg-accent round-button text-larger agency ps-5 pe-5 opacity-button text-nowrap" type="button">Subscribe</button>
                             </div>
                         </div>
                     </div>
@@ -52,7 +51,7 @@ export default function Account() {
 
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
                         <AccountArticleCard></AccountArticleCard>
-                        <AccountArticleCard></AccountArticleCard>
+                        <AccountAarticleCard></AccountAarticleCard>
                         <AccountArticleCard></AccountArticleCard>
                         <AccountArticleCard></AccountArticleCard>
                     </div>

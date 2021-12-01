@@ -18,3 +18,26 @@
 .creator-card :hover:before {
     transform: scale(1.25);
 }
+
+.account-article-card {
+    width: 400px;
+    height: 350px;
+}
+
+.account-article-photo {
+    width: 400px;
+    height: 265px;
+    border: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-svg{
+    margin-top: -11%;
+    margin-bottom: 0;
+}
+
+.account-card-icon{
+    width: 20px;
+    height: 20px;
+}

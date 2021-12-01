@@ -5,6 +5,7 @@
 :root {
     --dark-color: #191919;
     --sub-dark-color: #14213D;
+    --card-dark-gradient: #141415;
     --accent-color: #FCA311;
     --light-color: #FFFFFF;
     --sub-light-color: #E5E5E5;
@@ -13,6 +14,10 @@
 
 .bg-dark-gradient {
     background: linear-gradient(180deg, rgba(25, 25, 25, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+.card-dark-gradient-bg {
+    background-color: var(--card-dark-gradient) !important;
 }
 
 .bg-dark-color {
@@ -27,9 +32,10 @@
     background-color: var(--accent-color) !important;
 }
 
-.bg-sub-light{
+.bg-sub-light {
     background-color: var(--sub-light-color) !important;
 }
-.bg-light{
+
+.bg-light {
     background-color: var(--light-color) !important;
 }
