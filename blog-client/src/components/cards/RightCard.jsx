@@ -34,8 +34,8 @@ function RightCard(props) {
                 maxHeight: '190px'
             }}>
 
-                <h3 className="agency text-x-large me-4 color-light ms-4 mt-5 opacity-trigger" style={{ maxHeight: '100px' }} >{props.article.title}</h3>
-                <h5 className="agency text-larger color-sub-light ms-4 ps-3 mt-2" style={{
+                <h3 className="agency text-x-large me-4 color-light ms-4 mt-4 opacity-trigger" style={{ maxHeight: '110px' }} >{props.article.title}</h3>
+                <h5 className="agency text-larger color-sub-light ms-4 ps-3 mt-4 mb-2" style={{
                 }}>
                     by {props.author}
                 </h5>

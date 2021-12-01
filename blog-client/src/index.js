@@ -18,6 +18,7 @@ import Article from './components/article'
 import Explore from './components/explore';
 import Login from './components/login'
 import Account from './components/account';
+import Register from './components/register';
 
 ReactDOM.render(
   <UseSessionProvider>
@@ -53,7 +54,7 @@ ReactDOM.render(
         </Route>
         
         <Route path="/register">
-          Login
+          <Register></Register>
         </Route>
 
         <Route path="/article/:id">
