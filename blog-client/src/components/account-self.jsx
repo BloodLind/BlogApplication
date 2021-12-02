@@ -39,7 +39,7 @@ export default function Account() {
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
-                                <button className="btn bg-accent round-button text-larger agency ps-5 pe-5 opacity-button text-nowrap" type="button">Subscribe</button>
+                                <button className="btn bg-accent text-larger agency ps-5 pe-5 text-nowrap" type="button">Subscribe</button>
                             </div>
                         </div>
                     </div>
