@@ -19,8 +19,12 @@ export default class AccountService
         });
     
     if(res.ok){
-      const token  = (await (await res.json())).token;
-      session.setSession({ "token":token});
+      var result = await (await res.json())
+      session.setSession({"token":result.token})
+      localStorage.setItem('login', result.login)
+      console.log(localStorage.getItem('login'))
+      // const token  = (await (await res.json())).token;
+      // session.setSession({ "token":token});
       return true;
     } else {
       return false;
