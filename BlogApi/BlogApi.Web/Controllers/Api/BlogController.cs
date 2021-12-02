@@ -48,14 +48,15 @@ namespace BlogApi.Web.Controllers.Api
         private async Task<UserDataResponse> GetUserDataFiltred(Func<User, ICollection<string>, bool> predicate, UserDataRequest request)
         {
             var users = (await userRepository.Users.ToListAsync()).Where(x => predicate(x, request.UsersId));
-          
-            var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x => {
+
+            var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x =>
+            {
                 string userPhotoId = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id)?.Photo.Id.ToString();
                 return new UserData
                 {
                     Id = x.Id,
                     Name = x.UserName,
-                    Photo = string.IsNullOrEmpty(userPhotoId)! ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhotoId}" : null
+                    Photo = !String.IsNullOrEmpty(userPhotoId) ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhotoId}" : null
                 };
             }).ToList();
 
@@ -74,8 +75,8 @@ namespace BlogApi.Web.Controllers.Api
             int total = articlesRepository.GetAll().Count();
             if (articlesRepository == null)
                 return null;
-            
-            if(searchText == null)
+
+            if (searchText == null)
                 articles = articlesRepository.GetAll().OrderByDescending(x => x.PublicationDate).Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
             else
                 articles = articlesRepository.GetAll().Where(x => x.Title.Contains(searchText))
@@ -91,18 +92,18 @@ namespace BlogApi.Web.Controllers.Api
             };
 
         }
-        public BlogController(IRepository<Article> articlesRepository, IRepository<Photo> photoRepository,IRepository<UserPhoto> userPhotoRepository, UserRepository userRepository)
+        public BlogController(IRepository<Article> articlesRepository, IRepository<Photo> photoRepository, IRepository<UserPhoto> userPhotoRepository, UserRepository userRepository)
         {
             this.articlesRepository = articlesRepository;
             this.photoRepository = photoRepository;
             this.userPhotoRepository = userPhotoRepository;
             this.userRepository = userRepository;
         }
-        
+
         [HttpGet("articles/page-{page:int}"), HttpGet(""), HttpGet("/articles")]
         public async Task<ActionResult> Articles(int page = 1, string searchText = null)
         {
-            
+
             if (!PageCheck(page, articlesRepository))
                 return BadRequest();
 
@@ -111,18 +112,18 @@ namespace BlogApi.Web.Controllers.Api
         [HttpGet("photos/id-{id}")]
         public async Task<ActionResult> PhotoById(string id)
         {
-           
+
 
             var file = Path.Combine(Directory.GetCurrentDirectory(),
-                                                "Files","Images", photoRepository.Get(Guid.Parse(id)).Path);
+                                                "Files", "Images", photoRepository.Get(Guid.Parse(id)).Path);
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
-            if(provider.TryGetContentType(Path.GetFileName(file),out contentType))
+            if (provider.TryGetContentType(Path.GetFileName(file), out contentType))
             {
-                return PhysicalFile(file,contentType);
+                return PhysicalFile(file, contentType);
             }
             return BadRequest();
-           
+
         }
 
         [HttpGet("articles/id-{id}"), HttpPost("articles/id-{id}")]
@@ -132,13 +133,13 @@ namespace BlogApi.Web.Controllers.Api
         }
 
 
-       
-     
+
+
 
         [HttpPost("articles/subscriptions")]
         public async Task<ActionResult> SubscribtionArticles([FromBody] SubscriptionArticlesRequest request)
         {
-            if(request.UserLogin == null || !PageCheck(request.Page, articlesRepository))
+            if (request.UserLogin == null || !PageCheck(request.Page, articlesRepository))
             {
                 return BadRequest();
             }
@@ -158,6 +159,33 @@ namespace BlogApi.Web.Controllers.Api
                 Result = result
             });
         }
+
+
+        [HttpPost("articles/user-articles")]
+        public async Task<ActionResult> UserArcticles([FromBody] SubscriptionArticlesRequest request)
+        {
+            if (request.UserLogin == null || !PageCheck(request.Page, articlesRepository))
+            {
+                return BadRequest();
+            }
+
+            var user = await userRepository.GetUserByLoginAsync(request.UserLogin);
+            var articles = (await articlesRepository.GetAll().AsNoTracking().ToListAsync())
+                .Where(x => user.Id == x.AuthorId.ToString())
+                .OrderBy(x => x.PublicationDate);
+            var result = articles.Skip((request.Page - 1) * countOnPage).Take(countOnPage).ToList();
+
+            return Json(new ArticleResponse
+            {
+                Count = result.Count,
+                CurrentPage = request.Page,
+                PageCount = (int)Math.Ceiling(result.Count / (double)countOnPage),
+                Total = articles.Count(),
+                Result = result
+            });
+        }
+
+
         [HttpPost("users")]
         public async Task<ActionResult> GetUserInformation([FromBody] UserDataRequest request)
         {
