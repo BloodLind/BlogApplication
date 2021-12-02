@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import '../styles/site.css'
 import '../styles/default-namespace.jsx'
 import ExploreCard from './cards/ExploreCard'
-
+import {GetPhotos} from '../api/apiKeys'
 
 export default function Explore() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
-    const [photos, setPhotos] = useState([]);
+
     const [authors, setAuthors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
@@ -23,13 +23,8 @@ export default function Explore() {
                 newData = x;
             setData(newData);
 
-            PhotosGet(x.result.map(y => y.previewPhotoId)).then(p => {
-                let newPhotos = photos;
-                if (photos != undefined)
-                    newPhotos = photos.concat(p);
-                else
-                    newPhotos = x;
-                setPhotos(newPhotos);
+           
+               
 
                 UsersGet(x.result.map(a => a.authorId)).then(z => {
                     let newAuthors = authors;
@@ -40,12 +35,12 @@ export default function Explore() {
                     setAuthors(newAuthors);
                     setIsLoaded(true)
                 })
-            })
+           
         });
     }, [currentPage]);
     if (isLoaded || currentPage > 1) {
         let page = data.result.map(x =>
-            <ExploreCard key={x.id} article={x} photo={photos.filter(p => p.id == x.previewPhotoId)[0]} author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
+            <ExploreCard key={x.id} article={x} photo={ GetPhotos + `/id-${x.previewPhotoId}` } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
         window.addEventListener('scroll', () => {
 
             const {

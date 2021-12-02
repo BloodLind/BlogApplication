@@ -9,32 +9,28 @@ import RightCard from './cards/RightCard';
 import LeftSecondCard from './cards/LeftSecondCard';
 import RightSecondCard from './cards/RightSecondCard';
 import CreatorCard from './cards/CreatorCard';
+import {GetPhotos} from '../api/apiKeys'
 
 function Main() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
-    const [photos, setPhotos] = useState([]);
     const [authors, setAuthors] = useState([]);
     useEffect(() => {
         BlogsGet().then(x => {
             setData(x);
-            PhotosGet(x.result.map(y => y.previewPhotoId)).then(p => {
-                setPhotos(p);
-                UsersGet(x.result.map(a => a.authorId)).then(z => { console.log("authors ", z); setAuthors(z); setIsLoaded(true) })
-            })
+                UsersGet(x.result.map(a => a.authorId)).then(z => { console.log("authors ", z); setAuthors(z); setIsLoaded(true) });
         });
     }, [])
-
     if (isLoaded == true) {
         console.log(data);
-        console.log(photos);
+       
         console.log(authors);
         let cards = authors.userDatas.slice(0, 5).map(x => <CreatorCard author={x}></CreatorCard>)
         return (
             <>
                 <div className='color-light d-flex flex-column justify-content-center'>
                     <div className="w-100 card m-5 round-card align-self-center align-content-between justify-content-between" style={{
-                        backgroundImage: `url(${data.result[0].previewPhotoId == null ? '/drawable/logowithtextdark.png' : photos[0].data})`,
+                        backgroundImage: `url(${data.result[0].previewPhotoId == null ? '/drawable/logowithtextdark.png' : GetPhotos + `/id-${data.result[1].previewPhotoId}`})`,
                         height: 525 + 'px',
                         backgroundRepeat: 'no-repeat',
                         backgroundPositionX: `50%`,
@@ -73,22 +69,22 @@ function Main() {
                         <LeftCard
                             article={data.result[1]}
                             author={authors.userDatas?.filter(x => x.id == data.result[1].authorId)[0].name}
-                            photo={photos?.filter(x => x.id == data.result[1].previewPhotoId)[0]?.data}></LeftCard>
+                            photo={ GetPhotos + `/id-${data.result[1].previewPhotoId}` }></LeftCard>
                         <LeftSecondCard
                             article={data.result[2]}
                             author={authors.userDatas?.filter(x => x.id == data.result[2].authorId)[0].name}
-                            photo={photos?.filter(x => x.id == data.result[2].previewPhotoId)[0]?.data}></LeftSecondCard>
+                            photo={ GetPhotos + `/id-${data.result[2].previewPhotoId}` }></LeftSecondCard>
                     </div>
                     <div className="d-flex flex-column gap-5">
 
                         <RightCard
                             article={data.result[3]}
                             author={authors.userDatas?.filter(x => x.id == data.result[3].authorId)[0].name}
-                            photo={photos?.filter(x => x.id == data.result[3].previewPhotoId)[0]?.data}></RightCard>
+                            photo={ GetPhotos + `/id-${data.result[3].previewPhotoId}` }></RightCard>
                         <RightSecondCard
                             article={data.result[4]}
                             author={authors.userDatas?.filter(x => x.id == data.result[4].authorId)[0].name}
-                            photo={photos?.filter(x => x.id == data.result[4].previewPhotoId)[0]?.data}></RightSecondCard>
+                            photo={ GetPhotos + `/id-${data.result[4].previewPhotoId}` }></RightSecondCard>
                     </div>
                 </div>
                 <Link className="btn opacity-button bg-sub-dark agency text-super-large text-white align-self-center ps-5 pe-5 round-card" to='/explore' style={{ width: '250px' }}>Explore More</Link>
@@ -123,5 +119,6 @@ function Main() {
     else
         return (<></>);
 }
+
 
 export default Main;
