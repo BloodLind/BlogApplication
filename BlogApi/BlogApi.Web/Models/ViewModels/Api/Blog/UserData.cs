@@ -11,5 +11,6 @@ namespace BlogApi.Web.Models.ViewModels.Api.Blog
         public string Id { get; set; }
         public string Name { get; set; }
         public string Photo { get; set; }
+        public string ProfilePhoto { get; set; }
     }
 }

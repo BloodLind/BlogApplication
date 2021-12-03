@@ -51,12 +51,18 @@ namespace BlogApi.Web.Controllers.Api
 
             var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x =>
             {
-                string userPhotoId = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id)?.Photo.Id.ToString();
+                var userPhoto = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id);
                 return new UserData
                 {
                     Id = x.Id,
                     Name = x.UserName,
-                    Photo = !String.IsNullOrEmpty(userPhotoId) ? $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhotoId}" : null
+                    Photo = !String.IsNullOrEmpty(userPhoto?.PhotoId.ToString()) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoId.ToString()}" : 
+                                                                                                                                                           null,
+                    ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.ProfilePhotoId.ToString()) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.ProfilePhotoId.ToString()}" :
+                                                                                                                                                            null
+
                 };
             }).ToList();
 
@@ -161,7 +167,7 @@ namespace BlogApi.Web.Controllers.Api
         }
 
 
-        [HttpPost("articles/user-articles")]
+        [HttpPost("user/articles")]
         public async Task<ActionResult> UserArcticles([FromBody] SubscriptionArticlesRequest request)
         {
             if (request.UserLogin == null || !PageCheck(request.Page, articlesRepository))
@@ -187,12 +193,38 @@ namespace BlogApi.Web.Controllers.Api
 
 
         [HttpPost("users")]
-        public async Task<ActionResult> GetUserInformation([FromBody] UserDataRequest request)
+        public async Task<ActionResult> GetUsersInformation([FromBody] UserDataRequest request)
         {
             if (CheckObjectForNull.CheckForNull(request) && PageCheck(request.Page, userRepository))
                 return BadRequest();
 
             return Json(await GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request));
+
+        }
+
+
+
+        [HttpGet("user/id-{id}")]
+        public async Task<ActionResult> GetUserInfo(string id)
+        {
+            if (id == null)
+                return BadRequest();
+
+
+            var user = await userRepository.GetUserByIdAsync(id);
+            var userPhoto = userPhotoRepository.GetAll().FirstOrDefault(x => x.UserId == user.Id);
+            return Json(new UserData()
+            {
+                Id = user.Id,
+                Name = user.UserName,
+                Photo = !String.IsNullOrEmpty(userPhoto?.PhotoId.ToString()) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoId.ToString()}" :
+                                                                                                                                                           null,
+                ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.ProfilePhotoId.ToString()) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.ProfilePhotoId.ToString()}" :
+                                                                                                                                                            null
+            }) ;
+
 
         }
         [HttpPost("search/users")]
@@ -204,3 +236,22 @@ namespace BlogApi.Web.Controllers.Api
         }
     }
 }
+
+
+
+
+//private GetDataResponse<IEnumerable<T>> GenerateDataResponse<T>(IEnumerable<T> data, GetDataRequest request)
+//{
+
+//    var responseData = data.Skip((request.Page - 1) * CountInOnePage).Take(CountInOnePage);
+
+//    int pageCount = (int)Math.Ceiling((double)data.Count() / CountInOnePage);
+//    var response = new GetDataResponse<IEnumerable<T>>()
+//    {
+//        Result = responseData,
+//        TotalCount = data.Count(),
+//        PageCount = pageCount,
+//        CurrentPage = request.Page
+//    };
+//    return response;
+//}
