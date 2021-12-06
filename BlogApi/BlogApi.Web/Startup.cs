@@ -5,7 +5,9 @@ using BlogApi.Core.Infrastructure.Interfaces;
 using BlogApi.Identity.Contexts;
 using BlogApi.Identity.Models;
 using BlogApi.Identity.Repositories;
+using BlogApi.Web.AppConfiguration;
 using BlogApi.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -49,30 +52,17 @@ namespace BlogApi.Web
             services.AddControllersWithViews();
             services.AddDbContext<IdentityUsersContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-            services.AddIdentity<User, Role>(options => options.Stores.MaxLengthForKeys = 128)
+            services.AddIdentity<User, Role>(options => 
+            { 
+                options.Stores.MaxLengthForKeys = 128; 
+            })
               .AddEntityFrameworkStores<IdentityUsersContext>()
              .AddDefaultTokenProviders();
             services.AddDistributedMemoryCache();
             services.AddSession();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super-mega-puper-key"));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(
-                    opt =>
-                    {
-                        opt.RequireHttpsMetadata = true;
-                        opt.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = key,
-                            ValidateAudience = false,
-                            ValidateIssuer = false,
 
-                        };
-
-                    });
-         
-
+            AuthenticationConfiguration.Configuration(services);
             IdentityBuilder identityBuilder = services.AddIdentityCore<User>(options =>
             {
                 // Password settings.
@@ -103,8 +93,8 @@ namespace BlogApi.Web
             services.AddSingleton<IJwtGenerator>(new JwtGenerator(Configuration));
 
             identityBuilder.AddRoles<Role>();
-            identityBuilder.AddUserManager<UserManager<User>>();
-            identityBuilder.AddRoleManager<RoleManager<Role>>();
+            //identityBuilder.AddUserManager<UserManager<User>>();
+            //identityBuilder.AddRoleManager<RoleManager<Role>>();
 
             services.AddScoped<RoleRepository, RoleRepository>();
             services.AddScoped<UserRepository, UserRepository>();
@@ -125,8 +115,7 @@ namespace BlogApi.Web
             app.UseSession();
 
             app.UseAuthorization();
-            app.UseAuthorization();
-         
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

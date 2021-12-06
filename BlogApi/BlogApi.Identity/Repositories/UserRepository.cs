@@ -23,7 +23,7 @@ namespace BlogApi.Identity.Repositories
 
         public IQueryable<User> Users { get => userManager.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role); }
         public SignInManager<User> SignInManager { get; }
-
+       
         public async Task<ICollection<Subscribe>> GetUserSubsciptions(string login)
         {
             return (userManager.Users.Include(x => x.Subscriptions).Where(x => x.NormalizedUserName == login.ToUpper()).Include(x => x.Subscribers)
@@ -70,6 +70,19 @@ namespace BlogApi.Identity.Repositories
             return userManager.CreateAsync(user, password);
         }
 
+        public Task<IdentityResult> AddUserAsync(User user)
+        {
+            return userManager.CreateAsync(user);
+        }
+
+        public  Task<IdentityResult> AddLoginAsync(User user, UserLoginInfo info)
+        {
+            return userManager.AddLoginAsync(user, info);
+        }
+        public Task<IdentityResult> AddPassword(User user, string password)
+        {
+            return userManager.AddPasswordAsync(user, password);
+        }
         public async Task<bool> DeleteUserAsync(User user)
         {
             return (await userManager.DeleteAsync(user)).Succeeded;

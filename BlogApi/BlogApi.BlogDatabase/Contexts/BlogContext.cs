@@ -16,7 +16,6 @@ namespace BlogApi.BlogDatabase.Contexts
     public class BlogContext : DbContext
     {
         public DbSet<Article> Articles { get; set; }
-        public DbSet<Photo> Photos { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; } 
        
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
@@ -26,8 +25,7 @@ namespace BlogApi.BlogDatabase.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserPhoto>().HasOne(x => x.Photo).WithMany(x => x.UserPhotos)
-                .HasForeignKey(x => x.PhotoId).OnDelete(DeleteBehavior.Cascade);
+           
         }
 
 

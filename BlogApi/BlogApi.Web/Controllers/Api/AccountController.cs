@@ -1,20 +1,24 @@
 ﻿using BlogApi.Core.Services;
+using BlogApi.Identity.Models;
 using BlogApi.Identity.Repositories;
 using BlogApi.Web.Models.ViewModels.Api;
 using BlogApi.Web.Models.ViewModels.Api.Account;
 using BlogApi.Web.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlogApi.Web.Controllers.Api
 {
-    [Route("/api/account/"), ApiController]
+    [Route("/api/account/"), ApiController, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AccountController : Controller
     {
         private readonly UserRepository userRepository;
@@ -43,7 +47,64 @@ namespace BlogApi.Web.Controllers.Api
             return null;
         }
 
-        [HttpPost]
+        [AllowAnonymous, HttpGet("login/external/{provider?}")]
+        public async Task<ActionResult> ExternalLogin(string provider = "Google")
+        {
+            var properties = userRepository.SignInManager.ConfigureExternalAuthenticationProperties(provider: provider,
+                redirectUrl: Url.Action("ExternalResponse"));
+
+            return new ChallengeResult(provider,properties);
+        }
+
+        [AllowAnonymous, HttpGet("login/external/response")]
+        public async Task<ActionResult> ExternalResponse()
+        {
+            var externalProviders = (await userRepository.SignInManager.
+                GetExternalAuthenticationSchemesAsync()).ToList();
+            var info = await userRepository.SignInManager.GetExternalLoginInfoAsync(); // Всегда null
+
+            if (info == null)
+                return BadRequest("Error occured when external provider's data was loading");
+
+            var result = await userRepository.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            ClaimsIdentity claims = null;
+            User user = null;
+
+            if (!result.Succeeded)
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (email != null)
+                {
+                    user = await userRepository.GetUserAsync(email);
+                    if (user == null)
+                    {
+                        user = new User
+                        {
+                            Email = email,
+                            UserName = email
+                        };
+                        await userRepository.AddUserAsync(user);
+                        await userRepository.AddToRoleAsync(user, "User");
+                    }
+                    await userRepository.AddLoginAsync(user, info);
+                    await userRepository.SignInManager.SignInAsync(user, isPersistent: false);
+                }
+            }
+            else
+                user = await userRepository.GetUserAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+            
+
+            claims = (await userRepository.SignInManager.ClaimsFactory.CreateAsync(user)).Identities.First();
+            return Json(new AccountResponse
+            {
+                Token = jwtGenerator.CreateToken(claims),
+                Email = user.Email,
+                Login = user.UserName,
+                Role = user.UserRoles.FirstOrDefault(x => x.UserId == user.Id)?.Role.Name
+            }) ;
+        }
+
+        [HttpPost, AllowAnonymous]
         public async Task<ActionResult> Login([FromBody] ClientRequest request)
         {
             if (request == null || request.Login == null || request == null)
@@ -73,7 +134,13 @@ namespace BlogApi.Web.Controllers.Api
             }
         }
 
-        [HttpPost("register")]
+        [Authorize, HttpGet("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            await userRepository.SignInManager.SignOutAsync();
+            return StatusCode(StatusCodes.Status200OK);
+        }
+        [HttpPost("register"), AllowAnonymous]
         public async Task<ActionResult> RegisterUser([FromBody]RegisterUserRequest request)
         {
             if (CheckObjectForNull.CheckForNull(request))
@@ -105,7 +172,7 @@ namespace BlogApi.Web.Controllers.Api
             }
         }
 
-        [HttpPost("subscribe"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("subscribe")]
         public async Task<ActionResult> SubscribeUser([FromBody] string authorId)
         {
             try
@@ -128,13 +195,13 @@ namespace BlogApi.Web.Controllers.Api
                     SubscriberId = currentUserId
                 });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost("unsubscribe"), Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("unsubscribe")]
         public async Task<ActionResult> UnsubscribeUser([FromBody] string authorId)
         {
             try
