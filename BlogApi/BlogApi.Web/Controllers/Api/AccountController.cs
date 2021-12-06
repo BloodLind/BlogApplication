@@ -48,20 +48,20 @@ namespace BlogApi.Web.Controllers.Api
         }
 
         [AllowAnonymous, HttpGet("login/external/{provider?}")]
-        public IActionResult ExternalLogin(string provider = "Google")
+        public IActionResult ExternalLogin(string redirectUrl, string provider = "Google")
         {
             var properties = userRepository.SignInManager.ConfigureExternalAuthenticationProperties(provider: provider,
-                redirectUrl: Url.Action("ExternalResponse"));
+                redirectUrl: Url.Action("ExternalResponse", "Account", new { redirectUrl = redirectUrl }));
 
-            return new ChallengeResult(provider,properties);
+            return new ChallengeResult(provider, properties);
         }
 
-        [AllowAnonymous, HttpGet("login/external/response")]
-        public async Task<ActionResult> ExternalResponse()
+        [AllowAnonymous, HttpGet("login/external/response/")]
+        public async Task<ActionResult> ExternalResponse(string redirectUrl)
         {
             var externalProviders = (await userRepository.SignInManager.
                 GetExternalAuthenticationSchemesAsync()).ToList();
-            var info = await userRepository.SignInManager.GetExternalLoginInfoAsync(); // Всегда null
+            var info = await userRepository.SignInManager.GetExternalLoginInfoAsync();
 
             if (info == null)
                 return BadRequest("Error occured when external provider's data was loading");
@@ -92,16 +92,10 @@ namespace BlogApi.Web.Controllers.Api
             }
             else
                 user = await userRepository.GetUserAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
-            
+
 
             claims = (await userRepository.SignInManager.ClaimsFactory.CreateAsync(user)).Identities.First();
-            return Json(new AccountResponse
-            {
-                Token = jwtGenerator.CreateToken(claims),
-                Email = user.Email,
-                Login = user.UserName,
-                Role = user.UserRoles.FirstOrDefault(x => x.UserId == user.Id)?.Role.Name
-            }) ;
+            return Redirect($"https://{redirectUrl}?token={jwtGenerator.CreateToken(claims)}");
         }
 
         [HttpPost, AllowAnonymous]
