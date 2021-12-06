@@ -48,7 +48,7 @@ namespace BlogApi.Web.Controllers.Api
         }
 
         [AllowAnonymous, HttpGet("login/external/{provider?}")]
-        public async Task<ActionResult> ExternalLogin(string provider = "Google")
+        public IActionResult ExternalLogin(string provider = "Google")
         {
             var properties = userRepository.SignInManager.ConfigureExternalAuthenticationProperties(provider: provider,
                 redirectUrl: Url.Action("ExternalResponse"));

@@ -20,8 +20,7 @@ namespace BlogApi.Web.DataCreators
                     {
                         Id = Guid.NewGuid(),
                         Title = "About Site",
-                        Photo = null,
-                        PreviewPhotoId = null,
+                        PreviewPhotoPath = null,
                         InnerData = "This site is created by not aboba!",
                         PublicationDate = DateTime.Now,
                         AuthorId = Guid.Parse(user?.Id)

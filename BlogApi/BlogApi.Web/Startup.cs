@@ -87,7 +87,9 @@ namespace BlogApi.Web
             services.AddScoped<IdentityUsersContext, IdentityUsersContext>();
             services.AddScoped<DbContext, BlogContext>();
             services.AddScoped<IRepository<Article>, ArticleRepository>();
-            services.AddScoped<IRepository<Photo>, PhotoRepository>();
+            services.AddScoped<IRepository<Category>, CategoryRepository>();
+            services.AddScoped<IRepository<Like>, LikesRepository>();
+            services.AddScoped<IRepository<Comment>, CommentsRepository>();
             services.AddScoped<IRepository<UserPhoto>, UserPhotoRepository>();
             services.AddScoped<SubscriptionRepository, SubscriptionRepository>();
             services.AddSingleton<IJwtGenerator>(new JwtGenerator(Configuration));

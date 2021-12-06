@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BlogApi.BlogDatabase.Repositories
 {
-    public class PhotoRepository : AbstractRepository<Photo>
+    public class CommentsRepository : AbstractRepository<Comment>
     {
-        public PhotoRepository(DbContext dbContext) : base(dbContext)
+        public CommentsRepository(DbContext dbContext) : base(dbContext)
         {
         }
     }

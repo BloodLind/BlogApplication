@@ -12,11 +12,14 @@ namespace BlogApi.BlogDatabase.Contexts
 
     //Update-Database -Context BlogContext
     //    Для того что бы сделать миграцию нуждно прописать эту команду в консоле диспетчера пакетов 
-    //и закоментить еншуркреатед
+    //и закоментить EnsureCreated
     public class BlogContext : DbContext
     {
         public DbSet<Article> Articles { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; } 
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
        
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
         {
@@ -25,13 +28,6 @@ namespace BlogApi.BlogDatabase.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-<<<<<<< HEAD
-           
-=======
-            modelBuilder.Entity<UserPhoto>().HasOne(x => x.Photo).WithMany(x => x.UserPhotos)
-                .HasForeignKey(x => x.PhotoId).OnDelete(DeleteBehavior.Cascade);
-            //modelBuilder.Entity<UserPhoto>().HasOne(x => x.ProfilePhoto).WithMany(x => x.UserProfilePhotos).HasForeignKey(x => x.PhotoId).OnDelete(DeleteBehavior.Cascade);
->>>>>>> Back
         }
 
 

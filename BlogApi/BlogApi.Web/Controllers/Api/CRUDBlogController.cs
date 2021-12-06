@@ -19,12 +19,10 @@ namespace BlogApi.Web.Controllers.Api
     public class CRUDBlogController : Controller
     {
         private readonly IRepository<Article> articleRepository;
-        private readonly IRepository<Photo> photoRepository;
 
-        public CRUDBlogController(IRepository<Article> articleRepository, IRepository<Photo> photoRepository)
+        public CRUDBlogController(IRepository<Article> articleRepository)
         {
             this.articleRepository = articleRepository;
-            this.photoRepository = photoRepository;
         }
 
         //[HttpPost("addPhoto")]
@@ -60,7 +58,7 @@ namespace BlogApi.Web.Controllers.Api
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.Parse(User.Identities.ElementAt(0).Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value),
                 InnerData = request.InnerData,
-                PreviewPhotoId = request.PreviewPhotoId == null ? null : Guid.Parse(request.PreviewPhotoId),
+                PreviewPhotoPath = request.PreviewPhotoPath,
                 Title = request.Title,
                 PublicationDate = DateTime.Now
             };

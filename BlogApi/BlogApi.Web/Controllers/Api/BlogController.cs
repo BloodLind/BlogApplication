@@ -21,7 +21,6 @@ namespace BlogApi.Web.Controllers.Api
     {
         private readonly int countOnPage = 30;
         private readonly IRepository<Article> articlesRepository;
-        private readonly IRepository<Photo> photoRepository;
         private readonly IRepository<UserPhoto> userPhotoRepository;
         private readonly UserRepository userRepository;
 
@@ -51,17 +50,15 @@ namespace BlogApi.Web.Controllers.Api
 
             var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x =>
             {
-                var userPhoto = userPhotoRepository.GetAll().Include(x => x.Photo).FirstOrDefault(photo => photo.UserId == x.Id);
+                var userPhoto = userPhotoRepository.GetAll().FirstOrDefault(photo => photo.UserId == x.Id);
                 return new UserData
                 {
                     Id = x.Id,
                     Name = x.UserName,
-                    Photo = !String.IsNullOrEmpty(userPhoto?.PhotoId.ToString()) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoId.ToString()}" : 
-                                                                                                                                                           null,
-                    ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.ProfilePhotoId.ToString()) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.ProfilePhotoId.ToString()}" :
-                                                                                                                                                            null
+                    Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" :  null,
+                    ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.HeaderPhotoPath) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.HeaderPhotoPath}" :  null
 
                 };
             }).ToList();
@@ -98,10 +95,10 @@ namespace BlogApi.Web.Controllers.Api
             };
 
         }
-        public BlogController(IRepository<Article> articlesRepository, IRepository<Photo> photoRepository, IRepository<UserPhoto> userPhotoRepository, UserRepository userRepository)
+        
+        public BlogController(IRepository<Article> articlesRepository, IRepository<UserPhoto> userPhotoRepository, UserRepository userRepository)
         {
             this.articlesRepository = articlesRepository;
-            this.photoRepository = photoRepository;
             this.userPhotoRepository = userPhotoRepository;
             this.userRepository = userRepository;
         }
@@ -109,7 +106,6 @@ namespace BlogApi.Web.Controllers.Api
         [HttpGet("articles/page-{page:int}"), HttpGet(""), HttpGet("/articles")]
         public async Task<ActionResult> Articles(int page = 1, string searchText = null)
         {
-
             if (!PageCheck(page, articlesRepository))
                 return BadRequest();
 
@@ -118,10 +114,11 @@ namespace BlogApi.Web.Controllers.Api
         [HttpGet("photos/id-{id}")]
         public async Task<ActionResult> PhotoById(string id)
         {
-
+            if (String.IsNullOrEmpty(id))
+                return BadRequest("No image with name:" + id);
 
             var file = Path.Combine(Directory.GetCurrentDirectory(),
-                                                "Files", "Images", photoRepository.Get(Guid.Parse(id)).Path);
+                                                "Files", "Images", id);
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
             if (provider.TryGetContentType(Path.GetFileName(file), out contentType))
@@ -137,9 +134,6 @@ namespace BlogApi.Web.Controllers.Api
         {
             return Json(articlesRepository.Get(Guid.Parse(id)));
         }
-
-
-
 
 
         [HttpPost("articles/subscriptions")]
@@ -191,7 +185,6 @@ namespace BlogApi.Web.Controllers.Api
             });
         }
 
-
         [HttpPost("users")]
         public async Task<ActionResult> GetUsersInformation([FromBody] UserDataRequest request)
         {
@@ -202,14 +195,11 @@ namespace BlogApi.Web.Controllers.Api
 
         }
 
-
-
         [HttpGet("user/id-{id}")]
         public async Task<ActionResult> GetUserInfo(string id)
         {
             if (id == null)
                 return BadRequest();
-
 
             var user = await userRepository.GetUserByIdAsync(id);
             var userPhoto = userPhotoRepository.GetAll().FirstOrDefault(x => x.UserId == user.Id);
@@ -217,16 +207,15 @@ namespace BlogApi.Web.Controllers.Api
             {
                 Id = user.Id,
                 Name = user.UserName,
-                Photo = !String.IsNullOrEmpty(userPhoto?.PhotoId.ToString()) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoId.ToString()}" :
-                                                                                                                                                           null,
-                ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.ProfilePhotoId.ToString()) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.ProfilePhotoId.ToString()}" :
-                                                                                                                                                            null
+                Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" :  null,
+                ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" : null
             }) ;
 
 
         }
+        
         [HttpPost("search/users")]
         public async Task<ActionResult> GetUsers([FromBody] UserDataRequest request)
         {
@@ -239,19 +228,3 @@ namespace BlogApi.Web.Controllers.Api
 
 
 
-
-//private GetDataResponse<IEnumerable<T>> GenerateDataResponse<T>(IEnumerable<T> data, GetDataRequest request)
-//{
-
-//    var responseData = data.Skip((request.Page - 1) * CountInOnePage).Take(CountInOnePage);
-
-//    int pageCount = (int)Math.Ceiling((double)data.Count() / CountInOnePage);
-//    var response = new GetDataResponse<IEnumerable<T>>()
-//    {
-//        Result = responseData,
-//        TotalCount = data.Count(),
-//        PageCount = pageCount,
-//        CurrentPage = request.Page
-//    };
-//    return response;
-//}

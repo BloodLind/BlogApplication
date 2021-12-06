@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BlogApi.Web.Models.ViewModels.Api.Blog
 {
-    public class PhotoResponse : ResultResponse<IEnumerable<Photo>>
+    public class PhotoResponse : ResultResponse<IEnumerable<string>>
     {
        
     }

@@ -15,6 +15,6 @@ namespace BlogApi.BlogDatabase.Models
         public string UserId { get; set; }
         [Required]
         public string PhotoPath { get; set; }
-       
+        public string HeaderPhotoPath { get; set; } = null;
     }
 }
