@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,8 +17,18 @@ namespace BlogApi.Web
 {
     public class Program
     {
+        private static void CreateDirectories()
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(),
+                                                "Files", "Images");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
         public static void Main(string[] args)
         {
+            CreateDirectories();
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
