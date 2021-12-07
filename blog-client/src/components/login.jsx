@@ -15,7 +15,7 @@ import AccountService from "../api/accountService";
 import useSession from 'react-session-hook';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import {Google} from '../api/apiKeys';
 
 
 function Login() {
@@ -53,12 +53,12 @@ function Login() {
               </div>
               <Link className="dark-link mt-3 mb-3 align-self-center text-center agency fs-4 text-dark" to='/login'>Forgot password?</Link>
               
-              <button className="btn bg-dark-color color-light w-100 fs-4 agency opacity-button mt-2 mb-2 round-card d-flex ps-4 p-2 align-items-center">
-                <img alt="G" src={window.location.protocol + '//' + window.location.host + '/drawable/google.png'} className="icon me-3"></img>
-                Connect with Google</button>
+              <a href={Google + `?redirectUrl=${window.location.host}`} className="btn bg-dark-color color-light w-100 fs-4 agency opacity-button mt-2 mb-2 round-card d-flex ps-4 p-2 align-items-center">
+                <img alt="G" src={window.location.protocol + '//' + window.location.host + '/drawable/google.png'} className="custom-icon me-3"></img>
+                Connect with Google</a>
 
               <button className="btn bg-dark-color color-light w-100 p-2 fs-4 agency  opacity-button mt-3 round-card d-flex ps-4 p-2 align-items-center">
-                <img alt="R" src={window.location.protocol + '//' + window.location.host + '/drawable/reddit.png'} className="icon me-3"></img>
+                <img alt="R" src={window.location.protocol + '//' + window.location.host + '/drawable/reddit.png'} className="custom-icon me-3"></img>
                 Connect with Reddit</button>
           </div>
 

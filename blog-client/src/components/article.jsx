@@ -21,7 +21,7 @@ function Article(props){
     {
         return (<div className="d-flex flex-column gap-5 align-items-center">
         <ArticleCard photo={CheckPath(data.previewPhotoPath)} author={author} article={data}></ArticleCard>
-        <div className="p-5 m-2 ms-5 me-5 mt-0 col-10">
+        <div className="p-5 m-2 ms-5 me-5 mt-0 col-9">
             <p className="yu-gothic fs-5 m-5 mt-0 p-5">
                 {data.innerData}
             </p>

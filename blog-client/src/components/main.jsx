@@ -56,8 +56,8 @@ function Main() {
                     </div>
                 </div>
 
-                <div className="d-flex flex-row col-10 m-5 mb-0 p-5 align-self-center align-items-baseline gap-5">
-                    <h4 className="fs-2r agency text-nowrap ">New Memories</h4>
+                <div className="d-flex flex-row col-10 m-5 align-self-center justify-content-center align-items-baseline gap-5">
+                    <h4 className="fs-1 agency text-nowrap ">New Memories</h4>
                     <div className=" line-dark w-75"></div>
                 </div>
 
@@ -86,8 +86,8 @@ function Main() {
                     </div>
                 </div>
                 <Link className="btn opacity-button bg-sub-dark agency fs-2 text-white align-self-center ps-5 pe-5 round-card" to='/explore' style={{ width: '250px' }}>Explore More</Link>
-                <div className="d-flex flex-row col-10 m-5 mb-0 p-5 align-self-center align-items-baseline gap-5">
-                    <h4 className="fs-2r agency text-nowrap">Today Creators</h4>
+                <div className="d-flex flex-row col-10 m-5 mb-0 p-5 align-self-center align-items-baseline justify-content-center gap-5">
+                    <h4 className="fs-1 agency text-nowrap">Today Creators</h4>
                     <div className=" line-dark w-75"></div>
                 </div>
 
@@ -96,7 +96,7 @@ function Main() {
                 </div>
 
                 <div className="d-flex flex-row bg-dark-color color-light align-items-center justify-content-around" style={{
-                    height: '550px',
+                    height: '450px',
                     padding: '15em'
                 }}>
                     <div className="ocr m-5" style={{

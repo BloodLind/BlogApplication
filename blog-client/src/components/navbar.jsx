@@ -36,9 +36,9 @@ function Navbar() {
             borderBottom: '2px solid white',
           }
         }>
-          <Link className="nav-link fs-6 color-light" aria-current="page" to="/explore">Explore</Link>
-          <Link className="nav-link bg-torqoise-primary fs-6 color-light me-3" to="/check">Check</Link>
-          <Link className="nav-link bg-torqoise-primary fs-6 color-light" to="/create">Create</Link>
+          <Link className="nav-link fs-5 color-light" aria-current="page" to="/explore">Explore</Link>
+          <Link className="nav-link bg-torqoise-primary fs-5 color-light me-3" to="/check">Check</Link>
+          <Link className="nav-link bg-torqoise-primary fs-5 color-light" to="/create">Create</Link>
         </div>
         <div className="line"></div>
         <Link className="nav-img align-self-center" to="/">
@@ -53,9 +53,9 @@ function Navbar() {
 
     <nav className="navbar bg-dark-colo navigation opacity-100 position-fixed start-0 top-0 w-100 nav-top-second">
       <div className="navbar-collapse d-flex flex-row justify-content-center gap-5" id="navbarSupportedContent">
-        <Link className="nav-link fs-6 color-light" aria-current="page" to="/explore">Explore</Link>
-        <Link className="nav-link bg-torqoise-primary fs-6 color-light" to="/check">Check</Link>
-        <Link className="nav-link bg-torqoise-primary fs-6 color-light" to="/create">Create</Link>
+        <Link className="nav-link fs-5 color-light" aria-current="page" to="/explore">Explore</Link>
+        <Link className="nav-link bg-torqoise-primary fs-5 color-light" to="/check">Check</Link>
+        <Link className="nav-link bg-torqoise-primary fs-5 color-light" to="/create">Create</Link>
       </div>
       <Link to={session.token == undefined ? "/login" : '/account'} style={{ position: "absolute", top: "10px", right: "160px" }}>
         <img src={window.location.protocol + "//" + window.location.host + "/drawable/login.png"} style={{

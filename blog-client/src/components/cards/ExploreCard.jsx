@@ -33,7 +33,7 @@ export default function ExploreCard(props) {
                 }}></div>
             </div>
             <div className='color-sub-light h-100 p-5 pb-3 d-flex flex-column content w-100'>
-                <h3 className="agency fs-2 color-light">{props.article?.title}</h3>
+                <h3 className="agency fs-1 color-light">{props.article?.title}</h3>
                 <p className="agency fs-3 ms-2" style={{
                     maxHeight: '90px',
                     height: '90px',
@@ -42,7 +42,7 @@ export default function ExploreCard(props) {
                     overflow: 'hidden',
   
                 }}>{props.article?.innerData}</p>
-                <h5 className="agency fs-4 ms-5 mt-0">by {props.author?.name}</h5>
+                <h5 className="agency fs-4 ms-2 mt-0">by {props.author?.name}</h5>
             </div>
         </Link>
     </>)
