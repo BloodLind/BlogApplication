@@ -30,6 +30,9 @@ export default class AccountService
       return false;
     }
 }
+
+
+
     static async Register(login, password, email, session){
      
         var res =  await fetch(registerURL,

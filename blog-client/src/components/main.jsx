@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BlogsGet, UsersGet, PhotosGet } from '../api/blogController'
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
+import  useSession  from 'react-session-hook';
+import { removeParam } from '../services/stringOperations';
 import '../styles/site.css'
 import '../styles/default-namespace.jsx'
 import { Link } from 'react-router-dom'
@@ -13,6 +15,16 @@ import {GetPhotos} from '../api/apiKeys'
 import {CheckPath} from '../services/imageChecker';
 
 function Main() {
+    const session = useSession({});
+
+    var url = new URL(window.location.href);
+    var token = url.searchParams.get("token");
+    console.log("token from url", token);
+    if(token != null){
+    session.setSession({"token" : token});
+    window.location.href = removeParam("token", window.location.href);
+    }
+
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
     const [authors, setAuthors] = useState([]);
