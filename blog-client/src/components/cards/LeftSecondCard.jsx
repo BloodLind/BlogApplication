@@ -29,7 +29,7 @@ function LeftSecondCard(props) {
             }}>
 
                 <h3 className="agency fs-2 me-4 color-light ms-4 mt-5 opacity-trigger" style={{ maxHeight: '100px' }} >{props.article.title}</h3>
-                <h5 className="agency fs-6 color-sub-light ms-4 ps-3 mt-2" style={{
+                <h5 className="agency fs-5 color-sub-light ms-4 ps-3 mt-2" style={{
                 }}>
                     by {props.author}
                 </h5>
