@@ -1,0 +1,16 @@
+.input-black-line {
+    border:none;
+    border-bottom:3px solid black ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    outline: none;    
+  }
+  
+  .input-black-line::placeholder {
+    font-family: 'Agency FB';
+    font-style: none;
+    text-decoration: none;
+    
+   color: black;
+    font-size: 22px;
+  }

@@ -1,5 +1,5 @@
 import '../styles/images.css';
-import '../styles/login.css';
+import '../styles/Login.css';
 import '../styles/default-namespace.jsx'
 import '../styles/site.css'
 
@@ -48,8 +48,8 @@ function Register() {
               <div>
               {error}
               </div>
-              <Link className='agency fs-4 color-dark dark-link' to='/login'>Already have account?</Link>
-              <button className="btn bg-accent round-card fs-4 agency mt-3 ps-5 pe-5 opacity-button text-nowrap w-100" type="button" onClick={handleSingIn}>Sign up</button>
+              <Link className='agency text-larger color-dark dark-link' to='/login'>Already have account?</Link>
+              <button className="btn bg-accent round-card text-larger agency mt-3 ps-5 pe-5 opacity-button text-nowrap w-100" type="button" onClick={handleSingIn}>Sign up</button>
               <button className="btn bg-dark-color color-light ps-5 pe-5 w-100 yu-gothic opacity-button mt-2 mb-2 round-card d-flex ps-4 p-2 align-items-center">
                 <img alt="G" src={window.location.protocol + '//' + window.location.host + '/drawable/google.png'} className="icon me-3"></img>
                 Connect with Google</button>

@@ -1,0 +1,22 @@
+ .ce-block__content, 
+.ce-toolbar__content {
+ max-width: 87%; 
+} 
+
+ #editorjs {
+    /* background-color: gray; */
+    /* max-width: 90%;
+    border-radius:10px;*/
+    /* margin:30px;  */
+    background-color: white;
+    box-shadow: 0px 3px 6px #BEBEBE;
+    border-radius: 15px;
+  
+} 
+ .editorJSContainer
+{
+   
+padding: 40px;
+background-color: #eef5fa;
+
+} 

@@ -35,10 +35,10 @@ function Footer() {
 
         <div className="d-flex flex-column justify-content-start">
 
-          <span className="fs-4 color-sub-light">Follow us on:</span>
-          <a className="fs-4 light-link" href="https://www.instagram.com/?hl=ru">Instagram</a>
-          <a className="light-link fs-4" href="https://twitter.com/?lang=ru">Twiter</a>
-          <a className="light-link fs-4" href="https://www.reddit.com/">Reddit</a>
+          <span className="text-super-large color-sub-light">Follow us on:</span>
+          <a className="text-super-large light-link" href="https://www.instagram.com/?hl=ru">Instagram</a>
+          <a className="light-link text-super-large" href="https://twitter.com/?lang=ru">Twiter</a>
+          <a className="light-link text-super-large" href="https://www.reddit.com/">Reddit</a>
         </div>
       </div>
 

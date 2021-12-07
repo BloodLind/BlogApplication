@@ -5,9 +5,12 @@
   
   @font-face {
     font-family: "YU Gothic UI";
-    src: url('fonts/yugothib.ttf');
+    src: url('fonts/YuGothM.ttc');
   }
-  
+  @font-face {
+    font-family: "YU Gothic UI Bold";
+    src: url('fonts/YuGothB.ttc');
+  }
   @font-face {
     font-family: 'Agency FB';
     src: url('fonts/Agency\ FB.TTF');
@@ -24,6 +27,10 @@
 }
 
 .yu-gothic {
+    font-family: "YU Gothic UI Bold" !important;
+    letter-spacing: 0.01em;
+}
+.yu-gothic-medium {
     font-family: "YU Gothic UI" !important;
     letter-spacing: 0.01em;
 }

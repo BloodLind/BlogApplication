@@ -19,7 +19,7 @@ import Explore from './components/explore';
 import Login from './components/login'
 import Account from './components/account';
 import Register from './components/register';
-
+import Create from './components/create'
 ReactDOM.render(
   <UseSessionProvider>
     <Router>
@@ -33,7 +33,7 @@ ReactDOM.render(
 
         <Route path="/create">
           <Navbar />
-            Create
+           <Create></Create>
             <Footer /> 
         </Route>
 
