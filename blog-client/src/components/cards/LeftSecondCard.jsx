@@ -11,7 +11,7 @@ function LeftSecondCard(props) {
             backgroundSize: 'cover',
             backgroundPositionX: '50%',
             backgroundPositionY: '50%',
-            width: 500,
+            width: 450,
             height: 360,
         }}>
             <svg xmlns="http://www.w3.org/2000/svg" className="child" viewBox="0 0 663.387 372.949">
@@ -28,13 +28,13 @@ function LeftSecondCard(props) {
                 maxHeight: '190px'
             }}>
 
-                <h3 className="agency text-x-large me-4 color-light ms-4 mt-5 opacity-trigger" style={{ maxHeight: '100px' }} >{props.article.title}</h3>
-                <h5 className="agency text-larger color-sub-light ms-4 ps-3 mt-2" style={{
+                <h3 className="agency fs-2 me-4 color-light ms-4 mt-5 opacity-trigger" style={{ maxHeight: '100px' }} >{props.article.title}</h3>
+                <h5 className="agency fs-6 color-sub-light ms-4 ps-3 mt-2" style={{
                 }}>
                     by {props.author}
                 </h5>
             </div>
-            <Link className="btn bg-accent color-light yu-gothic text-large round-button m-3 me-5 col-3 opacity-button hidden align-self-end" to={'/article/' + props.article.id}
+            <Link className="btn bg-accent color-light yu-gothic fs-5 round-button m-3 me-5 col-3 opacity-button hidden align-self-end" to={'/article/' + props.article.id}
                 style={{
                     position: 'relative',
                     width: '110px',

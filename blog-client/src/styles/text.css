@@ -32,29 +32,13 @@
     font-size: 2.3em !important;
 }
 
-.text-larger {
-    font-size: x-large !important;
-}
 
-.text-large {
-    font-size: larger !important;
-}
-
-.text-super-xx-large {
-    font-size: 4.2em;
-}
 
 .text-super-x-larger {
     font-size: 4em;
 }
 
-.text-super-larger {
-    font-size: 2.7em;
-}
 
-.text-super-large {
-    font-size: 2em;
-}
 
 .line {
     background-color: white !important;

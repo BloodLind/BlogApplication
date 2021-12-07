@@ -36,7 +36,7 @@ function Register() {
   const handleSingUp = (event) => {
     alert(event);
   }
-  let error = AccountService.Errors.map(x => <h3 className="agency danger text-large m-2 link-danger">{x}</h3>);
+  let error = AccountService.Errors.map(x => <h3 className="agency danger fs-6 m-2 link-danger">{x}</h3>);
 
       return (  
        <div className="base" style={{backgroundImage: "url(/drawable/loginBack.png)"}}>
@@ -48,8 +48,8 @@ function Register() {
               <div>
               {error}
               </div>
-              <Link className='agency text-larger color-dark dark-link' to='/login'>Already have account?</Link>
-              <button className="btn bg-accent round-card text-larger agency mt-3 ps-5 pe-5 opacity-button text-nowrap w-100" type="button" onClick={handleSingIn}>Sign up</button>
+              <Link className='agency fs-4 color-dark dark-link' to='/login'>Already have account?</Link>
+              <button className="btn bg-accent round-card fs-4 agency mt-3 ps-5 pe-5 opacity-button text-nowrap w-100" type="button" onClick={handleSingIn}>Sign up</button>
               <button className="btn bg-dark-color color-light ps-5 pe-5 w-100 yu-gothic opacity-button mt-2 mb-2 round-card d-flex ps-4 p-2 align-items-center">
                 <img alt="G" src={window.location.protocol + '//' + window.location.host + '/drawable/google.png'} className="icon me-3"></img>
                 Connect with Google</button>
@@ -60,7 +60,7 @@ function Register() {
 
               <div className="logo m-4 d-flex flex-column">
                 <img style={{height:"300px"}} src="/drawable/logowithtextdark.png"/>
-                <h3 className='ocr text-large align-self-end' style={{
+                <h3 className='ocr fs-6 align-self-end' style={{
                   marginTop:'-50px',
                 }}>... Connect our minds</h3>
               </div>

@@ -5,11 +5,11 @@ import '../styles/site.css'
 import '../styles/default-namespace.jsx'
 import ExploreCard from './cards/ExploreCard'
 import {GetPhotos} from '../api/apiKeys'
+import { CheckPath } from '../services/imageChecker';
 
 export default function Explore() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
-
     const [authors, setAuthors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function Explore() {
     }, [currentPage]);
     if (isLoaded || currentPage > 1) {
         let page = data.result.map(x =>
-            <ExploreCard key={x.id} article={x} photo={ GetPhotos + `/id-${x.previewPhotoId}` } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
+            <ExploreCard key={x.id} article={x} photo={ CheckPath(x.previewPhotoPath) } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
         window.addEventListener('scroll', () => {
 
             const {

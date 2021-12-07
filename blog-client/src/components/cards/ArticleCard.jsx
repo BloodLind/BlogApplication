@@ -9,7 +9,7 @@ export default function ArticleCard(props) {
         <div className="m-5 mb-0" style={{
             width: '1000px',
             height: '400px',
-            backgroundImage: props.photo == null ? window.location.protocol + "//" + window.location.host + "/drawable/logowithTextlight.png" : `url(${props.photo.data})`,
+            backgroundImage: props.photo == null ? window.location.protocol + "//" + window.location.host + "/drawable/logowithTextlight.png" : `url(${props.photo})`,
             borderRadius: '10px',
             backgroundPositionX: '75%',
             backgroundPositionY: '35%',
@@ -29,9 +29,9 @@ export default function ArticleCard(props) {
                             borderRadius: '10px',
                             objectFit: 'cover'
                         }} className="border-0 child" src={props.author?.photo == null ? window.location.protocol + "//" + window.location.host + '/drawable/logowhite.png' : props.author.photo}></img>
-                        <h3 className="agency m-2 text-super-large color-light child">{props.author?.name}</h3>
+                        <h3 className="agency m-2 fs-2 color-light child">{props.author?.name}</h3>
                     </div>
-                    <h3 className="agency text-larger color-sub-light">Publication date: {date.getDate()}.{date.getMonth()}.{date.getFullYear()}</h3>
+                    <h3 className="agency fs-4 color-sub-light">Publication date: {date.getDate()}.{date.getMonth()}.{date.getFullYear()}</h3>
                 </div>
             </div>
         </div>

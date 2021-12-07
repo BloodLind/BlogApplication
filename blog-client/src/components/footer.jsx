@@ -19,26 +19,26 @@ function Footer() {
         <div className="d-flex flex-column justify-content-center align-items-center">
           <img className="nav-img" src={window.location.protocol + "//" + window.location.host + "/drawable/logowithTextlight.png"}></img>
           <div className="d-flex flex-row gap-5">
-            <div className="text-larger">
+            <div className="fs-5">
               @BloodLind vs @Kyrylchenko
             </div>
-            <a className="light-link text-larger" aria-current="page" href="#">PRIVACY POLICY</a>
-            <a className="light-link text-larger" aria-current="page" href="#">TERMS OF SERVICE</a>
+            <a className="light-link fs-5" aria-current="page" href="#">PRIVACY POLICY</a>
+            <a className="light-link fs-5" aria-current="page" href="#">TERMS OF SERVICE</a>
           </div>
         </div>
         <div className="d-flex flex-column justify-content-start">
-          <Link className="light-link text-super-large" to="/login">Sign in account</Link>
-          <Link className="light-link text-super-large" to="/create">Create new memory</Link>
-          <Link className="light-link text-super-large" to="/explore">Explore</Link>
+          <Link className="light-link fs-4" to="/login">Sign in account</Link>
+          <Link className="light-link fs-4" to="/create">Create new memory</Link>
+          <Link className="light-link fs-4" to="/explore">Explore</Link>
         </div>
 
 
         <div className="d-flex flex-column justify-content-start">
 
-          <span className="text-super-large color-sub-light">Follow us on:</span>
-          <a className="text-super-large light-link" href="https://www.instagram.com/?hl=ru">Instagram</a>
-          <a className="light-link text-super-large" href="https://twitter.com/?lang=ru">Twiter</a>
-          <a className="light-link text-super-large" href="https://www.reddit.com/">Reddit</a>
+          <span className="fs-4 color-sub-light">Follow us on:</span>
+          <a className="fs-4 light-link" href="https://www.instagram.com/?hl=ru">Instagram</a>
+          <a className="light-link fs-4" href="https://twitter.com/?lang=ru">Twiter</a>
+          <a className="light-link fs-4" href="https://www.reddit.com/">Reddit</a>
         </div>
       </div>
 

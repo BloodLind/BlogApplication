@@ -26,7 +26,7 @@ function AccountArticleCard(props) {
             </svg>
 
             <div className="d-flex flex-column account-content">
-                <div className="text-larger text-break p-3 pb-0 pt-0" style={{
+                <div className="fs-4 text-break p-3 pb-0 pt-0" style={{
                     position: 'relative',
                     top: '-15%',
                     height: '60px',

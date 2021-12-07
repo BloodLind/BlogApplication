@@ -8,15 +8,15 @@ import { Link } from 'react-router-dom'
 export default function ExploreCard(props) {
     return (<>
 
-        <Link className="col-10 m-5 mt-3 mb-3 round-card d-flex flex-row gap-0 explore-card text-decoration-none" to={'/article/' + props.article.id}>
+        <Link className="col-9 m-5 mt-3 mb-3 round-card d-flex flex-row gap-0 explore-card text-decoration-none" to={'/article/' + props.article.id}>
             <div className="col-4 d-flex flex-column" style={{
-                // background: props?.photo == undefined ? `url(${window.location.protocol + "//" + window.location.host + "/drawable/logowhite.png"})` : `url(${props.photo.data})`,
-                // backgroundRepeat: 'no-repeat',
-                position: 'relative'
-                // backgroundSize: 'cover',
-                // borderRadius:'15px 0px 0px 15px',
-                // backgroundPositionX: '50%',
-                // backgroundPositionY:'50%',
+                 background: props?.photo == undefined ? `url(${window.location.protocol + "//" + window.location.host + "/drawable/logowhite.png"})` : `url(${props.photo.data})`,
+                 backgroundRepeat: 'no-repeat',
+                position: 'relative',
+                 backgroundSize: 'cover',
+                 borderRadius:'15px 0px 0px 15px',
+                 backgroundPositionX: '50%',
+                 backgroundPositionY:'50%',
             }}>
                 <img loading="lazy" src={ !props?.photo  ? `${window.location.protocol + "//" + window.location.host + "/drawable/logowhite.png"}` : props.photo } style={{
                     borderRadius: '15px 0px 0px 15px',
@@ -33,8 +33,8 @@ export default function ExploreCard(props) {
                 }}></div>
             </div>
             <div className='color-sub-light h-100 p-5 pb-3 d-flex flex-column content w-100'>
-                <h3 className="agency text-super-larger color-light">{props.article?.title}</h3>
-                <p className="agency text-super-large ms-2" style={{
+                <h3 className="agency fs-2 color-light">{props.article?.title}</h3>
+                <p className="agency fs-3 ms-2" style={{
                     maxHeight: '90px',
                     height: '90px',
                     whiteSpace: 'wrap',
@@ -42,7 +42,7 @@ export default function ExploreCard(props) {
                     overflow: 'hidden',
   
                 }}>{props.article?.innerData}</p>
-                <h5 className="agency text-larger ms-5 mt-0">by {props.author?.name}</h5>
+                <h5 className="agency fs-4 ms-5 mt-0">by {props.author?.name}</h5>
             </div>
         </Link>
     </>)

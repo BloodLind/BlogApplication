@@ -26,7 +26,7 @@ export default function Account() {
                                 <div className="text-super-x-larger">
                                     Floppa
                                 </div>
-                                <div className="d-flex gap-5 text-larger">
+                                <div className="d-flex gap-5 fs-4">
                                     <div>
                                         3 publications
                                     </div>
@@ -39,7 +39,7 @@ export default function Account() {
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
-                                <button className="btn bg-accent text-larger agency ps-5 pe-5 text-nowrap" type="button">Subscribe</button>
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Subscribe</button>
                             </div>
                         </div>
                     </div>
