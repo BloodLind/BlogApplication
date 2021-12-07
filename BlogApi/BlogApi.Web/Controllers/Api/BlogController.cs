@@ -117,10 +117,12 @@ namespace BlogApi.Web.Controllers.Api
             if (String.IsNullOrEmpty(id))
                 return BadRequest("No image with name:" + id);
 
-            var file = Path.Combine(Directory.GetCurrentDirectory(),
-                                                "Files", "Images", id);
+            
+            var file = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(),
+                                                "Files", "Images"), $"{id}.*").FirstOrDefault();
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
+            
             if (provider.TryGetContentType(Path.GetFileName(file), out contentType))
             {
                 return PhysicalFile(file, contentType);
