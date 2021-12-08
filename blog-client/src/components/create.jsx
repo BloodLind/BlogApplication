@@ -25,7 +25,7 @@ function Create() {
     if (true) {
         return (
             <>
-            <div className="container ">
+            <div className="d-flex flex-column ps-5 pe-5 m-5">
                 
 
                 <div className="d-flex flex-row m-2  align-items-baseline gap-5">
@@ -36,21 +36,21 @@ function Create() {
                     <input className="w-100 agency fs-4 form-control border-0 shadow" placeholder="Hello, my name huylo" ></input>
 
                 <div className="d-flex flex-row m-2   align-items-baseline gap-5">
-                    <h4 className="text-x-large agency text-nowrap">Create Own Memory</h4>
+                    <h4 className="fs-2 agency text-nowrap">Create Own Memory</h4>
                     <div className=" line-dark w-100"></div>
                 </div>
                 
                
                 {/* <div className="editorJSContainer delete-select-border"> </div> */}
                
-                <div id="editorjs" className="delete-select-border yu-gothic-medium fs-5 " ></div>
+                <div id="editorjs" className="delete-select-border yu-gothic-medium fs-5" ></div>
                 <div className="d-flex flex-row m-2  align-items-baseline gap-5 mt-5 mb-5">
                     <h4 className="text-x-large agency text-nowrap" >Imagine The Look</h4>
                     <div className=" line-dark w-100 "></div>
                 </div>
                
-                <div className=" col-8 align-self-center round-button " >
-                    <img src={window.location.protocol + "//" + window.location.host + "/drawable/loadimageprev.png"} className="w-100 h-100 round-card" style={{objectFit:"cover"}}></img>
+                <div className="col-8 align-self-center m-5 round-card bg-dark-color" style={{maxHeight:"400px"}}>
+                    <img src={window.location.protocol + "//" + window.location.host + "/drawable/logogray.png"} className = "w-100 h-100" style={{objectFit:"cover"}}></img>
                     <div></div>
 
                 </div>
