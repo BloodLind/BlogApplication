@@ -10,7 +10,7 @@ import {
   Link
 } from "react-router-dom";
 import useSession, { UseSessionProvider } from 'react-session-hook';
-
+import { removeParam } from './services/stringOperations';
 import Main from './components/main'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
@@ -20,6 +20,9 @@ import Login from './components/login'
 import Account from './components/account';
 import Register from './components/register';
 import Create from './components/create'
+
+
+
 ReactDOM.render(
   <UseSessionProvider>
     <Router>
