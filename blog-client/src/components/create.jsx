@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import '../styles/create.css'
 import '../styles/forms.css'
 import '../styles/editorJSSets.css'
-// import '../styles/default-namespace.jsx'
+ import '../styles/default-namespace.jsx'
 import { Link } from 'react-router-dom'
 import LeftCard from './cards/LeftCard';
 import RightCard from './cards/RightCard';
@@ -13,6 +13,7 @@ import RightSecondCard from './cards/RightSecondCard';
 import CreatorCard from './cards/CreatorCard';
 import {GetPhotos} from '../api/apiKeys'
 import EditorJS from '@editorjs/editorjs';
+import '../styles/cards.css'
 function Create() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
@@ -24,7 +25,7 @@ function Create() {
     if (true) {
         return (
             <>
-            <div className="container">
+            <div className="container ">
                 
 
                 <div className="d-flex flex-row m-2  align-items-baseline gap-5">
@@ -43,11 +44,17 @@ function Create() {
                 {/* <div className="editorJSContainer delete-select-border"> </div> */}
                
                 <div id="editorjs" className="delete-select-border yu-gothic-medium fs-5 " ></div>
-                
-            
-              
-              <div className="d-flex flex-row justify-content-center gap-5 mb-5">
-                    </div>
+                <div className="d-flex flex-row m-2  align-items-baseline gap-5 mt-5 mb-5">
+                    <h4 className="text-x-large agency text-nowrap" >Imagine The Look</h4>
+                    <div className=" line-dark w-100 "></div>
+                </div>
+               
+                <div className=" col-8 align-self-center round-button " >
+                    <img src={window.location.protocol + "//" + window.location.host + "/drawable/loadimageprev.png"} className="w-100 h-100 round-card" style={{objectFit:"cover"}}></img>
+                    <div></div>
+
+                </div>
+               
               </div>
 </>
         );
