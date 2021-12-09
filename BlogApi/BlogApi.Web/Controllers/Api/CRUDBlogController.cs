@@ -1,6 +1,7 @@
 ﻿using BlogApi.BlogDatabase.Models;
 using BlogApi.Core.Infrastructure.Interfaces;
 using BlogApi.Core.Services;
+using BlogApi.Web.Models.ViewModels.Api.CRUD;
 using BlogApi.Web.Models.ViewModels.Api.CRUD.Blog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -8,12 +9,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BlogApi.Web.Controllers.Api
 {
+
+
+    public class FileCON
+    { 
+        public string File { get; set; }
+    }
+
     [ApiController, Route("api/blog/crud"), Authorize(AuthenticationSchemes =
     JwtBearerDefaults.AuthenticationScheme)]
     public class CRUDBlogController : Controller
@@ -25,25 +35,41 @@ namespace BlogApi.Web.Controllers.Api
             this.articleRepository = articleRepository;
         }
 
-        //[HttpPost("addPhoto")]
-        //public async Task<ActionResult> AddPhoto( IFormFile file)
-        //{
-        //    //file.
-        //    //if (photo == null)
-        //    //    return BadRequest();
+        [HttpPost("add-photo"), AllowAnonymous]
+        public async Task<ActionResult> AddPhoto(IFormFile image)
+        {
 
-        //    //if (!photoRepository.GetAll().Any(x => x.Data.Equals(photo)))
-        //    //{
-        //    //    photoRepository.CreateOrUpdate(new Photo { Data = photo });
-        //    //    photoRepository.SaveChanges();
-        //    //}
-        //    //var result = photoRepository.GetAll().FirstOrDefault(x => x.Data == photo);
-        //    //return Json(new PhotoResponse
-        //    //{
-        //    //    Result = result.Data,
-        //    //    ApiRequest = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{result.Id}"
-        //    //});
-        //}
+
+            string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(image.FileName)}";
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "Images", fileName);
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                await image.CopyToAsync(fs);
+            return Json(new
+            {
+                success = 1,
+                file = new { url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{fileName}" }
+            });
+           
+        }
+        [HttpPost("add-photo-url"),AllowAnonymous]
+        public async Task<ActionResult> AddPhotoByURL(AddPhotoByUrlRequest request)
+        {
+           
+            if (request.Url.Contains("."))
+            {
+                string oldFileName = request.Url.Substring(request.Url.LastIndexOf("/")+1);
+                string fileName =$"{Guid.NewGuid()}.{Path.GetExtension(oldFileName)}";
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "Images", fileName);
+                using (WebClient client = new WebClient())
+                    client.DownloadFile(request.Url, filePath);
+                return Json(new
+                {
+                    success = 1,
+                    file = new { url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{fileName}" }
+                });
+            }
+            return Json(new{success = 0 });
+        }
 
         [HttpPost("blog")]
         public async Task<ActionResult> AddBlog([FromBody] BlogRequest request)

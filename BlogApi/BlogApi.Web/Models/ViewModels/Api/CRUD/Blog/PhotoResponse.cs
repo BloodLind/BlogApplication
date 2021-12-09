@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace BlogApi.Web.Models.ViewModels.Api.CRUD.Blog
 {
-    public class PhotoResponse : CrudResponse<string>
-    {
-       
-    }
+  
 }

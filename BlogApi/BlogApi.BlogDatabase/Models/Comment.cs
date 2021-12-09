@@ -16,7 +16,7 @@ namespace BlogApi.BlogDatabase.Models
         public string InnerData { get; set; }
         [Required]
         public Guid ArticleId { get; set; }
-        public virtual Article Artice { get; set; }
+        public virtual Article Article { get; set; }
         [Required]
         public Guid UserId { get; set; }
 

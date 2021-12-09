@@ -56,9 +56,9 @@ namespace BlogApi.Web.Controllers.Api
                     Id = x.Id,
                     Name = x.UserName,
                     Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" :  null,
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" :  null,
                     ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.HeaderPhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.HeaderPhotoPath}" :  null
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{userPhoto?.HeaderPhotoPath}" :  null
 
                 };
             }).ToList();
@@ -111,15 +111,15 @@ namespace BlogApi.Web.Controllers.Api
 
             return Json(ArticleResponse(page, searchText));
         }
-        [HttpGet("photos/id-{id}")]
-        public async Task<ActionResult> PhotoById(string id)
+        [HttpGet("photos/{name}")]
+        public async Task<ActionResult> GetPhoto(string name)
         {
-            if (String.IsNullOrEmpty(id))
-                return BadRequest("No image with name:" + id);
+            if (String.IsNullOrEmpty(name))
+                return BadRequest("No image with name:" + name);
 
             
             var file = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(),
-                                                "Files", "Images"), $"{id}.*").FirstOrDefault();
+                                                "Files", "Images"), $"{name}.*").FirstOrDefault();
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
             
@@ -210,9 +210,9 @@ namespace BlogApi.Web.Controllers.Api
                 Id = user.Id,
                 Name = user.UserName,
                 Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" :  null,
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" :  null,
                 ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" : null
+                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" : null
             }) ;
 
 
