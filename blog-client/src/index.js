@@ -19,8 +19,8 @@ import Explore from './components/explore';
 import Login from './components/login'
 import Account from './components/account';
 import Register from './components/register';
-import Create from './components/create'
-
+import Create from './components/create';
+import Check from './components/check';
 
 
 ReactDOM.render(
@@ -42,7 +42,7 @@ ReactDOM.render(
 
         <Route path="/check">
          <Navbar />
-            Check
+            <Check></Check>
             <Footer /> 
         </Route>
 

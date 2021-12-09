@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 function AccountArticleCard(props) {
 
     return (
-        <div className="card round-card account-article-card shadow d-flex flex-column card-dark-gradient-bg agency color-light">
+        <div className="card round-card account-article-card shadow d-flex flex-column card-dark-gradient-bg agency color-light parent">
             <div className="account-article-photo" style={{
                 // backgroundImage: props.photo == null ? 'url(/drawable/logoblack.png)' : `url(${props.photo})`,
                 backgroundImage: `url(https://gmstyle.com.ua/img/cms/Minecraft/4082096669_886895539.jpg)`,
@@ -22,7 +22,7 @@ function AccountArticleCard(props) {
                         <stop offset="1" stop-color="#141415" />
                     </linearGradient>
                 </defs>
-                <path id="Контур_14" data-name="Контур 14" d="M9232.95,1393.959c180.457-2.076,338.261-.386,450.05,16.675v42l-450.029.059" transform="translate(-9232.95 -1393.257)" fill="url(#linear-gradient)" />
+                <path d="M9232.95,1393.959c180.457-2.076,338.261-.386,450.05,16.675v42l-450.029.059" transform="translate(-9232.95 -1393.257)" fill="url(#linear-gradient)" />
             </svg>
 
             <div className="d-flex flex-column account-content">
