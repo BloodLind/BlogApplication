@@ -40,7 +40,7 @@ function Main() {
             <>
                 <div className='color-light d-flex flex-column justify-content-center col-9 align-self-center mt-5'>
                     <div className="w-100 card m-5 round-card align-self-center align-content-between justify-content-between" style={{
-                        backgroundImage: `url(${data.result[0].previewPhotoPath == null ? '/drawable/logowithtextdark.png' : GetPhotos + `/id-${data.result[0].previewPhotoPath}`})`,
+                        backgroundImage: `url(${data.result[0].previewPhotoPath == null ? '/drawable/logowithtextdark.png' : GetPhotos + `/${data.result[0].previewPhotoPath}`})`,
                         height: 525 + 'px',
                         backgroundRepeat: 'no-repeat',
                         backgroundPositionX: `50%`,

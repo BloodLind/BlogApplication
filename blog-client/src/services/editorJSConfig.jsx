@@ -31,8 +31,8 @@ const EditorConfig = {
             class: ImageTool,
             config: {
               endpoints: {
-                byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
-                byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                byFile: 'https://localhost:44321/api/blog/crud/add-photo', // Your backend file uploader endpoint
+                byUrl: 'https://localhost:44321/api/blog/crud/add-photo-url', // Your endpoint that provides uploading by Url
               }
             }
              },
