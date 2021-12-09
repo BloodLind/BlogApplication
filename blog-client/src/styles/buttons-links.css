@@ -45,7 +45,7 @@
     transition: 50ms ease-in;
 }
 
-.delete-select-border div:focus,:hover {
+.delete-select-border * :focus,:hover {
     outline: none !important;
     border: none;
 }
