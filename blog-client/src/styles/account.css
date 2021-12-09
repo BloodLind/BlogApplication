@@ -3,24 +3,30 @@
     background: -webkit-linear-gradient(#141415, #14213d);
     background: -moz-linear-gradient(#141415, #14213d);
     background: -o-linear-gradient(#141415, #14213d);
-    background: linear-gradient(90deg, rgba(20, 20, 21, 1) 40%, rgba(20, 33, 61, 1) 70%);
+    background: linear-gradient(180deg, rgba(20, 20, 21, 1) 45%, rgba(20, 33, 61, 1) 60%);
 
-    -webkit-transition: background 0.3s ease-out;
-    -moz-transition: background 0.3s ease-out;
-    -o-transition: background 0.3s ease-out;
-    transition: background 0.3s ease-out;
-    background-size: 200rem auto;
-    background-position: 0rem;
+    -webkit-transition: background 0.2s ease-out;
+    -moz-transition: background 0.2s ease-out;
+    -o-transition: background 0.2s ease-out;
+    transition: background 0.2s ease-out;
+    background-size: auto 50rem;
+    background-position: 0 -10rem;
 
 }
 
+
+.account-article-card:hover,:focus{
+    transform: scale(1.06);
+}
 .account-article-card:hover .account-content {
-    background-position: -82rem;
+    background-position: 0rem -22rem;
 }
 
 .account-article-card:focus .account-content {
-    background-position: -82rem;
+    background-position: 0rem -22rem;
 }
+
+
 
 .account-back {
     height: 335px;

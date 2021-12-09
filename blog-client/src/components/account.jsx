@@ -39,8 +39,8 @@ export default function Account() {
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
-                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Edit Profile</button>
-                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Creative Lab</button>
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap opacity-button" type="button">Edit Profile</button>
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap opacity-button" type="button">Creative Lab</button>
                             </div>
                         </div>
                     </div>

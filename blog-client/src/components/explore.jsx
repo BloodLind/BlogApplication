@@ -57,7 +57,7 @@ export default function Explore() {
         }, { passive: true });
         return (<>
         <div className="d-flex flex-row col-10 mt-5 pt-5 align-self-center align-items-baseline justify-content-center gap-5">
-                    <h4 className="fs-1 agency text-nowrap">Today Creators</h4>
+                    <h4 className="fs-1 agency text-nowrap">Memories</h4>
                     <div className=" line-dark w-75"></div>
                 </div>
             <div className="d-flex flex-column justify-items-center align-items-center mt-3 pt-5 mb-5 pb-5">
