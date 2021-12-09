@@ -29,10 +29,15 @@ namespace BlogApi.Core.Repositories
             {
                 var entry = table.Attach(target);
                 foreach (var item in entity.GetType().GetProperties())
-                    entry.Entity
+                {
+
+                    var property = entry.Entity
                         .GetType()
-                        .GetProperty(item.Name)
-                        .SetValue(entry.Entity, item.GetValue(entity, null), null);
+                        .GetProperty(item.Name);
+                    if (!property.GetGetMethod().IsVirtual)
+                        property.SetValue(entry.Entity, item.GetValue(entity, null), null);
+                }
+
 
                 entry.State = EntityState.Modified;
             }
