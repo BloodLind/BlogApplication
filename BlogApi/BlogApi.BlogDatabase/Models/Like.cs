@@ -17,5 +17,7 @@ namespace BlogApi.BlogDatabase.Models
         [Required]
         public Guid ArticleId { get; set; }
         public virtual Article Article { get; set; }
+
+        public bool IsLiked { get; set; } = true;
     }
 }
