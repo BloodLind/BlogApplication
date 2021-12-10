@@ -18,6 +18,7 @@ import Article from './components/article'
 import Explore from './components/explore';
 import Login from './components/login'
 import Account from './components/account';
+import AccountSelf from './components/account-self';
 import Register from './components/register';
 import Create from './components/create';
 import Check from './components/check';
@@ -71,6 +72,13 @@ ReactDOM.render(
             <Account></Account>
             <Footer></Footer>
         </Route>
+
+        <Route path="/account-self">
+          <Navbar></Navbar>
+          <AccountSelf></AccountSelf>
+          <Footer></Footer>
+        </Route>
+
         </Switch>
 
     </Router>

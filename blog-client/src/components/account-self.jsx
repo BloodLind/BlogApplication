@@ -1,17 +1,63 @@
 import '../styles/default-namespace.jsx'
 import '../styles/site.css'
 import useSession from 'react-session-hook'
+import { useState, useEffect } from "react"
 import AccountArticleCard from './cards/AccountArticleCard'
+import { useHistory, Link } from 'react-router-dom'
+import { CheckPath } from '../services/imageChecker'
+import { GetUser, GetSelfBlogs } from '../api/blogController'
 
-export default function Account() {
-    const session = useSession();
-    if (session.token == undefined) {
+export default function AccountSelf() {
+    const session = useSession()
+    const [data, setData] = useState({});
+    const [author, setAuthor] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isLoaded, setIsLoaded] = useState(false);
+    console.log(session.token)
+    useEffect(() => {
+        setIsLoaded(false);
+        GetSelfBlogs(currentPage, session.token).then(res => {
+            console.log(res)
+            if (!res) {
+                return;
+            }
+            let newData = data;
+            newData.currentPage = res.currentPage;
+            if (data != undefined && data.result != undefined)
+                newData.result = data.result.concat(res.result);
+            else
+                newData = res;
+            setData(newData);
 
-    } else {
+            setIsLoaded(true)
+        })
+    }, [currentPage])
+
+    if (isLoaded || currentPage > 1) {
+        console.log(data.count)
+        let articleCards = undefined;
+        if (data.count > 0) {
+            articleCards = data.result.map(x => <AccountArticleCard key={x.id} article={x} photo={CheckPath(x.previewPhotoPath)}></AccountArticleCard>)
+            window.addEventListener('scroll', () => {
+
+                const {
+                    scrollTop,
+                    scrollHeight,
+                    clientHeight
+                } = document.documentElement;
+                if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
+                    console.log('end of scroll');
+                    if (isLoaded == true) {
+                        setCurrentPage(data.currentPage + 1);
+                    }
+                }
+            }, { passive: true });
+        }
+
+
+
         return (
-            // <div className="d-flex flex-wrap text-wrap overflow-hidden">
-            //     Your token is {session.token}
-            // </div>
+
             <div className="d-flex flex-column">
                 <div className="account-back">
                     <img className="account-img-back" src="https://wallpapercave.com/wp/wp2555730.jpg"></img>
@@ -39,6 +85,7 @@ export default function Account() {
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Edit Profile</button>
                                 <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Subscribe</button>
                             </div>
                         </div>
@@ -50,14 +97,25 @@ export default function Account() {
                     </div>
 
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
-                        <AccountArticleCard></AccountArticleCard>
-                        <AccountAarticleCard></AccountAarticleCard>
-                        <AccountArticleCard></AccountArticleCard>
-                        <AccountArticleCard></AccountArticleCard>
+
+                        {!articleCards ? (<div className="agency, ">
+                            <p className="text-x-large">
+                                Nothing is here? Try to create something!
+                            </p>
+                            <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Create</button>
+                        </div>) : articleCards}
+
                     </div>
                 </div>
             </div>
         )
+
+
+    } else {
+        return (<>
+        </>)
     }
 
+
 }
+

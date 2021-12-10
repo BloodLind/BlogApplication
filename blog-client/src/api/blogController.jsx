@@ -1,4 +1,4 @@
-import { GetUsers, GetArticles, GetPhotos, GetArticle } from './apiKeys'
+import { GetUsers, GetArticles, GetPhotos, GetArticle, SelfBlogs } from './apiKeys'
 
 
 export async function BlogsGet(page = 1) {
@@ -6,6 +6,15 @@ export async function BlogsGet(page = 1) {
     return res.then(x => { return x.json() }).then(x => x);
 }
 
+export async function GetSelfBlogs(page = 1, token) {
+    var res = fetch(SelfBlogs + '/page-' + page,
+        {
+            headers: {
+                'Authorization': 'bearer ' + token
+            }
+        });
+    return res.then(x => { return x.json() }).then(x => x);
+}
 
 export async function PhotosGet(ids) {
     var photos = [];
