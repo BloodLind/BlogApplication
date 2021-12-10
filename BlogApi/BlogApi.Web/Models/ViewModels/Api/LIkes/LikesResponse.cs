@@ -9,7 +9,6 @@ namespace BlogApi.Web.Models.ViewModels.Api.LIkes
     {
         public string ArticleId { get; set; }
         public string UserId { get; set; }
-
         public bool IsLiked { get; set; }
 
     }

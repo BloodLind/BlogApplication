@@ -15,6 +15,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using BlogApi.Web.Services;
 
 namespace BlogApi.Web.Controllers.Api
 {
@@ -116,14 +117,7 @@ namespace BlogApi.Web.Controllers.Api
                 {
                     var user = await userRepository.GetUserAsync(request.Login);
                     user ??= await userRepository.GetUserByLoginAsync(request.Login);
-                    var response = new AccountResponse
-                    {
-                        Login = user.UserName,
-                        Email = user.Email,
-                        Role = user.UserRoles.FirstOrDefault(x => x.UserId == user.Id)?.Role.Name,
-                        Token = jwtGenerator.CreateToken(identity)
-                    };
-                    return Json(response);
+                    return Json(ResponseCreator.AccountResponse(user, jwtGenerator.CreateToken(identity)));
                 }
             }
         }
@@ -140,30 +134,26 @@ namespace BlogApi.Web.Controllers.Api
             if (CheckObjectForNull.CheckForNull(request))
                 return BadRequest();
 
+            
             var result = await userRepository.AddUserAsync(
                 new()
                 {
                     Email = request.Email,
                     UserName = request.Login,
                 }, request.Password);
+
             if (result.Succeeded)
             {
                 var user = await userRepository.GetUserByLoginAsync(request.Login);
                 await userRepository.AddToRoleAsync(user, "User");
                 var identity = await GetIdentity(request.Login, request.Password);
 
-                return Json(new AccountResponse
-                {
-                    Email = request.Email,
-                    Login = request.Login,
-                    Token = jwtGenerator.CreateToken(identity)
-                });
+                return Json(ResponseCreator.AccountResponse(user, jwtGenerator.CreateToken(identity)));
 
             }
             else
-            {
                 return BadRequest(result.Errors);
-            }
+            
         }
 
         [HttpPost("subscribe")]
@@ -176,18 +166,16 @@ namespace BlogApi.Web.Controllers.Api
                 var currentUserId = User.Identities.ElementAt(0).Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 if (currentUserId == authorId)
                     throw new Exception("Cannot subscribe user to himself");
-                subscriptionRepository.CreateOrUpdate(new Identity.Models.Subscribe
+
+                subscriptionRepository.CreateOrUpdate(new()
                 {
                     Id = Guid.NewGuid(),
                     AuthorId = authorId,
                     SubscriberId = currentUserId
                 }) ;
                 subscriptionRepository.SaveChanges();
-                return Json(new SubscriptionResponse
-                {
-                    AuthorId = authorId,
-                    SubscriberId = currentUserId
-                });
+
+                return Json(ResponseCreator.SubscriptionResponse(authorId, currentUserId));
             }
             catch (Exception ex)
             {
@@ -205,11 +193,7 @@ namespace BlogApi.Web.Controllers.Api
                 var subscription = subscriptionRepository.GetAll().Where(x => (x.AuthorId == authorId && x.SubscriberId == currentUserId)).FirstOrDefault();
                 subscriptionRepository.Delete(subscription);
 
-                return Json(new SubscriptionResponse
-                {
-                    AuthorId = authorId,
-                    SubscriberId = currentUserId
-                });
+                return Json(ResponseCreator.SubscriptionResponse(authorId, currentUserId));
             }
             catch
             {

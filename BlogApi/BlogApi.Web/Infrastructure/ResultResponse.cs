@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlogApi.Web.Infrastructure
 {
-    public abstract class ResultResponse<T> : IResultResponse<T>
+    public class ResultResponse<T> : IResultResponse<T>
     {
         public int Count { get; set; }
         public int Total { get; set; }

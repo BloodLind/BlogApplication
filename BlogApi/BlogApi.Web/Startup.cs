@@ -6,6 +6,7 @@ using BlogApi.Identity.Contexts;
 using BlogApi.Identity.Models;
 using BlogApi.Identity.Repositories;
 using BlogApi.Web.AppConfiguration;
+using BlogApi.Web.Services;
 using BlogApi.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

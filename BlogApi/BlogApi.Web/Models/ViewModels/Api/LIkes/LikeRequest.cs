@@ -8,5 +8,6 @@ namespace BlogApi.Web.Models.ViewModels.Api.LIkes
     public class LikeRequest
     {
         public string ArticleId { get; set; }
+        public bool State { get; set; }
     }
 }

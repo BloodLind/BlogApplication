@@ -9,6 +9,7 @@ using BlogApi.Web.Models.ViewModels.Api.Account;
 using BlogApi.Web.Models.ViewModels.Api.Blog;
 using BlogApi.Web.Models.ViewModels.Api.Comments;
 using BlogApi.Web.Models.ViewModels.Api.LIkes;
+using BlogApi.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,6 @@ namespace BlogApi.Web.Controllers.Api
 
     public class UserController : Controller
     {
-        private readonly int countOnPage = 9;
         private readonly UserRepository userRepository;
         private readonly SubscriptionRepository subscriptionRepository;
         private readonly IRepository<Comment> commentsRepository;
@@ -42,177 +42,106 @@ namespace BlogApi.Web.Controllers.Api
             this.userPhotoRepository = userPhotoRepository;
             this.commentsRepository = commentsRepository;
             this.likesRepository = likesRepository;
+
+            DataFilter.HttpContext = this.HttpContext;
         }
 
-        private bool PageCheck<T>(int page, IRepository<T> repository) where T : class, IGuidKey, new()
-        {
-            if (page <= 0)
-                return false;
-            if (page > Math.Ceiling(repository.GetAll().Count() / (double)countOnPage))
-                return false;
 
-            return true;
-        }
 
-        private bool PageCheck(int page, UserRepository repository)
-        {
-            if (page <= 0)
-                return false;
-            if (page > Math.Ceiling(repository.Users.Count() / (double)countOnPage))
-                return false;
-
-            return true;
-        }
 
         [HttpGet("self")]
-        public async Task<ActionResult> GetSelfInfo()
-        {
-            var user = await userRepository.GetUserAsync(this.User);
-            return Json(new AccountResponse
-            {
-                Login = user.UserName,
-                Email = user.Email
-            });
-        }
+        public async Task<ActionResult> GetSelfInfo() => Json(ResponseCreator.AccountResponse(await userRepository.GetUserAsync(this.User)));
+        
 
         [HttpGet("publications/page-{page}")]
         public async Task<ActionResult> GetPublications(int page)
         {
-            if (!PageCheck(page, articlesRepository))
-            {
+            if (!PageChecker.PageCheck(page, articlesRepository))
                 return BadRequest();
-            }
-
 
             var user = await userRepository.GetUserAsync(this.User);
-            var articles = (await articlesRepository.GetAll().AsNoTracking().ToListAsync())
-                .Where(x => user.Id == x.AuthorId.ToString())
-                .OrderBy(x => x.PublicationDate);
-            var result = articles.Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
-
-            return Json(new ArticleResponse
-            {
-                Count = result.Count,
-                CurrentPage = page,
-                PageCount = (int)Math.Ceiling(result.Count / (double)countOnPage),
-                Total = articles.Count(),
-                Result = result
-            });
+            return Json(await ResponseCreator.UserArticlesAsync(articlesRepository, (x => x.AuthorId.ToString() == user.Id), page));
         }
 
 
-        [HttpGet("subs-blogs/page-{page}")]
-        public async Task<ActionResult> SubscribtionArticles(int page)
+        [HttpGet("subscription/articles/page-{page}")]
+        public async Task<ActionResult> GetSubscribtionArticles(int page)
         {
-            if (!PageCheck(page, articlesRepository))
-            {
+            if (!PageChecker.PageCheck(page, articlesRepository))
                 return BadRequest();
-            }
+            
 
             var user = await userRepository.GetUserAsync(this.User);
-
             var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName));
-            var articles = (await articlesRepository.GetAll().AsNoTracking().ToListAsync())
-                .Where(x => subscriptions.Any(s => s.AuthorId == x.AuthorId.ToString()))
-                .OrderBy(x => x.PublicationDate);
-            var result = articles.Skip((page - 1) * countOnPage).Take(countOnPage).ToList();
 
-            return Json(new SubscribesResponse
-            {
-                Count = result.Count,
-                CurrentPage = page,
-                PageCount = (int)Math.Ceiling(result.Count / (double)countOnPage),
-                Total = articles.Count(),
-                Result = result
-            });
+            return Json(await ResponseCreator.UserArticlesAsync(articlesRepository,
+                x => subscriptions.Any(s => x.AuthorId.ToString().Contains(s.AuthorId)), page));
         }
 
-
-        private async Task<UserDataResponse> GetUserDataFiltred(Func<User, ICollection<string>, bool> predicate, UserDataRequest request)
-        {
-            var users = (await userRepository.Users.ToListAsync()).Where(x => predicate(x, request.UsersId));
-
-            var usersData = users.Skip((request.Page - 1) * request.Count).Take(request.Count).Select(x =>
-            {
-                var userPhoto = userPhotoRepository.GetAll().FirstOrDefault(photo => photo.UserId == x.Id);
-                return new UserData
-                {
-                    Id = x.Id,
-                    Name = x.UserName,
-                    Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" : null,
-                    ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.HeaderPhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.HeaderPhotoPath}" : null
-
-                };
-            }).ToList();
-
-            return new UserDataResponse
-            {
-                Total = users.Count(),
-                Page = request.Page,
-                Count = usersData.Count,
-                UserDatas = usersData
-            };
-        }
-
-        [HttpGet("subs-users/page-{page}")]
+        [HttpGet("subscription/creators/page-{page}")]
         public async Task<ActionResult> GetSubscriptionUsers(int page)
         {
-            if (!PageCheck(page, userRepository))
+            if (!PageChecker.PageCheck(page, userRepository))
                 return BadRequest();
 
             var user = await userRepository.GetUserAsync(this.User);
             var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName));
-            List<string> ids = new List<string>();
+            
+            List<string> usersId = subscriptions.Select(x => x.AuthorId).ToList();
 
-            foreach (var x in subscriptions)
+            var request = new UserDataRequest()
             {
-                ids.Add(x.AuthorId);
-            }
-
-            UserDataRequest request = new UserDataRequest()
-            {
-                UsersId = ids,
+                UsersId = usersId,
                 Page = page
             };
 
-            return Json(await GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request));
+            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request, userRepository, userPhotoRepository));
         }
 
         [HttpPost("like-dislike")]
         public async Task<ActionResult> LikeOrDislike([FromBody] LikeRequest request)
         {
             if (articlesRepository.Get(Guid.Parse(request.ArticleId)) is null)
-            {
                 return BadRequest();
-            }
+            
+           
             var user = await userRepository.GetUserAsync(this.User);
-            Like like = likesRepository.GetAll().Where(x => x.ArticleId.ToString() == request.ArticleId && x.UserId.ToString() == user.Id).FirstOrDefault();
+            Like like = DataFilter.GetLikes(likesRepository,
+                x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefault();
 
             if (like is null)
             {
                 like = new Like()
                 {
                     UserId = Guid.Parse(user.Id),
-                    ArticleId = Guid.Parse(request.ArticleId)
+                    ArticleId = Guid.Parse(request.ArticleId),
+                    IsLiked = request.State
                 };
                 likesRepository.CreateOrUpdate(like);
-                likesRepository.SaveChanges();
             }
             else
-            {
-                like.IsLiked = !like.IsLiked;
-                likesRepository.SaveChanges();
-            }
+                like.IsLiked = request.State;
+            
+            likesRepository.SaveChanges();
 
-            return Json(new LikesResponse
-            {
-                ArticleId = request.ArticleId,
-                UserId = user.Id,
-                IsLiked = like.IsLiked
-            });
+            return Json(ResponseCreator.LikesResponse(like.ArticleId.ToString(), user.Id, like.IsLiked));
 
+        }
+
+        [HttpDelete("like-dislike")]
+        public async Task<ActionResult> RemoveLike([FromBody] LikeRequest request)
+        {
+            if (articlesRepository.Get(Guid.Parse(request.ArticleId)) is null)
+                return BadRequest();
+
+            var user = await userRepository.GetUserAsync(this.User);
+            Like like = await DataFilter.GetLikes(likesRepository,
+                x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
+
+            if(like is not null)
+                likesRepository.Delete(like);
+
+            return StatusCode(StatusCodes.Status200OK);
         }
 
         [HttpPost("comment")]
@@ -225,7 +154,7 @@ namespace BlogApi.Web.Controllers.Api
 
             var user = await userRepository.GetUserAsync(this.User);
 
-            Comment comment = new Comment()
+            Comment comment = new()
             {
                 Id = Guid.NewGuid(),
                 ArticleId = Guid.Parse(request.ArticleId),
@@ -237,30 +166,22 @@ namespace BlogApi.Web.Controllers.Api
             commentsRepository.SaveChanges();
 
 
-            return Json(new CommentResponse
-            {
-                Comment = request.Comment,
-                UserId = user.Id,
-                CommentId = comment.Id.ToString()
-            });
+            return Json(ResponseCreator.CommentResponse(comment.InnerData, user.Id, comment.Id.ToString()));
         }
 
-        [HttpDelete("comment-del")]
+        [HttpDelete("comment")]
         public async Task<ActionResult> DeleteComment([FromBody] string commentId)
         {
             var user = await userRepository.GetUserAsync(this.User);
             var comment = commentsRepository.Get(Guid.Parse(commentId));
 
-            if ((comment.UserId != Guid.Parse(user.Id) && comment.Artice.AuthorId != Guid.Parse(user.Id)) || comment == null)
+            if ((comment.UserId != Guid.Parse(user.Id) && comment.Article.AuthorId != Guid.Parse(user.Id)) || comment == null)
                 return BadRequest();
             
 
             commentsRepository.Delete(comment);
             commentsRepository.SaveChanges();
-            return Json(new CommentResponse
-            {
-                CommentId = commentId
-            });
+            return Json(ResponseCreator.CommentResponse(comment?.InnerData, user.Id, commentId));
 
         }
 
