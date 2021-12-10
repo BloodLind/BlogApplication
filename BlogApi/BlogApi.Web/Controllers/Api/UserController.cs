@@ -42,8 +42,6 @@ namespace BlogApi.Web.Controllers.Api
             this.userPhotoRepository = userPhotoRepository;
             this.commentsRepository = commentsRepository;
             this.likesRepository = likesRepository;
-
-            DataFilter.HttpContext = this.HttpContext;
         }
 
 
@@ -95,7 +93,8 @@ namespace BlogApi.Web.Controllers.Api
                 Page = page
             };
 
-            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request, userRepository, userPhotoRepository));
+            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), 
+                request, userRepository, userPhotoRepository, HttpContext));
         }
 
         [HttpPost("like-dislike")]

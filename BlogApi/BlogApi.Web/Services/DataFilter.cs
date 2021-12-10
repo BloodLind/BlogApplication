@@ -15,10 +15,9 @@ namespace BlogApi.Web.Services
 {
     public static class DataFilter
     {
-        public static HttpContext HttpContext { get; set; }
 
         public static async Task<UserDataResponse> GetUserDataFiltred(Func<User, ICollection<string>, bool> predicate,
-            UserDataRequest request, UserRepository userRepository, IRepository<UserPhoto> userPhotoRepository)
+            UserDataRequest request, UserRepository userRepository, IRepository<UserPhoto> userPhotoRepository, HttpContext httpContext)
         {
             var users = (await userRepository.Users.AsNoTracking().ToListAsync()).Where(x => predicate(x, request.UsersId));
 
@@ -30,9 +29,9 @@ namespace BlogApi.Web.Services
                     Id = x.Id,
                     Name = x.UserName,
                     Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.PhotoPath}" : null,
+                                         $"{httpContext.Request.Scheme}://{httpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" : null,
                     ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.HeaderPhotoPath) ?
-                                         $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/id-{userPhoto?.HeaderPhotoPath}" : null
+                                         $"{httpContext.Request.Scheme}://{httpContext.Request.Host}/api/blog/photos/{userPhoto?.HeaderPhotoPath}" : null
 
                 };
             }).ToList();

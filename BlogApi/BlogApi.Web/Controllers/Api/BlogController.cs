@@ -29,8 +29,6 @@ namespace BlogApi.Web.Controllers.Api
             this.articlesRepository = articlesRepository;
             this.userPhotoRepository = userPhotoRepository;
             this.userRepository = userRepository;
-
-            DataFilter.HttpContext = this.HttpContext;
         }
 
         [HttpGet("articles/page-{page:int}"), HttpGet(""), HttpGet("/articles")]
@@ -97,7 +95,7 @@ namespace BlogApi.Web.Controllers.Api
             if (CheckObjectForNull.CheckForNull(request) && PageChecker.PageCheck(request.Page, userRepository))
                 return BadRequest();
 
-            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request, userRepository, userPhotoRepository));
+            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request, userRepository, userPhotoRepository, HttpContext));
 
         }
 
@@ -129,7 +127,7 @@ namespace BlogApi.Web.Controllers.Api
             if (CheckObjectForNull.CheckForNull(request) && PageChecker.PageCheck(request.Page, userRepository))
                 return BadRequest();
             return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Any(item => item.Contains(x.UserName)),
-                request, userRepository, userPhotoRepository));
+                request, userRepository, userPhotoRepository, HttpContext));
         }
 
     }
