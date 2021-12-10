@@ -115,7 +115,7 @@ function Main() {
                         fontSize: '27em'
                     }}>?</div>
                     <div className="d-flex flex-column gap-5 m-5">
-                        <h3 className="agency text-super-x-larger" >Does not find need article? <br></br> Come on and create your own</h3>
+                        <h3 className="agency text-super-x-larger" >Have not found need article? <br></br> Come on and create your own</h3>
 
                         <Link to="/create" className="btn col-8 opacity-button bg-accent agency fs-2 color-light m-5 mt-0 mb-0 round-button">Create new memory</Link>
                     </div>

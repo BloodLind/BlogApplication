@@ -41,7 +41,7 @@ function Login() {
     error = <h3 className="agency danger fs-4 m-2 link-danger">Login or Password is wrong!</h3>;
   }
       return (
-       <div className="base" style={{backgroundImage: "url(/drawable/loginBack.png)"}}>
+       <div className="base" style={{backgroundImage: "url(/drawable/loginBack.png)", backgroundColor:"#171717"}}>
           <div className="loginContainer col-5 d-flex flex-row align-items-center gap-3 bg-light">
             <div className="loginForm p-2 d-flex flex-column       justify-content-center align-items-center">
               <input className="input w-100 ps-4 pe-4" type="text" placeholder="Login" name="login" value={state.login} onChange={handleChange} />

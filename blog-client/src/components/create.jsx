@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BlogsGet, UsersGet, PhotosGet } from '../api/blogController'
 import { useEffect, useState } from "react";
+import { useHistory } from 'react-router';
+import  useSession  from 'react-session-hook';
 import '../styles/create.css'
 import '../styles/forms.css'
 import '../styles/editorJSSets.css'
@@ -19,7 +21,13 @@ function Create() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
     const [authors, setAuthors] = useState([]);
-    const editor = new EditorJS(EditorConfig);
+    const session = useSession();
+    const history = useHistory();
+
+    if(session?.token == null){
+        history.replace("login");
+      }
+
     const addChip = function(e)
     {
         if(e.target.value.length > 0)

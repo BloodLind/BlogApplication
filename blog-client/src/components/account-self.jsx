@@ -92,18 +92,26 @@ export default function AccountSelf() {
                     </div>
 
                     <div className="d-flex container align-items-baseline gap-5">
-                        <h4 className="text-super-xx-large agency text-nowrap">Your Memories</h4>
+                        <h4 className="fs-1 agency text-nowrap">Your Memories</h4>
                         <div className=" line-dark flex-grow-1"></div>
                     </div>
 
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
 
-                        {!articleCards ? (<div className="agency, ">
-                            <p className="text-x-large">
-                                Nothing is here? Try to create something!
-                            </p>
-                            <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Create</button>
-                        </div>) : articleCards}
+                        {!articleCards ? (
+                             <div className="d-flex flex-row m-5 color-dark align-items-center justify-content-around" style={{
+                                height: '450px',
+                            }}>
+                                <div className="ocr m-5" style={{
+                                    fontSize: '27em'
+                                }}>?</div>
+                                <div className="d-flex flex-column gap-5 ">
+                                    <h3 className="agency text-super-x-larger" >Have not found your articles? <br></br> Come on and create new one</h3>
+            
+                                    <Link to="/create" className="btn col-8 opacity-button bg-accent agency fs-2 color-light mt-0 mb-0 round-button">Create new memory</Link>
+                                </div>
+                            </div>
+                        ) : articleCards}
 
                     </div>
                 </div>
