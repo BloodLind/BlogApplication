@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace BlogApi.Web.Controllers.Api
 {
-    [Route("/api/user-info/"), ApiController, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("/api/user/info/"), ApiController, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     public class UserController : Controller
     {
@@ -71,8 +71,7 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (!PageChecker.PageCheck(page, articlesRepository))
                 return BadRequest();
-
-
+            
             var user = await userRepository.GetUserAsync(this.User);
             var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName));
 
@@ -80,25 +79,13 @@ namespace BlogApi.Web.Controllers.Api
                 x => subscriptions.Any(s => x.AuthorId.ToString().Contains(s.AuthorId)), page));
         }
 
-        [HttpGet("subscription/creators/page-{page}")]
-        public async Task<ActionResult> GetSubscriptionUsers(int page)
+        [HttpGet("subscription/creators")]
+        public async Task<ActionResult> GetSubscriptionUsers()
         {
-            if (!PageChecker.PageCheck(page, userRepository))
-                return BadRequest();
-
             var user = await userRepository.GetUserAsync(this.User);
-            var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName));
-
-            List<string> usersId = subscriptions.Select(x => x.AuthorId).ToList();
-
-            var request = new UserDataRequest()
-            {
-                UsersId = usersId,
-                Page = page
-            };
-
-            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id),
-                request, userRepository, userPhotoRepository, HttpContext));
+            var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName)).Select(x => x.AuthorId).ToList();  
+    
+            return Json(await DataFilter.GetUsersData((x) => subscriptions.Contains(x.Id), userRepository, userPhotoRepository, HttpContext));
         }
 
         [HttpPost("like-dislike")]
@@ -138,8 +125,8 @@ namespace BlogApi.Web.Controllers.Api
                 return BadRequest();
 
             var user = await userRepository.GetUserAsync(this.User);
-            Like like = await DataFilter.GetLikes(likesRepository,
-                x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
+            Like like = DataFilter.GetLikes(likesRepository,
+                x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefault();
 
             if (like is not null)
                 likesRepository.Delete(like);

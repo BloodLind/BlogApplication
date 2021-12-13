@@ -7,6 +7,7 @@ using BlogApi.Web.Models.ViewModels.Api.Blog;
 using BlogApi.Web.Models.ViewModels.Api.Comments;
 using BlogApi.Web.Models.ViewModels.Api.Likes;
 using BlogApi.Web.Models.ViewModels.Api.LIkes;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -91,5 +92,34 @@ namespace BlogApi.Web.Services
             LikesCount = likes,
             DislikesCount = dislikes
         };
+
+
+        public static UserDataResponse UserDataResponse(IEnumerable<User>users,
+            IRepository<UserPhoto> userPhotoRepository,
+            HttpContext httpContext, int total, int page = 1)
+        {
+            var usersData = users.Select(x =>
+            {
+                var userPhoto = userPhotoRepository.GetAll().AsNoTracking().FirstOrDefault(photo => photo.UserId == x.Id);
+                return new UserData
+                {
+                    Id = x.Id,
+                    Name = x.UserName,
+                    Photo = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
+                                         $"{httpContext.Request.Scheme}://{httpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" : null,
+                    ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.HeaderPhotoPath) ?
+                                         $"{httpContext.Request.Scheme}://{httpContext.Request.Host}/api/blog/photos/{userPhoto?.HeaderPhotoPath}" : null
+
+                };
+            }).ToList();
+
+            return new()
+            {
+                Total = total,
+                Page = page,
+                Count = usersData.Count,
+                UserDatas = usersData
+            };
+        }
     }
 }
