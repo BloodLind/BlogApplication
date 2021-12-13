@@ -1,5 +1,4 @@
-.custom-dark-link:hover,
-:focus {
+.custom-dark-link:hover :focus {
     outline: none;
     border-bottom: 2px solid var(--dark-color);
 }
@@ -43,11 +42,6 @@
     text-decoration: none;
     border-bottom: none;
     transition: 50ms ease-in;
-}
-
-.delete-select-border * :focus,:hover {
-    outline: none !important;
-    border: none;
 }
  
 

@@ -16,7 +16,7 @@ function Navbar() {
   const session = useSession();
   return (<>
     <nav className="navbar bg-dark-gradient navigation-logo navigation opacity-100 nav-top d-flex flex-column justify-content-center">
-      <Link to={session.token == undefined ? "login" : 'account-self'} style={{ position: "absolute", top: "40px", right: "160px" }}>
+      <Link to={session.token == undefined ? "/login" : '/account-self'} style={{ position: "absolute", top: "40px", right: "160px" }}>
         <img style={{
           position: 'relative',
           width: '45px',
@@ -57,7 +57,7 @@ function Navbar() {
         <Link className="nav-link bg-torqoise-primary fs-5 color-light" to="/check">Check</Link>
         <Link className="nav-link bg-torqoise-primary fs-5 color-light" to="/create">Create</Link>
       </div>
-      <Link to={session.token == undefined ? "login" : 'account-self'} style={{ position: "absolute", top: "10px", right: "160px" }}>
+      <Link to={session.token == undefined ? "/login" : '/account-self'} style={{ position: "absolute", top: "10px", right: "160px" }}>
         <img src={window.location.protocol + "//" + window.location.host + "/drawable/login.png"} style={{
           width: '40px',
           objectFit: 'cover'

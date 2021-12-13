@@ -2,11 +2,12 @@ import '../styles/default-namespace.jsx'
 import '../styles/site.css'
 import useSession from 'react-session-hook'
 import AccountArticleCard from './cards/AccountArticleCard'
+import { useParams } from 'react-router';
 
-export default function Account() {
+export default function Account(props) {
     const session = useSession();
+    let {id} = useParams();
     if (session.token == undefined) {
-
     } else {
         return (
             // <div className="d-flex flex-wrap text-wrap overflow-hidden">
@@ -51,10 +52,7 @@ export default function Account() {
                     </div>
 
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
-                        <AccountArticleCard></AccountArticleCard>
-                        <AccountArticleCard></AccountArticleCard>
-                        <AccountArticleCard></AccountArticleCard>
-                        <AccountArticleCard></AccountArticleCard>
+                        
                     </div>
                 </div>
             </div>

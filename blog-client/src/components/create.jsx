@@ -55,8 +55,7 @@ function Create() {
                     <h4 className="text-x-large agency text-nowrap" >Your Title</h4>
                     <div className=" line-dark w-100 "></div>
                 </div>
-  
-                    <input className="w-100 agency fs-4 form-control border-0 shadow" placeholder="Hello, my name huylo" ></input>
+                <input className="agency fs-4 form-control border-0 shadow" placeholder="Hello, my name huylo" ></input>
 
                 <div className="d-flex flex-row m-2   align-items-baseline gap-5">
                     <h4 className="fs-2 agency text-nowrap">Create Own Memory</h4>
@@ -64,9 +63,9 @@ function Create() {
                 </div>
                 
                
-                {/* <div className="editorJSContainer delete-select-border"> </div> */}
+                
                
-                <div id="editorjs" className="delete-select-border agency-headers yu-gothic-medium fs-5" ></div>
+                <div id="editorjs" className="agency-headers yu-gothic-medium fs-5" ></div>
                 <div className="d-flex flex-row m-2  align-items-baseline gap-5 mt-5 mb-5">
                     <h4 className="text-x-large agency text-nowrap" >Imagine The Look</h4>
                     <div className=" line-dark w-100 "></div>

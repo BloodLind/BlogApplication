@@ -51,7 +51,7 @@ export default function Check()
   useEffect(() => {
       setIsLoaded(false);
       GetSubscribtionArticles(currentPage, session?.token).then(x => {
-        if(x == null)
+        if(x.count == 0)
           {
             setIsNoSubscriptions(true);
             return;
@@ -132,7 +132,7 @@ if(isNoSubscriptions){
     Find your favorite Creators and check their memories
     </div>
   </div>
-  <Link to="explore" className="align-self-center m-5 btn bg-accent round-button agency fs-1 mt-0 ps-5 pe-5 opacity-button">Explore memories</Link>
+  <Link to="explore" className="align-self-center color-light m-5 btn bg-accent round-button agency fs-1 mt-0 ps-5 pe-5 opacity-button">Explore memories</Link>
   </>)
 }
 return (<></>)
