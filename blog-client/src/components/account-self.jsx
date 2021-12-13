@@ -47,9 +47,8 @@ export default function AccountSelf() {
                 } = document.documentElement;
                 if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
                     console.log('end of scroll');
-                    if (isLoaded == true) {
+                    if (isLoaded == true) 
                         setCurrentPage(data.currentPage + 1);
-                    }
                 }
             }, { passive: true });
         }
@@ -98,15 +97,16 @@ export default function AccountSelf() {
 
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
 
-                        {!articleCards ? (
-                             <div className="d-flex flex-row m-5 color-dark align-items-center justify-content-around" style={{
+                        {!articleCards ? ( 
+                            <div className="d-flex flex-row m-5 color-dark align-items-center justify-content-around" style={{
                                 height: '450px',
                             }}>
                                 <div className="ocr m-5" style={{
                                     fontSize: '27em'
                                 }}>?</div>
+
                                 <div className="d-flex flex-column gap-5 ">
-                                    <h3 className="agency text-super-x-larger" >Have not found your articles? <br></br> Come on and create new one</h3>
+                                    <h3 className="agency text-super-x-larger" >Have not found your articles?<br></br>Come on and create new one</h3>
             
                                     <Link to="/create" className="btn col-8 opacity-button bg-accent agency fs-2 color-light mt-0 mb-0 round-button">Create new memory</Link>
                                 </div>

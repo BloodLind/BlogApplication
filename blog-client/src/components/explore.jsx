@@ -38,11 +38,12 @@ export default function Explore() {
            
         });
     }, [currentPage]);
+
     if (isLoaded || currentPage > 1) {
         let page = data.result.map(x =>
             <ExploreCard key={x.id} article={x} photo={ CheckPath(x.previewPhotoPath) } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
-        window.addEventListener('scroll', () => {
-
+        
+            window.addEventListener('scroll', () => {
             const {
                 scrollTop,
                 scrollHeight,

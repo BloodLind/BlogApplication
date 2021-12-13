@@ -1,8 +1,23 @@
-import { GetUsers, GetArticles, GetPhotos, GetArticle, SelfBlogs } from './apiKeys'
+import { GetUsers, GetArticles, GetPhotos, GetArticle, SelfBlogs, SubscriptionAuthors, SubscriptionArticles } from './apiKeys'
 
 
 export async function BlogsGet(page = 1) {
     var res = fetch(GetArticles + '/page-' + page);
+    return res.then(x => { return x.json() }).then(x => x);
+}
+
+export async function GetSubscribtionCreators(token){
+    var res = fetch(SubscriptionAuthors, {headers:{
+        "Authorization" : 'bearer ' + token
+    }})
+    return res.then(x => x.json()).then(x => x);
+}
+
+export async function GetSubscribtionArticles(page=1,token){
+    var res = fetch(SubscriptionArticles + '/page-' + page,
+        {
+            headers: { 'Authorization': 'bearer ' + token }
+        });
     return res.then(x => { return x.json() }).then(x => x);
 }
 

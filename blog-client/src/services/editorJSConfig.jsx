@@ -10,7 +10,8 @@ const EditorConfig = {
         /**
          * Wrapper of Editor
          */
-        holder: 'editorjs',
+        holderId: 'editorjs',
+        minHeight: 150,
   
         /**
          * Common Inline Toolbar settings

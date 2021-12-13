@@ -8,22 +8,14 @@ import '../styles/forms.css'
 import '../styles/editorJSSets.css'
  import '../styles/default-namespace.jsx'
 import { Link } from 'react-router-dom'
-import LeftCard from './cards/LeftCard';
-import RightCard from './cards/RightCard';
-import LeftSecondCard from './cards/LeftSecondCard';
-import RightSecondCard from './cards/RightSecondCard';
-import CreatorCard from './cards/CreatorCard';
 import {GetPhotos} from '../api/apiKeys'
 import EditorConfig from "../services/editorJSConfig"
 import '../styles/cards.css'
 import EditorJS from '@editorjs/editorjs';
 function Create() {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [data, setData] = useState({});
-    const [authors, setAuthors] = useState([]);
     const session = useSession();
     const history = useHistory();
-
+    const editor = new EditorJS(EditorConfig); 
     if(session?.token == null){
         history.replace("login");
       }
@@ -94,7 +86,7 @@ function Create() {
                 </div>
                 <div htmlFor="chips-input" className="col-10 round-card p-3 m-3 pb-5 agency shadow-lg fs-4 chips align-self-center mb-5">
                  
-                   <input type="text" id="chips-input" className="dropdown-toggle dropdown-toggle-split" onBlur={onChipInputFocusLast} onKeyUp={onChipInputPressedKey}  placeholder="Add new..."/>
+                   <input type="text" id="chips-input" className="dropdown-toggle dropdown-toggle-split fs-4" onBlur={onChipInputFocusLast} onKeyUp={onChipInputPressedKey}  placeholder="Input and add..."/>
                    <ul class="dropdown-menu">
                                          <li><a class="dropdown-item" href="#">Action</a></li>
                                          <li><a class="dropdown-item" href="#">Another action</a></li>

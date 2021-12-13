@@ -15,7 +15,7 @@ function LeftCard(props) {
             width: 450,
             height: 350,
         }}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="child round-button" viewBox="0 50 663.387 371.949">
+            <svg xmlns="http://www.w3.org/2000/svg" className="child" viewBox="0 50 663.387 371.949">
                 <path d="M7.934,0H654.407c4.474,0,8.1,4.477,8.1,10h0c0,5.523-.371,162.88-.849,262.657L23.391,370.433c-4.474,0-24.27,4.18-24.27-1.343L-.167,10C-.167,4.477,3.46,0,7.934,0Z" transform="translate(0.879)" fill="#191919" opacity="0.9"
                     style={{
                         mixBlendMode: "multiply",

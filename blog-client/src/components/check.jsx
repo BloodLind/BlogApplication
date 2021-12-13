@@ -1,7 +1,7 @@
 import '../styles/default-namespace';
 import {CheckPath} from '../services/imageChecker';
 import { useState, useEffect } from "react";
-import { BlogsGet, UsersGet } from "../api/blogController";
+import { GetSubscribtionArticles, GetSubscribtionCreators } from "../api/blogController";
 import useSession from 'react-session-hook';
 import { useHistory, Link } from 'react-router-dom';
 import Carousel from 'react-grid-carousel'
@@ -34,7 +34,7 @@ export default function Check()
 {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isNoSubscriptions, setIsNoSubscriptions] = useState(false);
-  const [data, setData] = useState({});
+  const [data, setData] = React.useState({});
   const [authors, setAuthors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const session = useSession();
@@ -43,9 +43,14 @@ export default function Check()
   if(session?.token == null){
     history.replace("login");
   }
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, [authors])
+
   useEffect(() => {
       setIsLoaded(false);
-      BlogsGet(currentPage).then(x => {
+      GetSubscribtionArticles(currentPage, session?.token).then(x => {
         if(x == null)
           {
             setIsNoSubscriptions(true);
@@ -60,35 +65,30 @@ export default function Check()
               newData = x;
           setData(newData);
 
-              UsersGet(x.result.map(a => a.authorId)).then(z => {
-                  let newAuthors = authors;
-                  if (authors != undefined && authors.userDatas != undefined)
-                      newAuthors.userDatas = authors.userDatas.concat(z.userDatas);
-                  else
-                      newAuthors = z;
-                  setAuthors(newAuthors);
-                  setIsLoaded(true)
-              })
-         
-      });
+           if(authors.userDatas == undefined){
+            GetSubscribtionCreators(session.token).then(z => {
+              setAuthors(z);
+            });
+          }
+        });
   }, [currentPage]);
     
   if(isLoaded || currentPage > 1){
     console.log('articles data', {data, authors});
    let authorsCards = authors.userDatas.map(x => <Carousel.Item>
      <div className="d-flex align-items-center justify-content-center">
-     <CreatorCard author={x}></CreatorCard>
+        <CreatorCard author={x}></CreatorCard>
      </div>
      </Carousel.Item>);
 
-     let page = data.result.map(x => <ExploreCard key={x.id} article={x} photo={ CheckPath(x.previewPhotoPath) } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
+    let page = data.result.map(x => <ExploreCard key={x.id} article={x} photo={ CheckPath(x.previewPhotoPath) } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
     window.addEventListener('scroll', () => {
-
       const {
           scrollTop,
           scrollHeight,
           clientHeight
       } = document.documentElement;
+      
       if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
           console.log('end of scroll');
           if (isLoaded == true) {
@@ -118,7 +118,7 @@ export default function Check()
         </div>
 
         <div className="d-flex flex-column m-5 align-items-center">
-{page}
+          {page}
         </div>
     </>);
 }
@@ -137,4 +137,5 @@ if(isNoSubscriptions){
 }
 return (<></>)
 }
+
 
