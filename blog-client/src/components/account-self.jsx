@@ -6,14 +6,16 @@ import AccountArticleCard from './cards/AccountArticleCard'
 import { useHistory, Link } from 'react-router-dom'
 import { CheckPath } from '../services/imageChecker'
 import { GetUser, GetSelfBlogs } from '../api/blogController'
-import { GetSelf } from '../api/userController.jsx'
+import { GetSelf, GetSubsctiptionAuthors, GetSubscribersCount } from '../api/userController.jsx'
 
 export default function AccountSelf() {
     const session = useSession()
-    const [data, setData] = useState({});
-    const [user, setUser] = useState(undefined);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [subToCount, setSubToCount] = useState(0)
+    const [subsribers, setSubscribers] = useState(0)
+    const [data, setData] = useState({})
+    const [user, setUser] = useState(undefined)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [isLoaded, setIsLoaded] = useState(false)
     useEffect(() => {
         setIsLoaded(false);
         GetSelf(session.token).then(res => {
@@ -21,10 +23,18 @@ export default function AccountSelf() {
             if (!tmp) {
                 return
             }
+            GetSubscribersCount(tmp.id).then(res=>{
+                setSubscribers(res)
+            })
+            GetSubsctiptionAuthors(session.token).then(res => {
+                setSubToCount(res.count)
+            })
             GetUser(tmp.id).then(x => {
                 console.log(x)
                 setUser(x[0])
             })
+            
+
         })
 
 
@@ -48,7 +58,7 @@ export default function AccountSelf() {
     if (isLoaded || currentPage > 1) {
         let articleCards = undefined;
         if (data.count > 0) {
-            articleCards = data.result.map(x => <AccountArticleCard owner={true} key={x.id} views={x.viewsCount} article={x} photo={CheckPath(x.previewPhotoPath)}></AccountArticleCard>)
+            articleCards = data.result.map(x => <AccountArticleCard owner={true} key={x.id} id={x.id} views={x.viewsCount} article={x} photo={CheckPath(x.previewPhotoPath)}></AccountArticleCard>)
             window.addEventListener('scroll', () => {
 
                 const {
@@ -71,15 +81,15 @@ export default function AccountSelf() {
             <div className="d-flex flex-column">
                 <div className="account-back">
                     <img className="account-img-back"
-                        src={CheckPath(user?.profilePhoto) ? CheckPath(user?.profilePhoto) : `${window.location.protocol}//${window.location.host}/drawable/loadimageprev.png`}
+                        src={user?.profilePhoto ? user?.profilePhoto : `${window.location.protocol}//${window.location.host}/drawable/loadimageprev.png`}
                         style={{ objectFit: 'cover' }}></img>
                 </div>
                 <div className="d-flex flex-column">
                     <div className="container agency mb-5">
                         <div className="d-flex gap-5 align-items-center">
-                            <div className="account-ava">
+                            <div className="account-ava" style={{backgroundColor : 'white'}}>
                                 <img className="w-100 h-100 account-ava-img shadow"
-                                    src={CheckPath(user?.photo) ? CheckPath(user?.photo) : `${window.location.protocol}//${window.location.host}/drawable/logoblack.png`}
+                                    src={user?.photo ? user?.photo : `${window.location.protocol}//${window.location.host}/drawable/logoblack.png`}
                                     style={{ objectFit: 'cover' }}></img>
                             </div>
                             <div className="d-flex flex-column gap-3">
@@ -88,18 +98,19 @@ export default function AccountSelf() {
                                 </div>
                                 <div className="d-flex gap-5 fs-4">
                                     <div>
-                                        {articleCards.length} publications
+                                        {!articleCards?.length ? 0 : articleCards.length} publications
                                     </div>
                                     <div>
-                                        4k subscribers
+                                        {subsribers} subscribers
                                     </div>
                                     <div>
-                                        5 subscriptions
+                                        {subToCount} subscriptions
                                     </div>
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
                                 <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Edit Profile</button>
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Creative Lab</button>
                             </div>
                         </div>
                     </div>
@@ -111,7 +122,7 @@ export default function AccountSelf() {
 
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
 
-                        {!articleCards ? (
+                        {!articleCards ? ( 
                             <div className="d-flex flex-row m-5 color-dark align-items-center justify-content-around" style={{
                                 height: '450px',
                             }}>
@@ -120,7 +131,7 @@ export default function AccountSelf() {
                                 }}>?</div>
 
                                 <div className="d-flex flex-column gap-5 ">
-                                    <h3 className="agency text-super-x-larger" >Have not found your articles? <br></br> Come on and create new one</h3>
+                                    <h3 className="agency text-super-x-larger" >Have not found your articles?<br></br>Come on and create new one</h3>
 
                                     <Link to="/create" className="btn col-8 opacity-button bg-accent agency fs-2 color-light mt-0 mb-0 round-button">Create new memory</Link>
                                 </div>
