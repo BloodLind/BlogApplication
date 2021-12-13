@@ -35,7 +35,7 @@ function Main() {
         });
     }, [])
     if (isLoaded == true) {
-        let cards = authors.userDatas.slice(0, 5).map(x => <CreatorCard author={x}></CreatorCard>)
+        let cards = authors.userDatas.slice(0, 5).map(x => <CreatorCard key={x.id} author={x}></CreatorCard>)
         return (
             <>
                 <div className='color-light d-flex flex-column justify-content-center col-9 align-self-center mt-5'>

@@ -5,11 +5,11 @@
   
   @font-face {
     font-family: "YU Gothic UI";
-    src: url('fonts/YuGothM.ttc');
+    src: url('fonts/YuGothM.ttf');
   }
   @font-face {
     font-family: "YU Gothic UI Bold";
-    src: url('fonts/YuGothB.ttc');
+    src: url('fonts/YuGothB.ttf');
   }
   @font-face {
     font-family: 'Agency FB';

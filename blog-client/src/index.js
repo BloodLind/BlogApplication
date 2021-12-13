@@ -67,7 +67,7 @@ ReactDOM.render(
             <Footer></Footer>
         </Route>
 
-        <Route path="/account">
+        <Route path="/account/:id">
             <Navbar></Navbar>
             <Account></Account>
             <Footer></Footer>
