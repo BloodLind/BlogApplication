@@ -95,7 +95,8 @@ namespace BlogApi.Web.Controllers.Api
             if (CheckObjectForNull.CheckForNull(request) && PageChecker.PageCheck(request.Page, userRepository))
                 return BadRequest();
 
-            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), request, userRepository, userPhotoRepository, HttpContext));
+            return Json(await DataFilter.GetUsersData((x) => request.UsersId.Contains(x.Id),
+                userRepository, userPhotoRepository, HttpContext, request));
 
         }
 
@@ -115,9 +116,7 @@ namespace BlogApi.Web.Controllers.Api
                                          $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" :  null,
                 ProfilePhoto = !String.IsNullOrEmpty(userPhoto?.PhotoPath) ?
                                          $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{userPhoto?.PhotoPath}" : null
-            }) ;
-
-
+            });
         }
 
         
@@ -126,8 +125,9 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (CheckObjectForNull.CheckForNull(request) && PageChecker.PageCheck(request.Page, userRepository))
                 return BadRequest();
-            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Any(item => item.Contains(x.UserName)),
-                request, userRepository, userPhotoRepository, HttpContext));
+
+            return Json(await DataFilter.GetUsersData((x) => request.UsersId.Any(item => item.Contains(x.UserName)),
+                userRepository, userPhotoRepository, HttpContext, request));
         }
 
     }
