@@ -2,8 +2,11 @@ import '../../styles/site.css'
 import '../../styles/default-namespace.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link, NavLink } from 'react-router-dom'
+import { useState, useEffect } from "react"
 
 function AccountArticleCard(props) {
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [data, setData] = useState({})
 
     return (
 
@@ -41,7 +44,7 @@ function AccountArticleCard(props) {
                     <div className="d-flex p-3 justify-content-between align-items-end">
                         <div className="d-flex gap-3 align-items-center">
                             <img src="/drawable/view.png" className="account-card-icon"></img>
-                            <div>10</div>
+                            <div>{props.views}</div>
                         </div>
                         <div className="d-flex gap-3 align-items-center">
                             <img src="/drawable/like.png" className="account-card-icon"></img>
