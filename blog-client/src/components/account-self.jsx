@@ -58,9 +58,8 @@ export default function AccountSelf() {
                 } = document.documentElement;
                 if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
                     console.log('end of scroll');
-                    if (isLoaded == true) {
+                    if (isLoaded == true) 
                         setCurrentPage(data.currentPage + 1);
-                    }
                 }
             }, { passive: true });
         }
@@ -119,6 +118,7 @@ export default function AccountSelf() {
                                 <div className="ocr m-5" style={{
                                     fontSize: '27em'
                                 }}>?</div>
+
                                 <div className="d-flex flex-column gap-5 ">
                                     <h3 className="agency text-super-x-larger" >Have not found your articles? <br></br> Come on and create new one</h3>
 

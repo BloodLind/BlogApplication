@@ -15,9 +15,10 @@
 }
 
 
-.account-article-card:hover,:focus{
+.account-article-card:hover :focus{
     transform: scale(1.06);
-}
+} 
+
 .account-article-card:hover .account-content {
     background-position: 0rem -22rem;
 }
