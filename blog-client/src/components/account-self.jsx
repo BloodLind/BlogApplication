@@ -6,16 +6,28 @@ import AccountArticleCard from './cards/AccountArticleCard'
 import { useHistory, Link } from 'react-router-dom'
 import { CheckPath } from '../services/imageChecker'
 import { GetUser, GetSelfBlogs } from '../api/blogController'
+import { GetSelf } from '../api/userController.jsx'
 
 export default function AccountSelf() {
     const session = useSession()
     const [data, setData] = useState({});
-    const [author, setAuthor] = useState([]);
+    const [user, setUser] = useState(undefined);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoaded, setIsLoaded] = useState(false);
-    console.log(session.token)
     useEffect(() => {
         setIsLoaded(false);
+        GetSelf(session.token).then(res => {
+            var tmp = res
+            if (!tmp) {
+                return
+            }
+            GetUser(tmp.id).then(x => {
+                console.log(x)
+                setUser(x[0])
+            })
+        })
+
+
         GetSelfBlogs(currentPage, session.token).then(res => {
             console.log(res)
             if (!res) {
@@ -34,10 +46,9 @@ export default function AccountSelf() {
     }, [currentPage])
 
     if (isLoaded || currentPage > 1) {
-        console.log(data.count)
         let articleCards = undefined;
         if (data.count > 0) {
-            articleCards = data.result.map(x => <AccountArticleCard key={x.id} article={x} photo={CheckPath(x.previewPhotoPath)}></AccountArticleCard>)
+            articleCards = data.result.map(x => <AccountArticleCard owner={true} key={x.id} views={x.viewsCount} article={x} photo={CheckPath(x.previewPhotoPath)}></AccountArticleCard>)
             window.addEventListener('scroll', () => {
 
                 const {
@@ -60,21 +71,25 @@ export default function AccountSelf() {
 
             <div className="d-flex flex-column">
                 <div className="account-back">
-                    <img className="account-img-back" src="https://wallpapercave.com/wp/wp2555730.jpg"></img>
+                    <img className="account-img-back"
+                        src={CheckPath(user?.profilePhoto) ? CheckPath(user?.profilePhoto) : `${window.location.protocol}//${window.location.host}/drawable/loadimageprev.png`}
+                        style={{ objectFit: 'cover' }}></img>
                 </div>
                 <div className="d-flex flex-column">
                     <div className="container agency mb-5">
                         <div className="d-flex gap-5 align-items-center">
                             <div className="account-ava">
-                                <img className="w-100 h-100 account-ava-img shadow" src="https://yt3.ggpht.com/ytc/AKedOLTAEe1oXRGuXZ7Df6olWXUyEuXvrawJBftMJ8kgDA=s900-c-k-c0x00ffffff-no-rj"></img>
+                                <img className="w-100 h-100 account-ava-img shadow"
+                                    src={CheckPath(user?.photo) ? CheckPath(user?.photo) : `${window.location.protocol}//${window.location.host}/drawable/logoblack.png`}
+                                    style={{ objectFit: 'cover' }}></img>
                             </div>
                             <div className="d-flex flex-column gap-3">
                                 <div className="text-super-x-larger">
-                                    Floppa
+                                    Welcome, {user?.name}
                                 </div>
                                 <div className="d-flex gap-5 fs-4">
                                     <div>
-                                        3 publications
+                                        {articleCards.length} publications
                                     </div>
                                     <div>
                                         4k subscribers
@@ -86,7 +101,6 @@ export default function AccountSelf() {
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
                                 <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Edit Profile</button>
-                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Subscribe</button>
                             </div>
                         </div>
                     </div>
@@ -99,7 +113,7 @@ export default function AccountSelf() {
                     <div className="d-flex container justify-content-between flex-wrap gap-5 mb-5">
 
                         {!articleCards ? (
-                             <div className="d-flex flex-row m-5 color-dark align-items-center justify-content-around" style={{
+                            <div className="d-flex flex-row m-5 color-dark align-items-center justify-content-around" style={{
                                 height: '450px',
                             }}>
                                 <div className="ocr m-5" style={{
@@ -107,7 +121,7 @@ export default function AccountSelf() {
                                 }}>?</div>
                                 <div className="d-flex flex-column gap-5 ">
                                     <h3 className="agency text-super-x-larger" >Have not found your articles? <br></br> Come on and create new one</h3>
-            
+
                                     <Link to="/create" className="btn col-8 opacity-button bg-accent agency fs-2 color-light mt-0 mb-0 round-button">Create new memory</Link>
                                 </div>
                             </div>
