@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BlogApi.Web.Controllers.Api
@@ -48,8 +49,11 @@ namespace BlogApi.Web.Controllers.Api
 
 
         [HttpGet("self")]
-        public async Task<ActionResult> GetSelfInfo() => Json(ResponseCreator.AccountResponse(await userRepository.GetUserAsync(this.User)));
-        
+        public async Task<ActionResult> GetSelfInfo() => Json(ResponseCreator.AccountResponse(await userRepository.GetUserByIdAsync(User.Identities.First()
+                                                                             .Claims
+                                                                                   .First(c => c.Type == ClaimTypes.NameIdentifier)
+                                                                                      .Value.ToString())));
+
 
         [HttpGet("publications/page-{page}")]
         public async Task<ActionResult> GetPublications(int page)
@@ -67,7 +71,7 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (!PageChecker.PageCheck(page, articlesRepository))
                 return BadRequest();
-            
+
 
             var user = await userRepository.GetUserAsync(this.User);
             var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName));
@@ -84,7 +88,7 @@ namespace BlogApi.Web.Controllers.Api
 
             var user = await userRepository.GetUserAsync(this.User);
             var subscriptions = (await userRepository.GetUserSubsciptions(user.UserName));
-            
+
             List<string> usersId = subscriptions.Select(x => x.AuthorId).ToList();
 
             var request = new UserDataRequest()
@@ -93,7 +97,7 @@ namespace BlogApi.Web.Controllers.Api
                 Page = page
             };
 
-            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id), 
+            return Json(await DataFilter.GetUserDataFiltred((x, collection) => collection.Contains(x.Id),
                 request, userRepository, userPhotoRepository, HttpContext));
         }
 
@@ -102,8 +106,8 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (articlesRepository.Get(Guid.Parse(request.ArticleId)) is null)
                 return BadRequest();
-            
-           
+
+
             var user = await userRepository.GetUserAsync(this.User);
             Like like = DataFilter.GetLikes(likesRepository,
                 x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefault();
@@ -120,7 +124,7 @@ namespace BlogApi.Web.Controllers.Api
             }
             else
                 like.IsLiked = request.State;
-            
+
             likesRepository.SaveChanges();
 
             return Json(ResponseCreator.LikesResponse(like.ArticleId.ToString(), user.Id, like.IsLiked));
@@ -137,7 +141,7 @@ namespace BlogApi.Web.Controllers.Api
             Like like = await DataFilter.GetLikes(likesRepository,
                 x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
 
-            if(like is not null)
+            if (like is not null)
                 likesRepository.Delete(like);
 
             return StatusCode(StatusCodes.Status200OK);
@@ -176,7 +180,7 @@ namespace BlogApi.Web.Controllers.Api
 
             if ((comment.UserId != Guid.Parse(user.Id) && comment.Article.AuthorId != Guid.Parse(user.Id)) || comment == null)
                 return BadRequest();
-            
+
 
             commentsRepository.Delete(comment);
             commentsRepository.SaveChanges();

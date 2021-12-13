@@ -68,7 +68,7 @@ namespace BlogApi.Web.Services
             Id = user.Id,
             Email = user.Email,
             Login = user.UserName,
-            Role = user.UserRoles.FirstOrDefault(x => x.UserId == user.Id).Role?.Name,
+            Role = user.UserRoles.FirstOrDefault(x => x.UserId == user.Id)?.Role?.Name,
             Token = token
         };
 
