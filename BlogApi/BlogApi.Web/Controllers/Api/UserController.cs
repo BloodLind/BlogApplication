@@ -45,7 +45,8 @@ namespace BlogApi.Web.Controllers.Api
             this.likesRepository = likesRepository;
         }
 
-
+        [AllowAnonymous, HttpGet("subscribers/id-{id}")]
+        public async Task<ActionResult> GetSubsribersCount(string id) => Json(subscriptionRepository.GetAll().Where(x => x.AuthorId == id).Count());
 
 
         [HttpGet("self")]
