@@ -121,8 +121,8 @@ namespace BlogApi.Web.Controllers.Api
                 return BadRequest();
 
             var user = await userRepository.GetUserAsync(this.User);
-            Like like = await DataFilter.GetLikes(likesRepository,
-                x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
+            Like like = DataFilter.GetLikes(likesRepository,
+                x => x.ArticleId.ToString().Equals(request.ArticleId) && x.UserId.ToString().Equals(user.Id)).FirstOrDefault();
 
             if(like is not null)
                 likesRepository.Delete(like);

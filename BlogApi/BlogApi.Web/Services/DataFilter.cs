@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BlogApi.Web.Services
@@ -37,10 +38,15 @@ namespace BlogApi.Web.Services
             return ResponseCreator.UserDataResponse(users,
                 userPhotoRepository, httpContext, users.Count());
         }
-        public static IQueryable<Like> GetLikes(IRepository<Like> likesRepository, Predicate<Like> predicate)
+        
+        public static IEnumerable<Like> GetLikes(IRepository<Like> likesRepository, Func<Like,bool> predicate)
         {
-            return likesRepository.GetAll().Where(x => predicate(x));
+            return likesRepository.GetAll().Where(predicate);
         }
 
+        public static IQueryable<Like> GetLikes(IRepository<Like> likesRepository, string id)
+        {
+            return likesRepository.GetAll().Where(x => x.Id.ToString() == id);
+        }
     }
 }

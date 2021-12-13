@@ -34,7 +34,7 @@ namespace BlogApi.Web.Controllers.Api
             if (String.IsNullOrEmpty(articleId))
                 return BadRequest();
 
-            var likes = DataFilter.GetLikes(likesRepository, x => x.ArticleId.ToString().Equals(articleId));
+            var likes = DataFilter.GetLikes(likesRepository, articleId);
             return Json(ResponseCreator.ArticleLikesResponse(articleId, likes.Where(x => x.IsLiked).Count(), likes.Where(x => !x.IsLiked).Count()));
         }
 
