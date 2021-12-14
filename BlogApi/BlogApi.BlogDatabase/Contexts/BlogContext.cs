@@ -16,20 +16,23 @@ namespace BlogApi.BlogDatabase.Contexts
     public class BlogContext : DbContext
     {
         public DbSet<Article> Articles { get; set; }
-        public DbSet<UserPhoto> UserPhotos { get; set; } 
+        public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
-       
+
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
         {
-           //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Category>()
+        .HasIndex(u => u.Name)
+        .IsUnique();
+
+
         }
-
-
     }
 }

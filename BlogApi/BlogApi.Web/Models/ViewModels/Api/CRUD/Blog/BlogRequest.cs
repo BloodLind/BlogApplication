@@ -11,7 +11,9 @@ namespace BlogApi.Web.Models.ViewModels.Api.CRUD.Blog
     {
         public string Title { get; set; }
         public string InnerData { get; set; }
-        [Core.Infrastructure.Attributes.Nullable]
+      
         public string PreviewPhotoPath { get; set; }
+
+        public IEnumerable<string> Categories { get; set; }
     }
 }

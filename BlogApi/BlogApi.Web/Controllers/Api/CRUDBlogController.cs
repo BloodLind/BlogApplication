@@ -30,9 +30,12 @@ namespace BlogApi.Web.Controllers.Api
     {
         private readonly IRepository<Article> articleRepository;
 
-        public CRUDBlogController(IRepository<Article> articleRepository)
+        public IRepository<Category> CategoryRepository { get; }
+
+        public CRUDBlogController(IRepository<Article> articleRepository, IRepository<Category> categoryRepository)
         {
             this.articleRepository = articleRepository;
+            CategoryRepository = categoryRepository;
         }
 
         [HttpPost("add-photo"), AllowAnonymous]
@@ -40,14 +43,16 @@ namespace BlogApi.Web.Controllers.Api
         {
 
 
-            string fileName = $"{Guid.NewGuid()}.{Path.GetExtension(image.FileName)}";
+            string fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "Images", fileName);
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
                 await image.CopyToAsync(fs);
             return Json(new
             {
                 success = 1,
-                file = new { url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{fileName}" }
+                file = new { url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{fileName}" },
+                photoName = fileName
+
             });
            
         }
@@ -65,39 +70,42 @@ namespace BlogApi.Web.Controllers.Api
                 return Json(new
                 {
                     success = 1,
-                    file = new { url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{fileName}" }
+                    file = new { url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/photos/{fileName}" },
+                     photoName = fileName
                 });
             }
             return Json(new{success = 0 });
         }
 
-        [HttpPost("blog")]
-        public async Task<ActionResult> AddBlog([FromBody] BlogRequest request)
+        [HttpPost("add-article")]
+        public async Task<ActionResult> AddBlog(BlogRequest request)
         {
             if (CheckObjectForNull.CheckForNull(request) || request.Title == "")
             {
                 return BadRequest();
             }
 
-           Article article = new()
+
+            List<Category> exsists = CategoryRepository.GetAll().Where(x => request.Categories.Contains(x.Name)).ToList();
+            List<Category> categories = request.Categories.Where(x=>exsists.FirstOrDefault(y=>y.Name == x)==null).Select(x => new Category() { Name = x }).ToList();
+            categories.AddRange(exsists);
+
+            Article article = new()
             {
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.Parse(User.Identities.ElementAt(0).Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value),
                 InnerData = request.InnerData,
                 PreviewPhotoPath = request.PreviewPhotoPath,
                 Title = request.Title,
-                PublicationDate = DateTime.Now
-            };
+                PublicationDate = DateTime.Now,
+                Categories = categories
+              };
 
             articleRepository.CreateOrUpdate(article);
             articleRepository.SaveChanges();
+            
 
-
-            return Json(new BlogResponse
-            {
-                Result = article,
-                ApiRequest = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/blog/articles/id-{article.Id}"
-            });
+            return Json(new {ArticleId = article.Id });
         }
     }
 }
