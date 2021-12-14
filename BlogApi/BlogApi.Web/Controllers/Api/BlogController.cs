@@ -62,7 +62,10 @@ namespace BlogApi.Web.Controllers.Api
         [HttpGet("articles/id-{id}"), HttpPost("articles/id-{id}")]
         public async Task<ActionResult> ArticleById(string id)
         {
-            return Json(articlesRepository.Get(Guid.Parse(id)));
+            var article = articlesRepository.Get(Guid.Parse(id));
+            article.ViewsCount++;
+            articlesRepository.SaveChanges();
+            return Json(article);
         }
 
 
@@ -83,10 +86,10 @@ namespace BlogApi.Web.Controllers.Api
         {
             if (request.UserLogin == null || !PageChecker.PageCheck(request.Page, articlesRepository))
                 return BadRequest();
-            
+
 
             var user = await userRepository.GetUserByLoginAsync(request.UserLogin);
-            return Json(await ResponseCreator.UserArticlesAsync(articlesRepository,(x => x.Id.ToString().Equals(user.Id)), request.Page));
+            return Json(await ResponseCreator.UserArticlesAsync(articlesRepository,(x => x.AuthorId.ToString() == user.Id), request.Page));
         }
 
         [HttpPost("users")]

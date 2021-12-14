@@ -45,7 +45,8 @@ namespace BlogApi.Web.Controllers.Api
             this.likesRepository = likesRepository;
         }
 
-
+        [AllowAnonymous, HttpGet("subscribers/id-{id}")]
+        public async Task<ActionResult> GetSubsribersCount(string id) => Json(subscriptionRepository.GetAll().Where(x => x.AuthorId == id).Count());
 
 
         [HttpGet("self")]
@@ -64,7 +65,15 @@ namespace BlogApi.Web.Controllers.Api
             var user = await userRepository.GetUserAsync(this.User);
             return Json(await ResponseCreator.UserArticlesAsync(articlesRepository, (x => x.AuthorId.ToString() == user.Id), page));
         }
-
+        [HttpGet("subscription/creators/check/id-{authorId}")]
+        public async Task<ActionResult> CheckIsSubscribed(string authorId)
+        {
+            var user = await userRepository.GetUserAsync(this.User);
+            var isSubscribe = (await userRepository.GetUserSubsciptions(user.UserName)).Any(x => x.AuthorId == authorId);
+            return Json(new{
+                isSubscribe
+            });
+        }
 
         [HttpGet("subscription/articles/page-{page}")]
         public async Task<ActionResult> GetSubscribtionArticles(int page)
