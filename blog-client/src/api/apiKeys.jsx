@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 export const BaseAddress =               "https://localhost:44321/"
 export const GetArticles = BaseAddress + "api/blog/articles"
 export const GetPhotos   = BaseAddress + "api/blog/photos"
@@ -16,3 +17,19 @@ export const SubscribersCount = BaseAddress + "api/user/info/subscribers"
 export const CheckSubscribtion = BaseAddress + 'api/user/info/subscription/creators/check'
 export const Subscribe = BaseAddress + "api/account/subscribe"
 export const Unsubscribe = BaseAddress + "api/account/unsubscribe"
+=======
+export const BaseAddress            =               "https://localhost:44321/"
+export const GetArticles            = BaseAddress + "api/blog/articles"
+export const GetPhotos              = BaseAddress + "api/blog/photos"
+export const GetUsers               = BaseAddress + "api/blog/users"
+export const GetArticle             = BaseAddress + "api/blog/articles"
+export const Login                  = BaseAddress + "api/account/"
+export const Register               = BaseAddress + "api/account/register"
+export const Google                 = BaseAddress + "api/account/login/external/Google"
+export const SelfBlogs              = BaseAddress + "api/user-info/publications"
+export const SubscriptionAuthors    = BaseAddress + "api/user/info/subscription/creators"
+export const SubscriptionArticles   = BaseAddress + "api/user/info/subscription/articles"
+export const UploadPhoto            = BaseAddress + "api/blog/crud/add-photo"
+export const UploadPhotoByURL       = BaseAddress + "api/blog/crud/add-photo-url"
+export const AddArticle             = BaseAddress + "api/blog/crud/add-article"
+>>>>>>> Stashed changes

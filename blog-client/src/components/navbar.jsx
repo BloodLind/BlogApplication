@@ -11,6 +11,7 @@ import useSession  from 'react-session-hook'
 import { useLocation } from 'react-router'
 
 function Logout(session){
+  localStorage.clear();
   session.removeSession();
 }
 function Navbar() {

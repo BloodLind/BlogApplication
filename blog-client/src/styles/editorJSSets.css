@@ -3,7 +3,7 @@
  max-width: 87%; 
 } 
 
- #editorjs {
+ .createArticleEditorjs {
     /* background-color: gray; */
     /* max-width: 90%;
     border-radius:10px;*/
@@ -20,3 +20,8 @@ padding: 40px;
 background-color: #eef5fa;
 
 } 
+.image-tool__image
+{
+    display: flex;
+    justify-content: center;
+}

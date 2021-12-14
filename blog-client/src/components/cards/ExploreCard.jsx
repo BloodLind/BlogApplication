@@ -41,7 +41,7 @@ export default function ExploreCard(props) {
                     textOverflow: 'ellipsis',
                     overflow: 'hidden',
   
-                }}>{props.article?.innerData}</p>
+                }}>{JSON.parse(props.article?.innerData).blocks[0].data.text}</p>
                 <h5 className="agency fs-4 ms-2 mt-0">by {props.author?.name}</h5>
             </div>
         </Link>

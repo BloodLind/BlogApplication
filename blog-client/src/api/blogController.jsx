@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import { GetUsers, GetArticles, GetPhotos, GetArticle, ArticleStats, SelfBlogs, SubscriptionAuthors, SubscriptionArticles, UserArticles } from './apiKeys'
+=======
+import { GetUsers, GetArticles, GetPhotos, GetArticle, SelfBlogs, SubscriptionAuthors, SubscriptionArticles,UploadPhoto,UploadPhotoByURL,AddArticle } from './apiKeys'
+>>>>>>> Stashed changes
 
 
 export async function BlogsGet(page = 1) {
@@ -114,7 +118,9 @@ export async function ArticleGet(id) {
     else
         return null;
 }
+export async function UploadPhotoToServer(file,token) {
 
+<<<<<<< Updated upstream
 export async function GetArticleStats(articleId) {
     var result = await fetch(ArticleStats + `/id-${articleId}`);
     if (result.ok)
@@ -123,3 +129,41 @@ export async function GetArticleStats(articleId) {
         return null
 }
 
+=======
+    let formData = new FormData();
+    formData.append("image",file);
+   
+    var res = fetch(UploadPhoto,
+    {
+        method: "POST",
+        headers: {
+            'Authorization': 'bearer ' + token
+        },
+        body: formData,
+    });
+    return res.then(x => { return x.json() }).then(x => x);
+}
+export async function UploadPhotoByUrlToServer(url,token) {
+    var res = fetch(UploadPhotoByURL,
+    {
+        method: "POST",
+        headers: {
+            'Authorization': 'bearer ' + token
+        },
+        body: {url:url},
+    });
+    return res.then(x => { return x.json() }).then(x => x);
+}
+export async function AddArticleToServer(article,token) {
+    var res = fetch(AddArticle,
+    {
+        method: "POST",
+        headers: {
+            'Authorization': 'bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(article),
+    });
+    return res.then(x => { return x.json() }).then(x => x);
+}
+>>>>>>> Stashed changes

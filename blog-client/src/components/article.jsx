@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import {Link, useParams} from 'react-router-dom'
 import ArticleCard from './cards/ArticleCard'
 import { CheckPath } from '../services/imageChecker';
-
+import EditorConfig from "../services/editorJSConfig";
+import EditorJS from "@editorjs/editorjs";
+import "../styles/editorJSSets.css";
 function Article(props){
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({});
@@ -15,17 +17,20 @@ function Article(props){
             {
                 setData(x); 
                 GetUser(x.authorId).then(z => { setAuthor(z[0]); setIsLoaded(true)});
+               
             });
      }, [])
     if(isLoaded)
     {
-        return (<div className="d-flex flex-column gap-5 align-items-center">
+        var config = EditorConfig;
+        config.readOnly = true;
+        config.data = JSON.parse(data.innerData)
+        var editorJS = new EditorJS(config);
+        return (<div className="d-flex flex-column gap-5 align-items-center align-content-center">
         <ArticleCard photo={CheckPath(data.previewPhotoPath)} author={author} article={data}></ArticleCard>
-        <div className="p-5 m-2 ms-5 me-5 mt-0 col-9">
-            <p className="yu-gothic fs-5 m-5 mt-0 p-5">
-                {data.innerData}
-            </p>
-        </div>
+      
+                <div id="editorjs" className="delete-select-border agency-headers yu-gothic fs-5 col-7 p-3 align-self-center"></div>
+      
     </div>);
     } else {
         return (<></>);
