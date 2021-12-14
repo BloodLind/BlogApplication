@@ -4,23 +4,25 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link, NavLink } from 'react-router-dom'
 import { useState, useEffect } from "react"
 import { GetArticleStats } from "../../api/blogController"
+import numberFormat from '../../services/numbersFormater'
 
 function AccountArticleCard(props) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState({})
     useEffect(() => {
         setIsLoaded(false)
-        GetArticleStats(props.id).then(res => {
+        GetArticleStats(props.article.id).then(res => {
             setData(res)
         })
         setIsLoaded(true)
     }, [])
 
+    var publicationDate = new Date(props.article.publicationDate);
     if (isLoaded) {
         return (
 
             <NavLink to={'/article/' + props.article.id} className="text-decoration-none">
-                <div className="card round-card account-article-card shadow d-flex flex-column card-dark-gradient-bg agency color-light parent">
+                <div className="card round-card account-article-card shadow d-flex flex-column card-dark-gradient-bg agency color-light">
                     <div className="account-article-photo" style={{
                         backgroundImage: !props?.photo ? `url(${window.location.protocol + "//" + window.location.host + "/drawable/logowhite.png"})` : `url(${props.photo})`,
                         backgroundRepeat: 'no-repeat',
@@ -53,17 +55,20 @@ function AccountArticleCard(props) {
                         <div className="d-flex p-3 justify-content-between align-items-end">
                             <div className="d-flex gap-3 align-items-center">
                                 <img src="/drawable/view.png" className="account-card-icon"></img>
-                                <div>{props.views}</div>
+                                <div>{numberFormat(props.views)}</div>
                             </div>
                             <div className="d-flex gap-3 align-items-center">
                                 <img src="/drawable/like.png" className="account-card-icon"></img>
-                                <div>{data.likesCount}</div>
+                                <div>{numberFormat(data.likesCount)}</div>
                             </div>
                             <div className="d-flex gap-3 align-items-center">
                                 <img src="/drawable/dislike.png" className="account-card-icon"></img>
-                                <div>{data.dislikesCount}</div>
+                                <div>{numberFormat(data.dislikesCount)}</div>
                             </div>
-                            {!props.owner ? (<></>) : (
+                            {!props.owner ? 
+                            (<div className="fs-5 color-sub-light agency">
+                                {`${publicationDate.getDate()}.${publicationDate.getMonth()}.${publicationDate.getFullYear()}`}
+                            </div>) : (
                                 <div className="d-flex gap-3 align-items-center">
                                     <img src="/drawable/more.png" className="account-card-icon"></img>
                                 </div>

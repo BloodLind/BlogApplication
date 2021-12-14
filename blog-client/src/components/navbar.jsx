@@ -8,12 +8,15 @@ import '../styles/text.css'
 import '../styles/default-namespace.jsx'
 import { Link } from 'react-router-dom'
 import useSession  from 'react-session-hook'
+import { useLocation } from 'react-router'
 
 function Logout(session){
   session.removeSession();
 }
 function Navbar() {
   const session = useSession();
+  const location = useLocation();
+  localStorage.setItem("redirectUrl", location.pathname);
   return (<>
     <nav className="navbar bg-dark-gradient navigation-logo navigation opacity-100 nav-top d-flex flex-column justify-content-center">
       <Link to={session.token == undefined ? "/login" : '/account-self'} style={{ position: "absolute", top: "40px", right: "160px" }}>
@@ -23,7 +26,7 @@ function Navbar() {
           objectFit: 'cover'
         }} src={window.location.protocol + "//" + window.location.host + "/drawable/login.png"}></img>
       </Link>
-      <Link to="" onClick={() => Logout(session)} style={{ position: "absolute", top: "40px", right: "100px", display: session.token == undefined ? 'none' : "block"}}>
+      <Link to={location.pathname} onClick={() => Logout(session)} style={{ position: "absolute", top: "40px", right: "100px", display: session.token == undefined ? 'none' : "block"}}>
         <img style={{
           position: 'relative',
           width: '45px',
@@ -63,7 +66,7 @@ function Navbar() {
           objectFit: 'cover'
         }}></img>
       </Link>
-      <Link to="" onClick={() => Logout(session)} style={{ position: "absolute", top: "10px", right: "100px", display: session.token == undefined ? 'none' : "block"}}>
+      <Link to={location.pathname} onClick={() => Logout(session)} style={{ position: "absolute", top: "10px", right: "100px", display: session.token == undefined ? 'none' : "block"}}>
         <img style={{
           position: 'relative',
           width: '40px',

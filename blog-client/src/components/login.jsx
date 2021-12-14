@@ -28,7 +28,7 @@ function Login() {
   };
   const handleSingIn = async (event) => {
     if(await AccountService.Login(state.login, state.password, session)){
-      history.push("/")
+      history.push(!localStorage.getItem("redirectUrl") ? "/" : localStorage.getItem("redirectUrl"))
     } else {
       setErrorOccuerd(true);
     }

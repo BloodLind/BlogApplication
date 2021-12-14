@@ -124,7 +124,7 @@ export default function Check()
 }
 if(isNoSubscriptions){
   return (<>
-  <div className="align-self-center agency fs-1 m-5 p-5 h-100">
+  <div className="align-self-center agency fs-1 m-5 mb-0 p-5 h-100">
     <div>
     There no subscriptions to look. 
     </div>
@@ -132,7 +132,7 @@ if(isNoSubscriptions){
     Find your favorite Creators and check their memories
     </div>
   </div>
-  <Link to="explore" className="align-self-center color-light m-5 btn bg-accent round-button agency fs-1 mt-0 ps-5 pe-5 opacity-button">Explore memories</Link>
+  <Link to="explore" className="align-self-center color-light m-5 btn bg-accent round-card agency fs-1 mt-0 ps-5 pe-5 p-2 opacity-button">Explore Memories</Link>
   </>)
 }
 return (<></>)

@@ -14,9 +14,11 @@
 
 }
 
-
-.account-article-card:hover :focus{
-    transform: scale(1.06);
+.account-article-card{
+    transition: 100ms ease-out;
+}
+.account-article-card:hover{
+    transform: scale(1.04);
 } 
 
 .account-article-card:hover .account-content {
@@ -41,6 +43,7 @@
 .account-ava {
     height: 300px;
     width: 300px;
+    min-width: 300px;
     margin-top: -10%;
     border-radius: 10px;
     border-style: solid;

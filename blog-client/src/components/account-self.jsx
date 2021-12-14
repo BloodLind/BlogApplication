@@ -7,15 +7,22 @@ import { useHistory, Link } from 'react-router-dom'
 import { CheckPath } from '../services/imageChecker'
 import { GetUser, GetSelfBlogs } from '../api/blogController'
 import { GetSelf, GetSubsctiptionAuthors, GetSubscribersCount } from '../api/userController.jsx'
+import numberFormat from '../services/numbersFormater.jsx'
 
 export default function AccountSelf() {
-    const session = useSession()
-    const [subToCount, setSubToCount] = useState(0)
-    const [subsribers, setSubscribers] = useState(0)
-    const [data, setData] = useState({})
-    const [user, setUser] = useState(undefined)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [isLoaded, setIsLoaded] = useState(false)
+    const session = useSession();
+    const history = useHistory();
+    const [subToCount, setSubToCount] = useState(0);
+    const [subsribers, setSubscribers] = useState(0);
+    const [data, setData] = useState({});
+    const [user, setUser] = useState(undefined);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    if(!session.token){
+        history.push("/");
+    }
+
     useEffect(() => {
         setIsLoaded(false);
         GetSelf(session.token).then(res => {
@@ -30,16 +37,12 @@ export default function AccountSelf() {
                 setSubToCount(res.count)
             })
             GetUser(tmp.id).then(x => {
-                console.log(x)
-                setUser(x[0])
+                setUser(x)
             })
-            
-
         })
 
 
         GetSelfBlogs(currentPage, session.token).then(res => {
-            console.log(res)
             if (!res) {
                 return;
             }
@@ -50,31 +53,33 @@ export default function AccountSelf() {
             else
                 newData = res;
             setData(newData);
-
-            setIsLoaded(true)
+            setIsLoaded(true);
         })
-    }, [currentPage])
+    }, [currentPage]);
+
 
     if (isLoaded || currentPage > 1) {
         let articleCards = undefined;
         if (data.count > 0) {
             articleCards = data.result.map(x => <AccountArticleCard owner={true} key={x.id} id={x.id} views={x.viewsCount} article={x} photo={CheckPath(x.previewPhotoPath)}></AccountArticleCard>)
-            window.addEventListener('scroll', () => {
+            if(currentPage === 1)
+            {
 
-                const {
-                    scrollTop,
-                    scrollHeight,
-                    clientHeight
-                } = document.documentElement;
-                if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
-                    console.log('end of scroll');
-                    if (isLoaded == true) 
-                        setCurrentPage(data.currentPage + 1);
+                window.addEventListener('scroll', () => {
+                    const {
+                        scrollTop,
+                        scrollHeight,
+                        clientHeight
+                    } = document.documentElement;
+                    if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
+                        console.log('end of scroll');
+                        if (isLoaded == true) {
+                    setCurrentPage(data.currentPage + 1);
                 }
-            }, { passive: true });
+            }
+        }, { passive: true });
+    }
         }
-
-
 
         return (
 
@@ -98,19 +103,19 @@ export default function AccountSelf() {
                                 </div>
                                 <div className="d-flex gap-5 fs-4">
                                     <div>
-                                        {!articleCards?.length ? 0 : articleCards.length} publications
+                                        {!articleCards?.length ? 0 : numberFormat(articleCards.length)} publications
                                     </div>
                                     <div>
-                                        {subsribers} subscribers
+                                        {numberFormat(subsribers)} subscribers
                                     </div>
                                     <div>
-                                        {subToCount} subscriptions
+                                        {numberFormat(subToCount)} subscriptions
                                     </div>
                                 </div>
                             </div>
                             <div className="d-flex gap-3 flex-grow-1 justify-content-end">
-                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Edit Profile</button>
-                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap" type="button">Creative Lab</button>
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap opacity-button" type="button">Edit Profile</button>
+                                <button className="btn bg-accent fs-4 agency ps-5 pe-5 text-nowrap opacity-button" type="button">Creative Lab</button>
                             </div>
                         </div>
                     </div>

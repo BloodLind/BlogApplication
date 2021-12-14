@@ -43,19 +43,23 @@ export default function Explore() {
         let page = data.result.map(x =>
             <ExploreCard key={x.id} article={x} photo={ CheckPath(x.previewPhotoPath) } author={authors.userDatas.filter(a => a.id == x.authorId)[0]}></ExploreCard>)
         
-            window.addEventListener('scroll', () => {
-            const {
-                scrollTop,
-                scrollHeight,
-                clientHeight
-            } = document.documentElement;
-            if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
-                console.log('end of scroll');
-                if (isLoaded == true) {
+            if(currentPage === 1)
+            {
+
+                window.addEventListener('scroll', () => {
+                    const {
+                        scrollTop,
+                        scrollHeight,
+                        clientHeight
+                    } = document.documentElement;
+                    if (scrollTop + clientHeight >= scrollHeight - 350 && data.currentPage != data.pageCount) {
+                        console.log('end of scroll');
+                        if (isLoaded == true) {
                     setCurrentPage(data.currentPage + 1);
                 }
             }
         }, { passive: true });
+    }
         return (<>
         <div className="d-flex flex-row col-10 mt-5 pt-5 align-self-center align-items-baseline justify-content-center gap-5">
                     <h4 className="fs-1 agency text-nowrap">Memories</h4>
